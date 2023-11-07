@@ -1,0 +1,11 @@
+bin/
+publish/
+obj/
+.idea/
+node_modules/
+*.sqlite
+*.db
+*.DotSettings.*
+src/Memodex.WebApp/wwwroot/js/*
+src/Memodex.WebApp/wwwroot/css/*
+appsettings.*.json
