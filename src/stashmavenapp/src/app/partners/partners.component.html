@@ -1,0 +1,8 @@
+<p>partners works!</p>
+
+<table>
+  <tr *ngFor="let item of partnerList?.partners">
+    <td>{{item.customIdentifier}}</td>
+    <td>{{item.primaryTaxIdentifierType}}</td>
+    <td>{{item.primaryTaxIdentifierValue}}</td>
+</table>
