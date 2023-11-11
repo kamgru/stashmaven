@@ -21,6 +21,7 @@ import {
 } from "@azure/msal-browser";
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {BrowserModule} from "@angular/platform-browser";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   return {
@@ -70,6 +71,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
 export const appConfig = {
   providers: [
     importProvidersFrom(BrowserModule),
+    importProvidersFrom(BrowserAnimationsModule),
     MsalGuard,
     MsalService,
     MsalBroadcastService,

@@ -3,11 +3,11 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 
 export class ListPartnerRequest {
-  page: number = 0;
-  pageSize: number = 10;
-  search: string = '';
-  sortBy: string = '';
-  isAscending: boolean = false;
+  page: number = 1
+  pageSize: number = 10
+  search?: string
+  sortBy?: string
+  isAscending?: boolean
 }
 
 export interface PartnerList {
@@ -39,14 +39,7 @@ export class PartnersService {
   listPartners(req: ListPartnerRequest): Observable<PartnerList> {
     return this.http.get<PartnerList>('http://localhost:5253/api/v1/partner/list',
       {
-        params:
-          {
-            'page': '0',
-            'pageSize': '10',
-            'search': '',
-            'sortBy': '',
-            'isAscending': 'false'
-          }
+        params: {...req}
       })
   }
 

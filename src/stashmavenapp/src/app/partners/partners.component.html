@@ -1,8 +1,27 @@
-<p>partners works!</p>
+<p-table *ngIf="partnerList" [value]="partnerList!.partners" styleClass="p-datatable-striped"
+         selectionMode="single" dataKey="customIdentifier" [(selection)]="selectedPartner" [virtualScroll]="true"
+         [lazy]="true" (onLazyLoad)="loadMore($event)" [virtualScrollItemSize]="46" [scrollable]="true" scrollHeight="300px">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Identifier</th>
+      <th>Name</th>
+      <th>Tax Id Type</th>
+      <th>Tax Id Value</th>
+      <th>City</th>
+      <th>Street</th>
+      <th>Postal Code</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-partner>
+    <tr [pSelectableRow]="partner" style="height: 46px">
+      <td>{{partner.customIdentifier}}</td>
+      <td>{{partner.legalName}}</td>
+      <td>{{partner.primaryTaxIdentifierType}}</td>
+      <td>{{partner.primaryTaxIdentifierValue}}</td>
+      <td>{{partner.city}}</td>
+      <td>{{partner.street}}</td>
+      <td>{{partner.postalCode}}</td>
+    </tr>
+  </ng-template>
 
-<table>
-  <tr *ngFor="let item of partnerList?.partners">
-    <td>{{item.customIdentifier}}</td>
-    <td>{{item.primaryTaxIdentifierType}}</td>
-    <td>{{item.primaryTaxIdentifierValue}}</td>
-</table>
+</p-table>
