@@ -1,6 +1,24 @@
-<p-table *ngIf="partnerList" [value]="partnerList!.partners" styleClass="p-datatable-striped"
-         selectionMode="single" dataKey="customIdentifier" [(selection)]="selectedPartner" [virtualScroll]="true"
-         [lazy]="true" (onLazyLoad)="loadMore($event)" [virtualScrollItemSize]="46" [scrollable]="true" scrollHeight="300px">
+<p-table [value]="partners"
+         #partnersTable
+         styleClass="p-datatable-striped"
+         [lazy]="true"
+         (onLazyLoad)="loadPartnerLazy($event)"
+         [rows]="rows"
+         [rowsPerPageOptions]="[10, 25, 50]"
+         [showLoader]="true"
+         [totalRecords]="totalRecords"
+         [paginator]="true"
+         [globalFilterFields]="['customIdentifier', 'legalName', 'primaryTaxIdentifierValue']"
+         >
+
+  <ng-template pTemplate="caption">
+    <div class="flex">
+      <span class="p-input-icon-left ml-auto">
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" (keyup)="search($event)" placeholder="Search...">
+      </span>
+    </div>
+  </ng-template>
   <ng-template pTemplate="header">
     <tr>
       <th>Identifier</th>
