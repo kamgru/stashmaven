@@ -1,6 +1,6 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {RouterOutlet} from '@angular/router';
 import {MSAL_GUARD_CONFIG, MsalBroadcastService, MsalGuardConfiguration, MsalService} from "@azure/msal-angular";
 import {filter, Subject, takeUntil} from "rxjs";
 import {
@@ -8,11 +8,16 @@ import {
   EventType,
   InteractionStatus,
 } from "@azure/msal-browser";
+import {SidebarModule} from "primeng/sidebar";
+import {ButtonModule} from "primeng/button";
+import {MenubarModule} from "primeng/menubar";
+import {MenuItem, PrimeIcons} from "primeng/api";
+import {NavSidebarComponent} from "./nav-sidebar/nav-sidebar.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, SidebarModule, ButtonModule, MenubarModule, NavSidebarComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -20,7 +25,16 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'Angular Standalone Sample - MSAL Angular v3';
   isIframe = false;
   loginDisplay = false;
+  sidebarVisible = true;
   private readonly _destroying$ = new Subject<void>();
+  items: MenuItem[] = [
+    {
+      icon: PrimeIcons.BARS,
+      command: () => {
+        this.sidebarVisible = true;
+      }
+    }
+  ];
 
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
@@ -64,7 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.loginDisplay = this.authService.instance.getAllAccounts().length > 0;
   }
 
-  checkAndSetActiveAccount(){
+  checkAndSetActiveAccount() {
     /**
      * If no active account set but there are accounts signed in, sets first account to active account
      * To use active account set here, subscribe to inProgress$ first in your component
