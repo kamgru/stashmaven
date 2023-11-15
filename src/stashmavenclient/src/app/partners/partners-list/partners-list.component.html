@@ -1,0 +1,32 @@
+<input (keyup)="search($event)" [value]="searchPhrase" class="border border-slate-500">
+<table class="table-auto p-5 m-5">
+    <thead>
+    <tr>
+        <th>
+            <app-table-column [name]="'id'"
+                              [id]="'customIdentifier'"
+                              (sortingChanged)="sortBy($event)">
+            </app-table-column>
+        </th>
+        <th>
+            <app-table-column [name]="'name'"
+                              [id]="'legalName'"
+                              (sortingChanged)="sortBy($event)">
+            </app-table-column>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let partner of partners">
+        <td>
+            {{partner.customIdentifier}}
+        </td>
+        <td>
+            {{partner.legalName}}
+        </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    </tfoot>
+
+</table>
