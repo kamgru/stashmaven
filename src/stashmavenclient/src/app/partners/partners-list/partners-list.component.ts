@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ListPartnersRequest, ListPartnersResponse, Partner, PartnersService} from "../partners.service";
 import {debounceTime, distinctUntilChanged, Subject, switchMap} from "rxjs";
@@ -17,6 +17,7 @@ export class PartnersListComponent {
     partners: Partner[] = [];
     observer?: IntersectionObserver;
     searchPhrase: string = '';
+    currentIndex: number = 0;
 
     private observedElement?: HTMLElement;
     private request: ListPartnersRequest = new ListPartnersRequest();
@@ -25,19 +26,22 @@ export class PartnersListComponent {
     private searchPhrase$ = new Subject<string>();
     private firstLoadDone: boolean = false;
 
-    private intersectionObserverCallback: IntersectionObserverCallback
-        = (entries: IntersectionObserverEntry[]) => {
-        const entry = entries[0];
+    constructor(private partnersService: PartnersService) {
+    }
 
-        if (entry.isIntersecting) {
-            if (this.partners.length < this.totalCount || !this.firstLoadDone) {
-                this.request.page++;
-                this.loadMore();
+    @HostListener('window:keydown', ['$event'])
+    handleKeyDown(event: KeyboardEvent) {
+        if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            if (this.currentIndex < this.partners.length - 1) {
+                this.currentIndex++;
+            }
+        } else if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            if (this.currentIndex > 0) {
+                this.currentIndex--;
             }
         }
-    };
-
-    constructor(private partnersService: PartnersService) {
     }
 
     ngOnInit() {
@@ -76,6 +80,11 @@ export class PartnersListComponent {
             )
     }
 
+    ngOnDestroy() {
+        this.observer?.disconnect();
+        this.searchPhrase$.unsubscribe();
+    }
+
     loadMore() {
         this.partnersService.listPartners(this.request)
             .subscribe(
@@ -111,4 +120,21 @@ export class PartnersListComponent {
         this.firstLoadDone = false;
         this.loadMore();
     }
+
+    private intersectionObserverCallback: IntersectionObserverCallback
+        = (entries: IntersectionObserverEntry[]) => {
+
+        for(let entry of entries){
+
+            if (entry.target === this.observedElement && entry.isIntersecting) {
+                if (this.partners.length < this.totalCount || !this.firstLoadDone) {
+                    this.request.page++;
+                    this.loadMore();
+                }
+            }
+            else {
+                console.log(entry);
+            }
+        }
+    };
 }

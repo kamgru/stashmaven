@@ -17,12 +17,18 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let partner of partners">
+    <tr *ngFor="let partner of partners; index as i" [class.current]="i == currentIndex">
         <td>
             {{partner.customIdentifier}}
         </td>
         <td>
             {{partner.legalName}}
+        </td>
+        <td>
+            {{i}}
+        </td>
+        <td *ngIf="i == currentIndex">
+            <span id="cursor-pointer"><-</span>
         </td>
     </tr>
     </tbody>
