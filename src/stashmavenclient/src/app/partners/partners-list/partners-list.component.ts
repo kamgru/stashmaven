@@ -36,15 +36,29 @@ export class PartnersListComponent {
             if (this.currentIndex < this.partners.length - 1) {
                 this.currentIndex++;
 
-                //document.getElementById('cursor-pointer')?.scrollIntoView();
-                //document.getElementById('table-items')?.scrollBy(0, 50)
+                let tableItems = document.getElementById('table-items');
+                let cursorPointer = document.getElementById('cursor-pointer');
+                let cursorPointerBottom = cursorPointer?.getBoundingClientRect().bottom;
+                let tableItemsBottom = tableItems?.getBoundingClientRect().bottom;
+
+                if (cursorPointerBottom! >= tableItemsBottom! - 27) {
+                    tableItems?.scrollBy(0, 27);
+                }
             }
         } else if (event.key === 'ArrowUp') {
             event.preventDefault();
             if (this.currentIndex > 0) {
                 this.currentIndex--;
 
-                //document.getElementById('cursor-pointer')?.scrollIntoView();
+                let tableItems = document.getElementById('table-items');
+                let cursorPointer = document.getElementById('cursor-pointer');
+                let cursorPointerTop = cursorPointer?.getBoundingClientRect().top;
+                let tableItemsTop = tableItems?.getBoundingClientRect().top;
+
+                if (cursorPointerTop! <= tableItemsTop! + 27) {
+                    tableItems?.scrollBy(0, -27);
+                }
+
             }
         }
     }
