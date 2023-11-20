@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 tr.current {
-    @apply border border-red-700;
+    @apply border border-red-700 box-border;
 }

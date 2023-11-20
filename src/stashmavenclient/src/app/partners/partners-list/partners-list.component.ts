@@ -35,11 +35,16 @@ export class PartnersListComponent {
             event.preventDefault();
             if (this.currentIndex < this.partners.length - 1) {
                 this.currentIndex++;
+
+                //document.getElementById('cursor-pointer')?.scrollIntoView();
+                //document.getElementById('table-items')?.scrollBy(0, 50)
             }
         } else if (event.key === 'ArrowUp') {
             event.preventDefault();
             if (this.currentIndex > 0) {
                 this.currentIndex--;
+
+                //document.getElementById('cursor-pointer')?.scrollIntoView();
             }
         }
     }
