@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-tr.current {
-    @apply border border-red-700 box-border;
+tr.cursor-pointer {
+    @apply bg-red-500;
 }

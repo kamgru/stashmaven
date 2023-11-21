@@ -1,10 +1,19 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-export class SortOrderChanged {
+export class ColumnClicked {
     constructor(
         public id: string,
         public sortOrder: string | null) {
+    }
+}
+
+export class ColumnModel {
+    constructor(
+        public id: string,
+        public name: string,
+        public interactive: boolean = false,
+        public sortOrder: string | null = null) {
     }
 }
 
@@ -17,22 +26,23 @@ export class SortOrderChanged {
 })
 export class TableColumnComponent {
 
-    @Input() name: string = 'table-column';
-    @Input() id: string = 'table-column';
-    @Output() sortingChanged: EventEmitter<SortOrderChanged> = new EventEmitter<SortOrderChanged>();
-
-    sortOrder: string | null = null;
+    @Input() column: ColumnModel = new ColumnModel('table-column', 'table-column', false);
+    @Output() sortingChanged: EventEmitter<ColumnClicked> = new EventEmitter<ColumnClicked>();
 
     handleClick() {
-        if (this.sortOrder == null) {
-            this.sortOrder = 'asc';
-        } else if (this.sortOrder == 'asc') {
-            this.sortOrder = 'desc';
-        } else {
-            this.sortOrder = null;
+        if (!this.column.interactive){
+            return;
         }
 
-        const evt = new SortOrderChanged(this.id, this.sortOrder);
+        if (this.column.sortOrder == null) {
+            this.column.sortOrder = 'asc';
+        } else if (this.column.sortOrder == 'asc') {
+            this.column.sortOrder = 'desc';
+        } else {
+            this.column.sortOrder = null;
+        }
+
+        const evt = new ColumnClicked(this.column.id, this.column.sortOrder);
         this.sortingChanged.emit(evt);
     }
 }

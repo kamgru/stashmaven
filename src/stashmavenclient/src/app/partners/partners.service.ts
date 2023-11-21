@@ -29,9 +29,6 @@ export class ListPartnersRequest {
   reset(){
     this.page = 1
     this.pageSize = 25
-    this.search = ''
-    this.sortBy = ''
-    this.isAscending = false
   }
 }
 

@@ -1,9 +1,9 @@
 import {Component, HostListener} from '@angular/core';
+import {FormsModule} from "@angular/forms";
 import {CommonModule} from '@angular/common';
 import {ListPartnersRequest, ListPartnersResponse, Partner, PartnersService} from "../partners.service";
 import {debounceTime, distinctUntilChanged, Subject, switchMap} from "rxjs";
-import {SortOrderChanged, TableColumnComponent} from "../table-column/table-column.component";
-import {FormsModule} from "@angular/forms";
+import {ColumnClicked, ColumnModel, TableColumnComponent} from "../table-column/table-column.component";
 
 @Component({
     selector: 'app-partners-list',
@@ -19,11 +19,20 @@ export class PartnersListComponent {
     searchPhrase: string = '';
     currentIndex: number = 0;
 
+    columns: ColumnModel[] = [
+        new ColumnModel('no', 'No.'),
+        new ColumnModel('customIdentifier', 'Id', true, null),
+        new ColumnModel('legalName', 'Name', true, null),
+        new ColumnModel('street', 'Street'),
+        new ColumnModel('city', 'City'),
+        new ColumnModel('zipCode', 'Zip code'),
+    ];
+
     private observedElement?: HTMLElement;
     private request: ListPartnersRequest = new ListPartnersRequest();
-
     private totalCount: number = 0;
     private searchPhrase$ = new Subject<string>();
+    private currentEvent$ = new Subject<KeyboardEvent>();
     private firstLoadDone: boolean = false;
 
     constructor(private partnersService: PartnersService) {
@@ -31,44 +40,46 @@ export class PartnersListComponent {
 
     @HostListener('window:keydown', ['$event'])
     handleKeyDown(event: KeyboardEvent) {
-        if (event.key === 'ArrowDown') {
-            event.preventDefault();
-            if (this.currentIndex < this.partners.length - 1) {
-                this.currentIndex++;
-
-                let tableItems = document.getElementById('table-items');
-                let cursorPointer = document.getElementById('cursor-pointer');
-                let cursorPointerBottom = cursorPointer?.getBoundingClientRect().bottom;
-                let tableItemsBottom = tableItems?.getBoundingClientRect().bottom;
-
-                if (cursorPointerBottom! >= tableItemsBottom! - 27) {
-                    tableItems?.scrollBy(0, 27);
-                }
-            }
-        } else if (event.key === 'ArrowUp') {
-            event.preventDefault();
-            if (this.currentIndex > 0) {
-                this.currentIndex--;
-
-                let tableItems = document.getElementById('table-items');
-                let cursorPointer = document.getElementById('cursor-pointer');
-                let cursorPointerTop = cursorPointer?.getBoundingClientRect().top;
-                let tableItemsTop = tableItems?.getBoundingClientRect().top;
-
-                if (cursorPointerTop! <= tableItemsTop! + 27) {
-                    tableItems?.scrollBy(0, -27);
-                }
-
-            }
-        }
+        this.currentEvent$.next(event);
     }
 
     ngOnInit() {
+        this.currentEvent$
+            .subscribe((event: KeyboardEvent) => {
+                if (event.key == 'ArrowDown') {
+                    event.preventDefault();
+                    if (this.currentIndex < this.partners.length - 1) {
+                        this.currentIndex++;
+                    }
+                    let table = document.querySelector('table');
+                    let tableBottom = document.querySelector('table')?.getBoundingClientRect().bottom;
+                    let cursorBottom = document.querySelector('.cursor-pointer')?.getBoundingClientRect().bottom
+
+                    if (tableBottom! - cursorBottom! <= 5) {
+                        table?.scrollBy(0, 27);
+                    }
+                } else if (event.key == 'ArrowUp') {
+                    event.preventDefault();
+                    if (this.currentIndex > 0) {
+                        this.currentIndex--;
+                    }
+
+                    let table = document.querySelector('table');
+                    let tableTop = document.querySelector('table')?.getBoundingClientRect().top;
+                    let cursorTop = document.querySelector('.cursor-pointer')?.getBoundingClientRect().top
+
+                    if (cursorTop! - tableTop! <= 5 + 27) {
+                        table?.scrollBy(0, -27);
+                    }
+                }
+
+            })
         this.searchPhrase$
             .pipe(
                 debounceTime(500),
                 distinctUntilChanged(),
                 switchMap((searchPhrase: string) => {
+                    this.currentIndex = 0;
                     this.firstLoadDone = false;
                     this.request.reset();
                     this.request.search = searchPhrase;
@@ -102,6 +113,7 @@ export class PartnersListComponent {
     ngOnDestroy() {
         this.observer?.disconnect();
         this.searchPhrase$.unsubscribe();
+        this.currentEvent$.unsubscribe();
     }
 
     loadMore() {
@@ -113,8 +125,7 @@ export class PartnersListComponent {
                     this.totalCount = response.totalCount;
                     this.firstLoadDone = true;
 
-                    if (this.partners.length < this.totalCount)
-                    {
+                    if (this.partners.length < this.totalCount) {
                         this.observer?.observe(this.observedElement!);
                     }
                 },
@@ -126,8 +137,12 @@ export class PartnersListComponent {
         this.searchPhrase$.next(searchPhrase);
     }
 
-    sortBy($event: SortOrderChanged) {
-        this.searchPhrase = '';
+    sortBy($event: ColumnClicked) {
+        for (let column of this.columns) {
+            if (column.id != $event.id) {
+                column.sortOrder = null;
+            }
+        }
         this.request.reset();
 
         if ($event.sortOrder != null) {
@@ -142,17 +157,12 @@ export class PartnersListComponent {
 
     private intersectionObserverCallback: IntersectionObserverCallback
         = (entries: IntersectionObserverEntry[]) => {
-
-        for(let entry of entries){
-
+        for (let entry of entries) {
             if (entry.target === this.observedElement && entry.isIntersecting) {
                 if (this.partners.length < this.totalCount || !this.firstLoadDone) {
                     this.request.page++;
                     this.loadMore();
                 }
-            }
-            else {
-                console.log(entry);
             }
         }
     };
