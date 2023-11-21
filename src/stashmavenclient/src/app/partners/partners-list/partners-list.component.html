@@ -1,5 +1,5 @@
 <div class="m-5 h-full ">
-  <input (keyup)="search($event)" [value]="searchPhrase" class="border border-slate-500 box-border">
+  <input (keyup)="search($event)" [value]="searchPhrase" class="border border-slate-500 box-border" #searchPhraseInput>
   <table class="table-auto block h-[506px] border-collapse border-spacing-0 w-full overflow-scroll">
     <thead class="sticky top-0 bg-amber-200">
     <tr>

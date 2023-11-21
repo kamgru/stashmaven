@@ -1,4 +1,4 @@
-import {Component, HostListener} from '@angular/core';
+import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from '@angular/common';
 import {ListPartnersRequest, ListPartnersResponse, Partner, PartnersService} from "../partners.service";
@@ -18,6 +18,7 @@ export class PartnersListComponent {
     observer?: IntersectionObserver;
     searchPhrase: string = '';
     currentIndex: number = 0;
+    @ViewChild('searchPhraseInput') searchPhraseInput?:  ElementRef;
 
     columns: ColumnModel[] = [
         new ColumnModel('no', 'No.'),
@@ -46,7 +47,13 @@ export class PartnersListComponent {
     ngOnInit() {
         this.currentEvent$
             .subscribe((event: KeyboardEvent) => {
-                if (event.key == 'ArrowDown') {
+                if (event.key == 'Enter') {
+                    event.preventDefault();
+                    const partner = this.partners[this.currentIndex];
+                } else if (event.ctrlKey && event.key == '/'){
+                    event.preventDefault();
+                    this.searchPhraseInput?.nativeElement.focus();
+                } else if (event.key == 'ArrowDown') {
                     event.preventDefault();
                     if (this.currentIndex < this.partners.length - 1) {
                         this.currentIndex++;
@@ -72,7 +79,6 @@ export class PartnersListComponent {
                         table?.scrollBy(0, -27);
                     }
                 }
-
             })
         this.searchPhrase$
             .pipe(
