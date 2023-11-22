@@ -2,7 +2,7 @@ import {Component, ElementRef, EventEmitter, HostListener, Output, ViewChild} fr
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from '@angular/common';
 import {debounceTime, distinctUntilChanged, Subject, switchMap} from "rxjs";
-import {ColumnClicked, ColumnModel, TableColumnComponent} from "../table-column/table-column.component";
+import {ColumnClicked, ColumnModel, TableColumnComponent} from "./table-column/table-column.component";
 import {Partner} from "../partner";
 import {ListPartnersRequest, ListPartnersResponse, ListPartnersService} from "./list-partners.service";
 import {SelectPartnerService} from "../select-partner.service";
@@ -14,13 +14,13 @@ export class SelectedPartnerChanged {
 }
 
 @Component({
-    selector: 'app-partners-list',
+    selector: 'app-list-partners',
     standalone: true,
     imports: [CommonModule, TableColumnComponent, FormsModule],
-    templateUrl: './partners-list.component.html',
-    styleUrls: ['./partners-list.component.css']
+    templateUrl: './list-partners.component.html',
+    styleUrls: ['./list-partners.component.css']
 })
-export class PartnersListComponent {
+export class ListPartnersComponent {
 
     partners: Partner[] = [];
     observer?: IntersectionObserver;
