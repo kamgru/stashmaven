@@ -1,10 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {
-    CreatePartnerRequest,
-    CreatePartnerService
-} from "./create-partner.service";
+import {CreatePartnerRequest, CreatePartnerService} from "./create-partner.service";
 import {PartnerAddress} from "../partnerAddress";
 import {TaxIdentifierType} from "../taxIdentifierType";
 import {TaxIdentifier} from "../taxIdentifier";
@@ -35,7 +32,6 @@ export class CreatePartnerComponent {
     }
 
     onSubmit() {
-        console.log(this.partnerForm)
         const address = new PartnerAddress(
             this.partnerForm.value!.address!.street!,
             this.partnerForm.value!.address!.city!,
@@ -55,8 +51,6 @@ export class CreatePartnerComponent {
             [nipIdentifier],
             address
         )
-
-        console.log(request)
 
         this.partnersService.createPartner(request)
             .subscribe(() => {

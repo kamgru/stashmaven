@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, HostListener, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from '@angular/common';
 import {debounceTime, distinctUntilChanged, Subject, switchMap} from "rxjs";
@@ -6,12 +6,6 @@ import {ColumnClicked, ColumnModel, TableColumnComponent} from "./table-column/t
 import {Partner} from "../partner";
 import {ListPartnersRequest, ListPartnersResponse, ListPartnersService} from "./list-partners.service";
 import {SelectPartnerService} from "../select-partner.service";
-
-export class SelectedPartnerChanged {
-    constructor(
-        public partnerId: string) {
-    }
-}
 
 @Component({
     selector: 'app-list-partners',
