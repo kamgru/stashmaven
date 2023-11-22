@@ -1,0 +1,38 @@
+<p>partner-details works!</p>
+<div class="w-1/2 mx-auto">
+
+    <form [formGroup]="partnerForm" (ngSubmit)="onSubmit()">
+        <div class="flex flex-col">
+            <label for="custom-identifier">Custom Identifier</label>
+            <input type="text" id="custom-identifier" formControlName="customIdentifier">
+        </div>
+
+        <div class="flex flex-col">
+            <label for="legal-name">Legal Name</label>
+            <textarea id="legal-name" rows="6" formControlName="legalName"></textarea>
+        </div>
+
+        <div class="flex flex-col">
+            <label for="tax-identifier">NIP</label>
+            <input type="text" id="tax-identifier" formControlName="primaryTaxIdentifier">
+        </div>
+
+        <div formGroupName="address">
+            <div class="flex flex-col">
+                <label for="street">Street</label>
+                <input type="text" id="street" formControlName="street">
+            </div>
+            <div class="flex flex-col">
+                <label for="city">City</label>
+                <input type="text" id="city" formControlName="city">
+            </div>
+            <div class="flex flex-col">
+                <label for="postal-code">Postal Code</label>
+                <input type="text" id="postal-code" formControlName="postalCode">
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="!partnerForm.valid">Submit</button>
+
+    </form>
+</div>

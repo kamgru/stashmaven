@@ -1,5 +1,6 @@
 <p>partners works!</p>
+<p><a routerLink="/partners/create" >create</a></p>
 <app-partners-list></app-partners-list>
 <div class="mt-5">
-    <app-partner-preview [partner]="selectedPartner"> *ngIf="selectedPartner" [partner]="selectedPartner"></app-partner-preview>
+    <app-partner-preview *ngIf="selectedPartner" [partner]="selectedPartner"></app-partner-preview>
 </div>

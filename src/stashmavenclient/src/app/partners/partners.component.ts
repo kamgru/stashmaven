@@ -1,13 +1,15 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {PartnersListComponent} from "./partners-list/partners-list.component";
-import {Partner, PartnersService} from "./partners.service";
 import {PartnerPreviewComponent} from "./partner-preview/partner-preview.component";
+import {RouterLink} from "@angular/router";
+import {Partner} from "./partner";
+import {SelectPartnerService} from "./select-partner.service";
 
 @Component({
     selector: 'app-partners',
     standalone: true,
-    imports: [CommonModule, PartnersListComponent, PartnerPreviewComponent],
+    imports: [CommonModule, PartnersListComponent, PartnerPreviewComponent, RouterLink],
     templateUrl: './partners.component.html',
     styleUrls: ['./partners.component.css']
 })
@@ -15,7 +17,7 @@ export class PartnersComponent {
     selectedPartner?: Partner | null;
 
     constructor(
-        private partnersService: PartnersService
+        private partnersService: SelectPartnerService
     ) {
     }
 

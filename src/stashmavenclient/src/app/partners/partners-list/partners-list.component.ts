@@ -1,9 +1,11 @@
 import {Component, ElementRef, EventEmitter, HostListener, Output, ViewChild} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from '@angular/common';
-import {ListPartnersRequest, ListPartnersResponse, Partner, PartnersService} from "../partners.service";
 import {debounceTime, distinctUntilChanged, Subject, switchMap} from "rxjs";
 import {ColumnClicked, ColumnModel, TableColumnComponent} from "../table-column/table-column.component";
+import {Partner} from "../partner";
+import {ListPartnersRequest, ListPartnersResponse, ListPartnersService} from "./list-partners.service";
+import {SelectPartnerService} from "../select-partner.service";
 
 export class SelectedPartnerChanged {
     constructor(
@@ -42,7 +44,9 @@ export class PartnersListComponent {
     private currentEvent$ = new Subject<KeyboardEvent>();
     private firstLoadDone: boolean = false;
 
-    constructor(private partnersService: PartnersService) {
+    constructor(
+        private listPartnersService: ListPartnersService,
+        private selectPartnerService: SelectPartnerService) {
     }
 
     @HostListener('window:keydown', ['$event'])
@@ -56,7 +60,7 @@ export class PartnersListComponent {
                 if (event.key == 'Enter') {
                     event.preventDefault();
                     const partner = this.partners[this.currentIndex];
-                    this.partnersService.selectPartner(partner);
+                    this.selectPartnerService.selectPartner(partner);
                 } else if (event.ctrlKey && event.key == '/'){
                     event.preventDefault();
                     this.searchPhraseInput?.nativeElement.focus();
@@ -97,7 +101,7 @@ export class PartnersListComponent {
                     this.request.reset();
                     this.request.search = searchPhrase;
                     this.searchPhrase = searchPhrase;
-                    return this.partnersService.listPartners(this.request);
+                    return this.listPartnersService.listPartners(this.request);
                 }))
             .subscribe(
                 (response: ListPartnersResponse) => {
@@ -109,7 +113,7 @@ export class PartnersListComponent {
                 },
             );
 
-        this.partnersService.listPartners(this.request)
+        this.listPartnersService.listPartners(this.request)
             .subscribe(
                 (response: ListPartnersResponse) => {
                     this.partners = response.partners;
@@ -130,7 +134,7 @@ export class PartnersListComponent {
     }
 
     loadMore() {
-        this.partnersService.listPartners(this.request)
+        this.listPartnersService.listPartners(this.request)
             .subscribe(
                 (response: ListPartnersResponse) => {
                     this.observer?.unobserve(this.observedElement!);
