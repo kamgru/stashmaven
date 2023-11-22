@@ -1,9 +1,15 @@
-import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, HostListener, Output, ViewChild} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from '@angular/common';
 import {ListPartnersRequest, ListPartnersResponse, Partner, PartnersService} from "../partners.service";
 import {debounceTime, distinctUntilChanged, Subject, switchMap} from "rxjs";
 import {ColumnClicked, ColumnModel, TableColumnComponent} from "../table-column/table-column.component";
+
+export class SelectedPartnerChanged {
+    constructor(
+        public partnerId: string) {
+    }
+}
 
 @Component({
     selector: 'app-partners-list',
@@ -50,6 +56,7 @@ export class PartnersListComponent {
                 if (event.key == 'Enter') {
                     event.preventDefault();
                     const partner = this.partners[this.currentIndex];
+                    this.partnersService.selectPartner(partner);
                 } else if (event.ctrlKey && event.key == '/'){
                     event.preventDefault();
                     this.searchPhraseInput?.nativeElement.focus();
