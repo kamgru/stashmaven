@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 
 namespace StashMaven.WebApi.PartnerFeatures;
 
+[Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
 public class PartnerController : ControllerBase

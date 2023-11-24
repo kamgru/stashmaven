@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StashMaven.Common", "StashM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StashMaven.Seeder", "StashMaven.Seeder\StashMaven.Seeder.csproj", "{3714AB91-108D-4D0C-B51A-27FE45E745FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorAppServer", "BlazorAppServer\BlazorAppServer.csproj", "{2A1D5703-075B-4812-A72E-B3F0F0930527}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +30,5 @@ Global
 		{3714AB91-108D-4D0C-B51A-27FE45E745FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3714AB91-108D-4D0C-B51A-27FE45E745FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3714AB91-108D-4D0C-B51A-27FE45E745FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A1D5703-075B-4812-A72E-B3F0F0930527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A1D5703-075B-4812-A72E-B3F0F0930527}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A1D5703-075B-4812-A72E-B3F0F0930527}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A1D5703-075B-4812-A72E-B3F0F0930527}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
