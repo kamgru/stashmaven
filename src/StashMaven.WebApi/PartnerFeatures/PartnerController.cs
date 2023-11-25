@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
 
 namespace StashMaven.WebApi.PartnerFeatures;
 
@@ -12,15 +11,18 @@ public class PartnerController : ControllerBase
     private readonly CreatePartnerHandler _createPartnerHandler;
     private readonly GetPartnerByIdHandler _getPartnerByIdHandler;
     private readonly ListPartnersHandler _listPartnersHandler;
+    private readonly UpdatePartnerHandler _updatePartnerHandler;
 
     public PartnerController(
         CreatePartnerHandler createPartnerHandler,
         GetPartnerByIdHandler getPartnerByIdHandler,
-        ListPartnersHandler listPartnersHandler)
+        ListPartnersHandler listPartnersHandler,
+        UpdatePartnerHandler updatePartnerHandler)
     {
         _createPartnerHandler = createPartnerHandler;
         _getPartnerByIdHandler = getPartnerByIdHandler;
         _listPartnersHandler = listPartnersHandler;
+        _updatePartnerHandler = updatePartnerHandler;
     }
 
     [HttpGet]
@@ -55,5 +57,15 @@ public class PartnerController : ControllerBase
         ListPartnersHandler.ListPartnerResponse response =
             await _listPartnersHandler.ListPartnersAsync(request);
         return Ok(response);
+    }
+
+    [HttpPatch]
+    [Route("{partnerId}")]
+    public async Task<IActionResult> UpdatePartnerAsync(
+        Guid partnerId,
+        UpdatePartnerHandler.PatchPartnerRequest request)
+    {
+        await _updatePartnerHandler.PatchPartnerAsync(partnerId, request);
+        return Ok();
     }
 }

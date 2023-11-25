@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.PartnerFeatures;
@@ -18,13 +19,6 @@ public class CreatePartnerHandler
             [MinLength(2)]
             [MaxLength(3)]
             public required string CountryCode { get; set; }
-        }
-
-        public enum TaxIdentifierType
-        {
-            Nip = 0,
-            Regon = 1,
-            Krs = 2
         }
 
         public class TaxIdentifier
@@ -82,9 +76,10 @@ public class CreatePartnerHandler
                 CreatedOn = DateTime.UtcNow,
                 UpdatedOn = DateTime.UtcNow
             },
-            TaxIdentifiers = request.BusinessIdentifications.Select(bi => new TaxIdentifier
+            TaxIdentifiers = request.BusinessIdentifications
+                .Select(bi => new TaxIdentifier
                 {
-                    Type = (Data.TaxIdentifierType)bi.TaxIdentifierType,
+                    Type = bi.TaxIdentifierType,
                     Value = bi.Value,
                     IsPrimary = bi.IsPrimary,
                     CreatedOn = DateTime.UtcNow,

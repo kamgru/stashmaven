@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
@@ -6,7 +7,11 @@ using StashMaven.WebApi.PartnerFeatures;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 builder.Services.AddEndpointsApiExplorer();
 
 IConfigurationSection aadSection = builder.Configuration.GetSection("AzureAd");
@@ -56,6 +61,7 @@ builder.Services.AddDbContext<StashMavenContext>(opt =>
 builder.Services.AddScoped<CreatePartnerHandler>();
 builder.Services.AddScoped<GetPartnerByIdHandler>();
 builder.Services.AddScoped<ListPartnersHandler>();
+builder.Services.AddScoped<UpdatePartnerHandler>();
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("allow-all", policyBuilder =>

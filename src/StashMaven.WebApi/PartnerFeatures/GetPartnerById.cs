@@ -9,13 +9,8 @@ public class GetPartnerByIdHandler
     {
         public required string LegalName { get; set; }
         public required string CustomIdentifier { get; set; }
-        public required string Street { get; set; }
-        public string? StreetAdditional { get; set; }
-        public required string City { get; set; }
-        public string? State { get; set; }
-        public required string PostalCode { get; set; }
-        public required string CountryCode { get; set; }
         public required List<TaxIdentifier> TaxIdentifiers { get; set; }
+        public required PartnerAddress Address { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime UpdatedOn { get; set; }
 
@@ -24,6 +19,16 @@ public class GetPartnerByIdHandler
             public required string Type { get; set; }
             public required string Value { get; set; }
             public bool IsPrimary { get; set; }
+        }
+
+        public class PartnerAddress
+        {
+            public required string Street { get; set; }
+            public string? StreetAdditional { get; set; }
+            public required string City { get; set; }
+            public string? State { get; set; }
+            public required string PostalCode { get; set; }
+            public required string CountryCode { get; set; }
         }
     }
 
@@ -70,12 +75,6 @@ public class GetPartnerByIdHandler
         {
             LegalName = partner.LegalName,
             CustomIdentifier = partner.CustomIdentifier,
-            Street = partner.Address.Street,
-            StreetAdditional = partner.Address.StreetAdditional,
-            City = partner.Address.City,
-            State = partner.Address.State,
-            PostalCode = partner.Address.PostalCode,
-            CountryCode = partner.Address.CountryCode,
             TaxIdentifiers = partner.TaxIdentifiers.Select(ti => new GetPartnerResponse.TaxIdentifier
                 {
                     Type = ti.Type.ToString(),
@@ -83,6 +82,15 @@ public class GetPartnerByIdHandler
                     IsPrimary = ti.IsPrimary
                 })
                 .ToList(),
+            Address = new GetPartnerResponse.PartnerAddress
+            {
+                Street = partner.Address.Street,
+                StreetAdditional = partner.Address.StreetAdditional,
+                City = partner.Address.City,
+                State = partner.Address.State,
+                PostalCode = partner.Address.PostalCode,
+                CountryCode = partner.Address.CountryCode
+            },
             CreatedOn = partner.CreatedOn,
             UpdatedOn = partner.UpdatedOn
         };

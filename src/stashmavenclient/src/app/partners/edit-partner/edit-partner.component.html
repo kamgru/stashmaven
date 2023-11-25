@@ -1,1 +1,95 @@
-<p>edit-partner works!</p>
+<h1>Edit Partner</h1>
+
+<div class="w-1/3 mx-auto">
+    <form [formGroup]="partnerForm" (ngSubmit)="onSubmit()">
+        <h2>General</h2>
+        <div class="border border-slate-400 rounded-xl p-3 mb-2">
+            <div class="flex flex-col">
+                <label for="legal-name">Legal Name</label>
+                <input type="text" id="legal-name" formControlName="legalName">
+            </div>
+            <div class="flex flex-col">
+                <label for="custom-identifier">Custom Identifier</label>
+                <input type="text" id="custom-identifier" formControlName="customIdentifier">
+            </div>
+        </div>
+
+        <h2>Business Identifications</h2>
+        <div class="border border-slate-400 rounded-xl p-3 mb-2">
+            <table class="table-auto">
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Primary</th>
+                </tr>
+                </thead>
+                <tbody formArrayName="taxIdentifiers">
+                <ng-container *ngFor="let taxId of partnerForm.controls.taxIdentifiers.controls; let idx=index">
+                    <tr [formGroupName]="idx">
+                        <td><input type="text" readonly formControlName="type"></td>
+                        <td><input type="text" formControlName="value"></td>
+                        <td><input type="checkbox" formControlName="isPrimary"
+                                   (click)="onTaxIdPrimaryChange(idx)"
+                                   [checked]="taxId.controls['isPrimary']"></td>
+                        <td>
+                            <button type="button" (click)="removeTaxIdentifier(idx)">x</button>
+                        </td>
+                    </tr>
+                </ng-container>
+                </tbody>
+                <tfoot>
+                <tr *ngIf="!showAddTaxIdentifier">
+                    <td>
+                        <button type="button" (click)="showAddTaxIdentifier = true">+</button>
+                    </td>
+                </tr>
+                <tr *ngIf="showAddTaxIdentifier" [formGroup]="addTaxIdentifierForm">
+                    <td>
+                        <select formControlName="type">
+                            <option>Nip</option>
+                            <option>Regon</option>
+                            <option>Krs</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" formControlName="value">
+                    </td>
+                    <td>
+                        <button type="button" (click)="addTaxIdentifier()">add</button>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <h2>Address</h2>
+        <div formGroupName="address" class="border border-slate-400 rounded-xl p-3">
+            <div class="flex flex-col">
+                <label for="street">Street</label>
+                <input type="text" id="street" formControlName="street">
+            </div>
+            <div class="flex flex-col">
+                <label for="streetAdditional">Street (continued)</label>
+                <input type="text" id="streetAdditional" formControlName="streetAdditional">
+            </div>
+            <div class="flex flex-col">
+                <label for="city">City</label>
+                <input type="text" id="city" formControlName="city">
+            </div>
+            <div class="flex flex-col">
+                <label for="state">State</label>
+                <input type="text" id="state" formControlName="state">
+            </div>
+            <div class="flex flex-col">
+                <label for="postal-code">Postal Code</label>
+                <input type="text" id="postal-code" formControlName="postalCode">
+            </div>
+            <div class="flex flex-col">
+                <label for="country">Country</label>
+                <input type="text" id="country" formControlName="countryCode">
+            </div>
+        </div>
+        <button type="submit">Save</button>
+    </form>
+</div>
