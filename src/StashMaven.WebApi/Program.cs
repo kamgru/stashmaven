@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using StashMaven.WebApi.CatalogFeatures;
 using StashMaven.WebApi.Data;
 using StashMaven.WebApi.PartnerFeatures;
 
@@ -62,6 +63,11 @@ builder.Services.AddScoped<CreatePartnerHandler>();
 builder.Services.AddScoped<GetPartnerByIdHandler>();
 builder.Services.AddScoped<ListPartnersHandler>();
 builder.Services.AddScoped<UpdatePartnerHandler>();
+builder.Services.AddScoped<CreateTaxDefinitionHandler>();
+builder.Services.AddScoped<ListTaxDefinitionsHandler>();
+builder.Services.AddScoped<GetTaxDefinitionByIdHandler>();
+builder.Services.AddScoped<CreateCatalogItemHandler>();
+builder.Services.AddScoped<ListCatalogItemsHandler>();
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("allow-all", policyBuilder =>

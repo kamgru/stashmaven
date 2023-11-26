@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using StashMaven.WebApi.CatalogFeatures;
 
 namespace StashMaven.WebApi.Data;
 
@@ -47,6 +48,44 @@ public class Partner
     public DateTime UpdatedOn { get; set; }
 }
 
+public enum UnitOfMeasure
+{
+    Pc = 0,
+    Kg = 1,
+    L = 2
+}
+
+public class TaxDefinition
+{
+    public int Id { get; set; }
+    public Guid TaxDefinitionId { get; set; }
+    public required string Name { get; set; }
+    public required decimal Rate { get; set; }
+}
+
+public class CatalogItem
+{
+    public int Id { get; set; }
+    public Guid CatalogItemId { get; set; }
+    public required string Name { get; set; }
+    public required string Sku { get; set; }
+    public required UnitOfMeasure UnitOfMeasure { get; set; }
+    public TaxDefinition? TaxDefinition { get; set; }
+    public string? BarCode { get; set; }
+    public Brand Brand { get; set; } = null!;
+    public DateTime CreatedOn { get; set; }
+    public DateTime UpdatedOn { get; set; }
+}
+
+public class Brand
+{
+    public int Id { get; set; }
+    public Guid BrandId { get; set; }
+    public required string Name { get; set; }
+    public required string ShortCode { get; set; }
+    public List<CatalogItem> CatalogItems { get; set; } = new();
+}
+
 public class StashMavenContext : DbContext
 {
     public StashMavenContext(
@@ -61,16 +100,29 @@ public class StashMavenContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Partner>()
-            .ToTable("Partner", "smvn");
+            .ToTable("Partner", "prt");
 
         modelBuilder.Entity<Address>()
-            .ToTable("Address", "smvn");
+            .ToTable("Address", "prt");
 
         modelBuilder.Entity<TaxIdentifier>()
-            .ToTable("TaxIdentifier", "smvn");
+            .ToTable("TaxIdentifier", "prt");
+
+        modelBuilder.Entity<CatalogItem>()
+            .ToTable("CatalogItem", "cat");
+
+        modelBuilder.Entity<TaxDefinition>()
+            .ToTable("TaxDefinition", "cat");
+
+        modelBuilder.Entity<Brand>()
+            .ToTable("Brand", "cat");
     }
 
     public DbSet<Partner> Partners => Set<Partner>();
     public DbSet<Address> Addresses => Set<Address>();
     public DbSet<TaxIdentifier> TaxIdentifiers => Set<TaxIdentifier>();
+
+    public DbSet<CatalogItem> CatalogItems => Set<CatalogItem>();
+    public DbSet<TaxDefinition> TaxDefinitions => Set<TaxDefinition>();
+    public DbSet<Brand> Brands => Set<Brand>();
 }

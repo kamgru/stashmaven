@@ -2,21 +2,18 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StashMaven.WebApi.Data;
 
 #nullable disable
 
-namespace StashMaven.WebApi.Data
+namespace StashMaven.WebApi.Data.Migrations
 {
     [DbContext(typeof(StashMavenContext))]
-    [Migration("20231029094923_Initial")]
-    partial class Initial
+    partial class StashMavenContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,7 +66,48 @@ namespace StashMaven.WebApi.Data
                     b.HasIndex("PartnerId")
                         .IsUnique();
 
-                    b.ToTable("Address", "smvn");
+                    b.ToTable("Address", "prt");
+                });
+
+            modelBuilder.Entity("StashMaven.WebApi.Data.CatalogItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BarCode")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("CatalogItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Sku")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("TaxDefinitionId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UnitOfMeasure")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaxDefinitionId");
+
+                    b.ToTable("CatalogItem", "cat");
                 });
 
             modelBuilder.Entity("StashMaven.WebApi.Data.Partner", b =>
@@ -99,7 +137,30 @@ namespace StashMaven.WebApi.Data
 
                     b.HasKey("Id");
 
-                    b.ToTable("Partner", "smvn");
+                    b.ToTable("Partner", "prt");
+                });
+
+            modelBuilder.Entity("StashMaven.WebApi.Data.TaxDefinition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("TaxDefinitionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaxDefinition", "cat");
                 });
 
             modelBuilder.Entity("StashMaven.WebApi.Data.TaxIdentifier", b =>
@@ -133,7 +194,7 @@ namespace StashMaven.WebApi.Data
 
                     b.HasIndex("PartnerId");
 
-                    b.ToTable("TaxIdentifier", "smvn");
+                    b.ToTable("TaxIdentifier", "prt");
                 });
 
             modelBuilder.Entity("StashMaven.WebApi.Data.Address", b =>
@@ -145,6 +206,15 @@ namespace StashMaven.WebApi.Data
                         .IsRequired();
 
                     b.Navigation("Partner");
+                });
+
+            modelBuilder.Entity("StashMaven.WebApi.Data.CatalogItem", b =>
+                {
+                    b.HasOne("StashMaven.WebApi.Data.TaxDefinition", "TaxDefinition")
+                        .WithMany()
+                        .HasForeignKey("TaxDefinitionId");
+
+                    b.Navigation("TaxDefinition");
                 });
 
             modelBuilder.Entity("StashMaven.WebApi.Data.TaxIdentifier", b =>

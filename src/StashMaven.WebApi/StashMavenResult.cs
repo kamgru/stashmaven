@@ -1,5 +1,31 @@
 namespace StashMaven.WebApi;
 
+
+public class StashMavenResult
+{
+    public bool IsSuccess { get; private set; }
+    public string? Message { get; private set; }
+
+    public static StashMavenResult Success()
+    {
+        return new StashMavenResult
+        {
+            IsSuccess = true,
+            Message = string.Empty
+        };
+    }
+
+    public static StashMavenResult Error(
+        string message)
+    {
+        return new StashMavenResult
+        {
+            IsSuccess = false,
+            Message = message
+        };
+    }
+}
+
 public class StashMavenResult<T>
 {
     public T? Data { get; private set; }

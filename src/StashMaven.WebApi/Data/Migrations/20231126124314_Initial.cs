@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace StashMaven.WebApi.Data
+namespace StashMaven.WebApi.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -13,11 +13,14 @@ namespace StashMaven.WebApi.Data
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "smvn");
+                name: "prt");
+
+            migrationBuilder.EnsureSchema(
+                name: "cat");
 
             migrationBuilder.CreateTable(
                 name: "Partner",
-                schema: "smvn",
+                schema: "prt",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -34,8 +37,24 @@ namespace StashMaven.WebApi.Data
                 });
 
             migrationBuilder.CreateTable(
+                name: "TaxDefinition",
+                schema: "cat",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TaxDefinitionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Rate = table.Column<decimal>(type: "numeric", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TaxDefinition", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Address",
-                schema: "smvn",
+                schema: "prt",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -56,7 +75,7 @@ namespace StashMaven.WebApi.Data
                     table.ForeignKey(
                         name: "FK_Address_Partner_PartnerId",
                         column: x => x.PartnerId,
-                        principalSchema: "smvn",
+                        principalSchema: "prt",
                         principalTable: "Partner",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -64,7 +83,7 @@ namespace StashMaven.WebApi.Data
 
             migrationBuilder.CreateTable(
                 name: "TaxIdentifier",
-                schema: "smvn",
+                schema: "prt",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -82,22 +101,55 @@ namespace StashMaven.WebApi.Data
                     table.ForeignKey(
                         name: "FK_TaxIdentifier_Partner_PartnerId",
                         column: x => x.PartnerId,
-                        principalSchema: "smvn",
+                        principalSchema: "prt",
                         principalTable: "Partner",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CatalogItem",
+                schema: "cat",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CatalogItemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Sku = table.Column<string>(type: "text", nullable: false),
+                    UnitOfMeasure = table.Column<int>(type: "integer", nullable: false),
+                    TaxDefinitionId = table.Column<int>(type: "integer", nullable: true),
+                    BarCode = table.Column<string>(type: "text", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CatalogItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CatalogItem_TaxDefinition_TaxDefinitionId",
+                        column: x => x.TaxDefinitionId,
+                        principalSchema: "cat",
+                        principalTable: "TaxDefinition",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Address_PartnerId",
-                schema: "smvn",
+                schema: "prt",
                 table: "Address",
                 column: "PartnerId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_CatalogItem_TaxDefinitionId",
+                schema: "cat",
+                table: "CatalogItem",
+                column: "TaxDefinitionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TaxIdentifier_PartnerId",
-                schema: "smvn",
+                schema: "prt",
                 table: "TaxIdentifier",
                 column: "PartnerId");
         }
@@ -107,15 +159,23 @@ namespace StashMaven.WebApi.Data
         {
             migrationBuilder.DropTable(
                 name: "Address",
-                schema: "smvn");
+                schema: "prt");
+
+            migrationBuilder.DropTable(
+                name: "CatalogItem",
+                schema: "cat");
 
             migrationBuilder.DropTable(
                 name: "TaxIdentifier",
-                schema: "smvn");
+                schema: "prt");
+
+            migrationBuilder.DropTable(
+                name: "TaxDefinition",
+                schema: "cat");
 
             migrationBuilder.DropTable(
                 name: "Partner",
-                schema: "smvn");
+                schema: "prt");
         }
     }
 }

@@ -5,10 +5,10 @@ namespace StashMaven.WebApi.PartnerFeatures;
 
 public class ListPartnersHandler
 {
-    const int MinPageSize = 5;
-    const int MaxPageSize = 100;
-    const int MinPage = 1;
-    const int MinSearchLength = 3;
+    private const int MinPageSize = 5;
+    private const int MaxPageSize = 100;
+    private const int MinPage = 1;
+    private const int MinSearchLength = 3;
 
     public class Partner
     {
