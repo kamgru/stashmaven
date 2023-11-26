@@ -2,21 +2,18 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StashMaven.WebApi.Data;
 
 #nullable disable
 
-namespace StashMaven.WebApi.Data.Migrations
+namespace StashMaven.WebApi.Migrations
 {
     [DbContext(typeof(StashMavenContext))]
-    [Migration("20231126124314_Initial")]
-    partial class Initial
+    partial class StashMavenContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,6 +69,30 @@ namespace StashMaven.WebApi.Data.Migrations
                     b.ToTable("Address", "prt");
                 });
 
+            modelBuilder.Entity("StashMaven.WebApi.Data.Brand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid>("BrandId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ShortCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Brand", "cat");
+                });
+
             modelBuilder.Entity("StashMaven.WebApi.Data.CatalogItem", b =>
                 {
                     b.Property<int>("Id")
@@ -82,6 +103,9 @@ namespace StashMaven.WebApi.Data.Migrations
 
                     b.Property<string>("BarCode")
                         .HasColumnType("text");
+
+                    b.Property<int?>("BrandId")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("CatalogItemId")
                         .HasColumnType("uuid");
@@ -107,6 +131,8 @@ namespace StashMaven.WebApi.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
 
                     b.HasIndex("TaxDefinitionId");
 
@@ -213,9 +239,15 @@ namespace StashMaven.WebApi.Data.Migrations
 
             modelBuilder.Entity("StashMaven.WebApi.Data.CatalogItem", b =>
                 {
+                    b.HasOne("StashMaven.WebApi.Data.Brand", "Brand")
+                        .WithMany("CatalogItems")
+                        .HasForeignKey("BrandId");
+
                     b.HasOne("StashMaven.WebApi.Data.TaxDefinition", "TaxDefinition")
                         .WithMany()
                         .HasForeignKey("TaxDefinitionId");
+
+                    b.Navigation("Brand");
 
                     b.Navigation("TaxDefinition");
                 });
@@ -229,6 +261,11 @@ namespace StashMaven.WebApi.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Partner");
+                });
+
+            modelBuilder.Entity("StashMaven.WebApi.Data.Brand", b =>
+                {
+                    b.Navigation("CatalogItems");
                 });
 
             modelBuilder.Entity("StashMaven.WebApi.Data.Partner", b =>

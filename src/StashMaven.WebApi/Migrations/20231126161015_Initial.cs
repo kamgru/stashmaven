@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace StashMaven.WebApi.Data.Migrations
+namespace StashMaven.WebApi.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -17,6 +17,22 @@ namespace StashMaven.WebApi.Data.Migrations
 
             migrationBuilder.EnsureSchema(
                 name: "cat");
+
+            migrationBuilder.CreateTable(
+                name: "Brand",
+                schema: "cat",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    BrandId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    ShortCode = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Brand", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Partner",
@@ -120,12 +136,19 @@ namespace StashMaven.WebApi.Data.Migrations
                     UnitOfMeasure = table.Column<int>(type: "integer", nullable: false),
                     TaxDefinitionId = table.Column<int>(type: "integer", nullable: true),
                     BarCode = table.Column<string>(type: "text", nullable: true),
+                    BrandId = table.Column<int>(type: "integer", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CatalogItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CatalogItem_Brand_BrandId",
+                        column: x => x.BrandId,
+                        principalSchema: "cat",
+                        principalTable: "Brand",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CatalogItem_TaxDefinition_TaxDefinitionId",
                         column: x => x.TaxDefinitionId,
@@ -140,6 +163,12 @@ namespace StashMaven.WebApi.Data.Migrations
                 table: "Address",
                 column: "PartnerId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatalogItem_BrandId",
+                schema: "cat",
+                table: "CatalogItem",
+                column: "BrandId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CatalogItem_TaxDefinitionId",
@@ -168,6 +197,10 @@ namespace StashMaven.WebApi.Data.Migrations
             migrationBuilder.DropTable(
                 name: "TaxIdentifier",
                 schema: "prt");
+
+            migrationBuilder.DropTable(
+                name: "Brand",
+                schema: "cat");
 
             migrationBuilder.DropTable(
                 name: "TaxDefinition",

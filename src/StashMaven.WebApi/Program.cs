@@ -20,7 +20,6 @@ AadConfig aadConfig = new(aadSection);
 
 builder.Services.AddSwaggerGen(opt =>
 {
-
     opt.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
         Description = "OAuth2.0 Auth Code with PKCE",
@@ -68,6 +67,11 @@ builder.Services.AddScoped<ListTaxDefinitionsHandler>();
 builder.Services.AddScoped<GetTaxDefinitionByIdHandler>();
 builder.Services.AddScoped<CreateCatalogItemHandler>();
 builder.Services.AddScoped<ListCatalogItemsHandler>();
+builder.Services.AddScoped<PatchCatalogItemHandler>();
+builder.Services.AddScoped<AddCatalogItemToBrandHandler>();
+builder.Services.AddScoped<CreateBrandHandler>();
+builder.Services.AddScoped<ListBrandsHandler>();
+builder.Services.AddScoped<UpdateBrandHandler>();
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("allow-all", policyBuilder =>

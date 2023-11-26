@@ -36,4 +36,20 @@ public class CatalogItemController : ControllerBase
             await handler.ListCatalogItemsAsync(request);
         return Ok(response);
     }
+
+    [HttpPatch]
+    public async Task<IActionResult> PatchCatalogItemAsync(
+        PatchCatalogItemHandler.PatchCatalogItemRequest request,
+        [FromServices]
+        PatchCatalogItemHandler handler)
+    {
+        StashMavenResult response = await handler.PatchCatalogItemAsync(request);
+
+        if (!response.IsSuccess)
+        {
+            return BadRequest(response.Message);
+        }
+
+        return Ok();
+    }
 }

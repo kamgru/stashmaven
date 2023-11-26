@@ -52,4 +52,21 @@ public class BrandController : ControllerBase
 
         return Ok();
     }
+
+    [HttpPost]
+    [Route("add-catalog-item")]
+    public async Task<IActionResult> AddCatalogItemToBrandAsync(
+        AddCatalogItemToBrandHandler.AddCatalogItemToBrandRequest request,
+        [FromServices]
+        AddCatalogItemToBrandHandler handler)
+    {
+        StashMavenResult response = await handler.AddCatalogItemToBrandAsync(request);
+
+        if (!response.IsSuccess)
+        {
+            return BadRequest(response.Message);
+        }
+
+        return Ok();
+    }
 }

@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.CatalogFeatures;
 
 namespace StashMaven.WebApi.Data;
 
@@ -72,7 +71,7 @@ public class CatalogItem
     public required UnitOfMeasure UnitOfMeasure { get; set; }
     public TaxDefinition? TaxDefinition { get; set; }
     public string? BarCode { get; set; }
-    public Brand Brand { get; set; } = null!;
+    public Brand? Brand { get; set; } = null!;
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
 }
