@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.PartnerFeatures;
 
@@ -45,7 +46,7 @@ public class PartnerController : ControllerBase
     public async Task<IActionResult> CreatePartnerAsync(
         CreatePartnerHandler.CreatePartnerRequest request)
     {
-        Guid partnerId = await _createPartnerHandler.CreatePartnerAsync(request);
+        PartnerId partnerId = await _createPartnerHandler.CreatePartnerAsync(request);
         return Created($"/api/v1/partner/{partnerId}", partnerId.ToString());
     }
 
@@ -62,7 +63,7 @@ public class PartnerController : ControllerBase
     [HttpPatch]
     [Route("{partnerId}")]
     public async Task<IActionResult> UpdatePartnerAsync(
-        Guid partnerId,
+        string partnerId,
         UpdatePartnerHandler.PatchPartnerRequest request)
     {
         await _updatePartnerHandler.PatchPartnerAsync(partnerId, request);

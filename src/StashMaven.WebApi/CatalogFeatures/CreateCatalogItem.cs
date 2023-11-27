@@ -13,7 +13,7 @@ public class CreateCatalogItemHandler
         [MinLength(3)]
         public required string Name { get; set; } = null!;
         public UnitOfMeasure UnitOfMeasure { get; set; }
-        public Guid TaxDefinitionId { get; set; }
+        public required string TaxDefinitionId { get; set; }
     }
 
     private readonly StashMavenContext _context;
@@ -24,17 +24,18 @@ public class CreateCatalogItemHandler
         _context = context;
     }
 
-    public async Task<StashMavenResult<Guid>> CreateCatalogItemAsync(
+    public async Task<StashMavenResult<CatalogItemId>> CreateCatalogItemAsync(
         CreateCatalogItemRequest request)
     {
-        Guid catalogItemId = Guid.NewGuid();
         TaxDefinition? taxDefinition = await _context.TaxDefinitions
-            .SingleOrDefaultAsync(t => t.TaxDefinitionId == request.TaxDefinitionId);
+            .SingleOrDefaultAsync(t => t.TaxDefinitionId.Value == request.TaxDefinitionId);
 
         if (taxDefinition == null)
         {
-            return StashMavenResult<Guid>.Error($"Tax definition {request.TaxDefinitionId} not found");
+            return StashMavenResult<CatalogItemId>.Error($"Tax definition {request.TaxDefinitionId} not found");
         }
+
+        CatalogItemId catalogItemId = new(Guid.NewGuid().ToString());
 
         CatalogItem catalogItem = new()
         {
@@ -50,6 +51,6 @@ public class CreateCatalogItemHandler
         await _context.CatalogItems.AddAsync(catalogItem);
         await _context.SaveChangesAsync();
 
-        return StashMavenResult<Guid>.Success(catalogItemId);
+        return StashMavenResult<CatalogItemId>.Success(catalogItemId);
     }
 }

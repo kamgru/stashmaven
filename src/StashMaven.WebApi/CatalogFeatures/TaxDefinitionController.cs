@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.CatalogFeatures;
 
@@ -14,9 +15,9 @@ public class TaxDefinitionController : ControllerBase
         [FromServices]
         CreateTaxDefinitionHandler handler)
     {
-        Guid taxDefinitionId = await handler.CreateTaxDefinitionAsync(request);
+        TaxDefinitionId taxDefinitionId = await handler.CreateTaxDefinitionAsync(request);
 
-        return Created($"api/v1/catalog/TaxDefinition/{taxDefinitionId}", taxDefinitionId.ToString());
+        return Created($"api/v1/catalog/TaxDefinition/{taxDefinitionId.Value}", taxDefinitionId.ToString());
     }
 
     [HttpGet]
@@ -35,7 +36,7 @@ public class TaxDefinitionController : ControllerBase
     [HttpGet]
     [Route("{taxDefinitionId}")]
     public async Task<IActionResult> GetTaxDefinitionByIdAsync(
-        Guid taxDefinitionId,
+        string taxDefinitionId,
         [FromServices]
         GetTaxDefinitionByIdHandler handler)
     {

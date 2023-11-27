@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.CatalogFeatures;
 
@@ -14,14 +15,14 @@ public class CatalogItemController : ControllerBase
         [FromServices]
         CreateCatalogItemHandler handler)
     {
-        StashMavenResult<Guid> response = await handler.CreateCatalogItemAsync(request);
+        StashMavenResult<CatalogItemId> response = await handler.CreateCatalogItemAsync(request);
 
         if (!response.IsSuccess)
         {
             return BadRequest(response.Message);
         }
 
-        return Created($"api/v1/catalog/catalog-item/{response.Data}", response.Data.ToString());
+        return Created($"api/v1/catalog/catalog-item/{response.Data?.Value}", response.Data?.ToString());
     }
 
     [HttpGet]

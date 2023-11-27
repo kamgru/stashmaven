@@ -8,13 +8,13 @@ public class PatchCatalogItemHandler
 {
     public class PatchCatalogItemRequest
     {
-        public Guid CatalogItemId { get; set; }
+        public required string CatalogItemId { get; set; }
         [MinLength(5)]
         public string? Sku { get; set; }
         [MinLength(3)]
         public string? Name { get; set; }
         public UnitOfMeasure? UnitOfMeasure { get; set; }
-        public Guid? TaxDefinitionId { get; set; }
+        public string? TaxDefinitionId { get; set; }
     }
     
     private readonly StashMavenContext _context;
@@ -29,7 +29,7 @@ public class PatchCatalogItemHandler
         PatchCatalogItemRequest request)
     {
         CatalogItem? catalogItem = await _context.CatalogItems
-            .SingleOrDefaultAsync(c => c.CatalogItemId == request.CatalogItemId);
+            .SingleOrDefaultAsync(c => c.CatalogItemId.Value == request.CatalogItemId);
     
         if (catalogItem == null)
         {
@@ -54,7 +54,7 @@ public class PatchCatalogItemHandler
         if (request.TaxDefinitionId != null)
         {
             TaxDefinition? taxDefinition = await _context.TaxDefinitions
-                .SingleOrDefaultAsync(t => t.TaxDefinitionId == request.TaxDefinitionId);
+                .SingleOrDefaultAsync(t => t.TaxDefinitionId.Value == request.TaxDefinitionId);
     
             if (taxDefinition == null)
             {

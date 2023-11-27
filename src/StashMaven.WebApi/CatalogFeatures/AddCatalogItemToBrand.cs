@@ -7,8 +7,8 @@ public class AddCatalogItemToBrandHandler
 {
     public class AddCatalogItemToBrandRequest
     {
-        public Guid BrandId { get; set; }
-        public Guid CatalogItemId { get; set; }
+        public required string BrandId { get; set; }
+        public required string CatalogItemId { get; set; }
     }
     
     private readonly StashMavenContext _context;
@@ -24,7 +24,7 @@ public class AddCatalogItemToBrandHandler
     {
         Brand? brand = await _context.Brands
             .Include(b => b.CatalogItems)
-            .SingleOrDefaultAsync(b => b.BrandId == request.BrandId);
+            .SingleOrDefaultAsync(b => b.BrandId.Value == request.BrandId);
     
         if (brand == null)
         {
@@ -32,7 +32,7 @@ public class AddCatalogItemToBrandHandler
         }
     
         CatalogItem? catalogItem = await _context.CatalogItems
-            .SingleOrDefaultAsync(c => c.CatalogItemId == request.CatalogItemId);
+            .SingleOrDefaultAsync(c => c.CatalogItemId.Value == request.CatalogItemId);
     
         if (catalogItem == null)
         {

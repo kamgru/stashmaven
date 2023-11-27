@@ -8,7 +8,7 @@ using StashMaven.WebApi.Data;
 
 #nullable disable
 
-namespace StashMaven.WebApi.Migrations
+namespace StashMaven.WebApi.Data.Migrations
 {
     [DbContext(typeof(StashMavenContext))]
     partial class StashMavenContextModelSnapshot : ModelSnapshot
@@ -77,9 +77,6 @@ namespace StashMaven.WebApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("BrandId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -106,9 +103,6 @@ namespace StashMaven.WebApi.Migrations
 
                     b.Property<int?>("BrandId")
                         .HasColumnType("integer");
-
-                    b.Property<Guid>("CatalogItemId")
-                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
@@ -158,9 +152,6 @@ namespace StashMaven.WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("PartnerId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("timestamp with time zone");
 
@@ -183,9 +174,6 @@ namespace StashMaven.WebApi.Migrations
 
                     b.Property<decimal>("Rate")
                         .HasColumnType("numeric");
-
-                    b.Property<Guid>("TaxDefinitionId")
-                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -237,6 +225,30 @@ namespace StashMaven.WebApi.Migrations
                     b.Navigation("Partner");
                 });
 
+            modelBuilder.Entity("StashMaven.WebApi.Data.Brand", b =>
+                {
+                    b.OwnsOne("StashMaven.WebApi.Data.BrandId", "BrandId", b1 =>
+                        {
+                            b1.Property<int>("BrandId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("BrandId");
+
+                            b1.HasKey("BrandId");
+
+                            b1.ToTable("Brand", "cat");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BrandId");
+                        });
+
+                    b.Navigation("BrandId")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("StashMaven.WebApi.Data.CatalogItem", b =>
                 {
                     b.HasOne("StashMaven.WebApi.Data.Brand", "Brand")
@@ -247,9 +259,78 @@ namespace StashMaven.WebApi.Migrations
                         .WithMany()
                         .HasForeignKey("TaxDefinitionId");
 
+                    b.OwnsOne("StashMaven.WebApi.Data.CatalogItemId", "CatalogItemId", b1 =>
+                        {
+                            b1.Property<int>("CatalogItemId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("CatalogItemId");
+
+                            b1.HasKey("CatalogItemId");
+
+                            b1.ToTable("CatalogItem", "cat");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CatalogItemId");
+                        });
+
                     b.Navigation("Brand");
 
+                    b.Navigation("CatalogItemId")
+                        .IsRequired();
+
                     b.Navigation("TaxDefinition");
+                });
+
+            modelBuilder.Entity("StashMaven.WebApi.Data.Partner", b =>
+                {
+                    b.OwnsOne("StashMaven.WebApi.Data.PartnerId", "PartnerId", b1 =>
+                        {
+                            b1.Property<int>("PartnerId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("PartnerId");
+
+                            b1.HasKey("PartnerId");
+
+                            b1.ToTable("Partner", "prt");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PartnerId");
+                        });
+
+                    b.Navigation("PartnerId")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("StashMaven.WebApi.Data.TaxDefinition", b =>
+                {
+                    b.OwnsOne("StashMaven.WebApi.Data.TaxDefinitionId", "TaxDefinitionId", b1 =>
+                        {
+                            b1.Property<int>("TaxDefinitionId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("TaxDefinitionId");
+
+                            b1.HasKey("TaxDefinitionId");
+
+                            b1.ToTable("TaxDefinition", "cat");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TaxDefinitionId");
+                        });
+
+                    b.Navigation("TaxDefinitionId")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("StashMaven.WebApi.Data.TaxIdentifier", b =>

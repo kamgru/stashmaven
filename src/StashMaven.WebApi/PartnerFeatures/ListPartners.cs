@@ -12,7 +12,7 @@ public class ListPartnersHandler
 
     public class Partner
     {
-        public Guid PartnerId { get; set; }
+        public required string PartnerId { get; set; }
         public required string LegalName { get; set; }
         public required string CustomIdentifier { get; set; }
         public required string Street { get; set; }
@@ -58,7 +58,7 @@ public class ListPartnersHandler
             .Include(p => p.TaxIdentifiers)
             .Select(p => new Partner
             {
-                PartnerId = p.PartnerId,
+                PartnerId = p.PartnerId.Value,
                 LegalName = p.LegalName,
                 CustomIdentifier = p.CustomIdentifier,
                 Street = p.Address!.Street,

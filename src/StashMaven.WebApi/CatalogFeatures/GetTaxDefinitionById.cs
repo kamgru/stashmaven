@@ -20,10 +20,10 @@ public class GetTaxDefinitionByIdHandler
     }
 
     public async Task<StashMavenResult<GetTaxDefinitionByIdResponse>> GetTaxDefinitionByIdAsync(
-        Guid taxDefinitionId)
+        string taxDefinitionId)
     {
         TaxDefinition? taxDefinition = await _context.TaxDefinitions
-            .FirstOrDefaultAsync(td => td.TaxDefinitionId == taxDefinitionId);
+            .FirstOrDefaultAsync(td => td.TaxDefinitionId.Value == taxDefinitionId);
 
         if (taxDefinition == null)
         {

@@ -18,12 +18,12 @@ public class CreateTaxDefinitionHandler
         _context = context;
     }
 
-    public async Task<Guid> CreateTaxDefinitionAsync(
+    public async Task<TaxDefinitionId> CreateTaxDefinitionAsync(
         CreateTaxDefinitionRequest request)
     {
         TaxDefinition taxDefinition = new()
         {
-            TaxDefinitionId = Guid.NewGuid(),
+            TaxDefinitionId = new TaxDefinitionId(Guid.NewGuid().ToString()),
             Name = request.Name,
             Rate = request.Rate
         };

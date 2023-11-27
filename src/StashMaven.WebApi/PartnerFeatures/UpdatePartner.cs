@@ -39,13 +39,13 @@ public class UpdatePartnerHandler
     }
 
     public async Task PatchPartnerAsync(
-        Guid partnerId,
+        string partnerId,
         PatchPartnerRequest request)
     {
         Partner partner = await _context.Partners
                               .Include(p => p.Address)
                               .Include(p => p.TaxIdentifiers)
-                              .FirstOrDefaultAsync(p => p.PartnerId == partnerId)
+                              .FirstOrDefaultAsync(p => p.PartnerId.Value == partnerId)
                           ?? throw new EntityNotFoundException($"Partner with id {partnerId} not found");
 
         if (request.CustomIdentifier is not null)

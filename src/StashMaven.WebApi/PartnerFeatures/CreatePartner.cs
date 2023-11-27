@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.PartnerFeatures;
@@ -44,10 +43,10 @@ public class CreatePartnerHandler
         _context = context;
     }
 
-    public async Task<Guid> CreatePartnerAsync(
+    public async Task<PartnerId> CreatePartnerAsync(
         CreatePartnerRequest request)
     {
-        Guid partnerId = Guid.NewGuid();
+        PartnerId partnerId = new PartnerId(Guid.NewGuid().ToString());
 
         //TODO: validation:
         // - null checks, duh

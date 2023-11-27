@@ -43,15 +43,11 @@ public class GetPartnerByIdHandler
     public async Task<StashMavenResult<GetPartnerResponse>> GetPartnerByIdAsync(
         string partnerId)
     {
-        if (!Guid.TryParse(partnerId, out Guid partnerGuid))
-        {
-            return StashMavenResult<GetPartnerResponse>.Error("Invalid partner id");
-        }
-
         Partner? partner = await _context.Partners
             .Include(p => p.Address)
             .Include(p => p.TaxIdentifiers)
-            .FirstOrDefaultAsync(p => p.PartnerId == partnerGuid);
+            .FirstOrDefaultAsync(p => p.PartnerId.Value == partnerId);
+
 
         if (partner == null)
         {

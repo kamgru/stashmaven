@@ -12,7 +12,7 @@ public class ListBrandsHandler
 
     public class Brand
     {
-        public Guid BrandId { get; set; }
+        public required string BrandId { get; set; }
         public required string Name { get; set; }
         public required string ShortCode { get; set; }
     }
@@ -48,7 +48,7 @@ public class ListBrandsHandler
         IQueryable<Brand> brands = _context.Brands
             .Select(b => new Brand
             {
-                BrandId = b.BrandId,
+                BrandId = b.BrandId.Value,
                 Name = b.Name,
                 ShortCode = b.ShortCode,
             });

@@ -22,10 +22,10 @@ public class CreateBrandHandler
         _context = context;
     }
 
-    public async Task<StashMavenResult<Guid>> CreateBrandAsync(
+    public async Task<StashMavenResult<BrandId>> CreateBrandAsync(
         CreateBrandRequest request)
     {
-        Guid brandId = Guid.NewGuid();
+        BrandId brandId = new(Guid.NewGuid().ToString());
         Brand brand = new()
         {
             BrandId = brandId,
@@ -36,6 +36,6 @@ public class CreateBrandHandler
         await _context.Brands.AddAsync(brand);
         await _context.SaveChangesAsync();
 
-        return StashMavenResult<Guid>.Success(brandId);
+        return StashMavenResult<BrandId>.Success(brandId);
     }
 }

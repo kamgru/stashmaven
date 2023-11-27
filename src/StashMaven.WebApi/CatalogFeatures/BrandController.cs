@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.CatalogFeatures;
 
@@ -14,14 +15,14 @@ public class BrandController : ControllerBase
         [FromServices]
         CreateBrandHandler handler)
     {
-        StashMavenResult<Guid> response = await handler.CreateBrandAsync(request);
+        StashMavenResult<BrandId> response = await handler.CreateBrandAsync(request);
 
         if (!response.IsSuccess)
         {
             return BadRequest(response.Message);
         }
 
-        return Created($"api/v1/catalog/brand/{response.Data}", response.Data.ToString());
+        return Created($"api/v1/catalog/brand/{response.Data?.Value}", response.Data?.ToString());
     }
 
     [HttpGet]

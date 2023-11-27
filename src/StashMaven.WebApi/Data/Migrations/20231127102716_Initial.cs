@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace StashMaven.WebApi.Migrations
+namespace StashMaven.WebApi.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -25,7 +25,7 @@ namespace StashMaven.WebApi.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BrandId = table.Column<Guid>(type: "uuid", nullable: false),
+                    BrandId = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     ShortCode = table.Column<string>(type: "text", nullable: false)
                 },
@@ -41,7 +41,7 @@ namespace StashMaven.WebApi.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PartnerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PartnerId = table.Column<string>(type: "text", nullable: false),
                     LegalName = table.Column<string>(type: "text", nullable: false),
                     CustomIdentifier = table.Column<string>(type: "text", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -59,7 +59,7 @@ namespace StashMaven.WebApi.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TaxDefinitionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TaxDefinitionId = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Rate = table.Column<decimal>(type: "numeric", nullable: false)
                 },
@@ -130,7 +130,7 @@ namespace StashMaven.WebApi.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CatalogItemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CatalogItemId = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Sku = table.Column<string>(type: "text", nullable: false),
                     UnitOfMeasure = table.Column<int>(type: "integer", nullable: false),

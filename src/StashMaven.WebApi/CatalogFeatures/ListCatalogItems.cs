@@ -12,7 +12,7 @@ public class ListCatalogItemsHandler
 
     public class CatalogItem
     {
-        public Guid CatalogItemId { get; set; }
+        public required string CatalogItemId { get; set; }
         public required string Sku { get; set; }
         public required string Name { get; set; }
         public UnitOfMeasure UnitOfMeasure { get; set; }
@@ -53,7 +53,7 @@ public class ListCatalogItemsHandler
             .Include(c => c.TaxDefinition)
             .Select(c => new CatalogItem
             {
-                CatalogItemId = c.CatalogItemId,
+                CatalogItemId = c.CatalogItemId.Value,
                 Sku = c.Sku,
                 Name = c.Name,
                 UnitOfMeasure = c.UnitOfMeasure,

@@ -8,7 +8,7 @@ public class UpdateBrandHandler
 {
     public class UpdateBrandRequest
     {
-        public required Guid BrandId { get; set; }
+        public required string BrandId { get; set; }
 
         [MinLength(3)]
         public string? Name { get; set; }
@@ -29,7 +29,7 @@ public class UpdateBrandHandler
         UpdateBrandRequest request)
     {
         Brand? brand = await _context.Brands
-            .SingleOrDefaultAsync(b => b.BrandId == request.BrandId);
+            .FirstOrDefaultAsync(b => b.BrandId.Value == request.BrandId);
 
         if (brand == null)
         {
