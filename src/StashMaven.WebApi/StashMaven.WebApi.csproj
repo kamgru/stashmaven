@@ -17,12 +17,7 @@
         <PackageReference Include="Microsoft.Identity.Web" Version="2.15.5" />
         <PackageReference Include="Npgsql" Version="7.0.6" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
-        <PackageReference Include="RabbitMQ.Client" Version="6.6.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\StashMaven.Common\StashMaven.Common.csproj" />
     </ItemGroup>
 
 </Project>
