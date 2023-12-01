@@ -1,9 +1,27 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StashMaven.WebApi.Data;
 
-namespace StashMaven.WebApi.CatalogFeatures;
+namespace StashMaven.WebApi.Features.Catalog.Brands;
 
-public class ListBrandsHandler
+public partial class BrandController
+{
+    [HttpGet]
+    [Route("list")]
+    public async Task<IActionResult> ListBrandsAsync(
+        [FromQuery]
+        ListBrandsHandler.ListBrandsRequest request,
+        [FromServices]
+        ListBrandsHandler handler)
+    {
+        ListBrandsHandler.ListBrandsResponse response =
+            await handler.ListBrandsAsync(request);
+        return Ok(response);
+    }
+}
+
+public class ListBrandsHandler(
+    StashMavenContext context)
 {
     private const int MinPageSize = 5;
     private const int MaxPageSize = 100;
@@ -31,27 +49,21 @@ public class ListBrandsHandler
         public int TotalCount { get; set; }
     }
 
-    private readonly StashMavenContext _context;
-
-    public ListBrandsHandler(
-        StashMavenContext context)
-    {
-        _context = context;
-    }
-
     public async Task<ListBrandsResponse> ListBrandsAsync(
         ListBrandsRequest request)
     {
         request.PageSize = Math.Clamp(request.PageSize, MinPageSize, MaxPageSize);
         request.Page = Math.Max(request.Page, MinPage);
 
-        IQueryable<Brand> brands = _context.Brands
+        IQueryable<Brand> brands = context.Brands
             .Select(b => new Brand
             {
                 BrandId = b.BrandId.Value,
                 Name = b.Name,
                 ShortCode = b.ShortCode,
             });
+
+        brands = request.IsAscending ? brands.OrderBy(x => x.Name) : brands.OrderByDescending(x => x.Name);
 
         if (!string.IsNullOrWhiteSpace(request.Search) && request.Search.Length >= MinSearchLength)
         {
@@ -61,8 +73,6 @@ public class ListBrandsHandler
         }
 
         int totalCount = await brands.CountAsync();
-
-        brands = request.IsAscending ? brands.OrderBy(x => x.Name) : brands.OrderByDescending(x => x.Name);
 
         brands = brands
             .Skip((request.Page - 1) * request.PageSize)

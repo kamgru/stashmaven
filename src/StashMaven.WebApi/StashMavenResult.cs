@@ -28,9 +28,9 @@ public class StashMavenResult
 
 public class StashMavenResult<T>
 {
-    public T? Data { get; private set; }
-    public bool IsSuccess { get; private set; }
-    public string? Message { get; private set; }
+    public T? Data { get; set; }
+    public bool IsSuccess { get; set; }
+    public string? Message { get; set; }
 
     public static StashMavenResult<T> Success(
         T data)

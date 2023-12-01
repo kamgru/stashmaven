@@ -4,6 +4,7 @@ using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using StashMaven.WebApi.CatalogFeatures;
 using StashMaven.WebApi.Data;
+using StashMaven.WebApi.Features.Catalog.Brands;
 using StashMaven.WebApi.PartnerFeatures;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -71,7 +72,8 @@ builder.Services.AddScoped<PatchCatalogItemHandler>();
 builder.Services.AddScoped<AddCatalogItemToBrandHandler>();
 builder.Services.AddScoped<CreateBrandHandler>();
 builder.Services.AddScoped<ListBrandsHandler>();
-builder.Services.AddScoped<UpdateBrandHandler>();
+builder.Services.AddScoped<PatchBrandHandler>();
+builder.Services.AddScoped<GetBrandByIdHandler>();
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("allow-all", policyBuilder =>
@@ -104,33 +106,25 @@ app.MapControllers();
 
 app.Run();
 
-public class AadConfig
+public class AadConfig(IConfigurationSection aadSection)
 {
-    private readonly IConfigurationSection _aadSection;
-    private readonly string _apiScope;
+    private readonly string _apiScope = aadSection["ApiScope"]
+                                        ?? throw new InvalidOperationException(
+                                            "ApiScope is missing from the configuration.");
 
-    public AadConfig(
-        IConfigurationSection aadSection)
-    {
-        _aadSection = aadSection;
-        Instance = aadSection["Instance"]
-                   ?? throw new InvalidOperationException(
-                       "Instance is missing from the configuration.");
-        TenantId = aadSection["TenantId"]
-                   ?? throw new InvalidOperationException(
-                       "TenantId is missing from the configuration.");
-        ClientId = aadSection["ClientId"]
-                   ?? throw new InvalidOperationException(
-                       "ClientId is missing from the configuration.");
-        _apiScope = aadSection["ApiScope"]
-                    ?? throw new InvalidOperationException(
-                        "ApiScope is missing from the configuration.");
-    }
+    public string Instance { get; } = aadSection["Instance"]
+                                      ?? throw new InvalidOperationException(
+                                          "Instance is missing from the configuration.");
 
-    public string Instance { get; }
-    public string TenantId { get; }
-    public string ClientId { get; }
-    public IConfigurationSection AadSection => _aadSection;
+    public string TenantId { get; } = aadSection["TenantId"]
+                                      ?? throw new InvalidOperationException(
+                                          "TenantId is missing from the configuration.");
+
+    public string ClientId { get; } = aadSection["ClientId"]
+                                      ?? throw new InvalidOperationException(
+                                          "ClientId is missing from the configuration.");
+
+    public IConfigurationSection AadSection => aadSection;
     public Uri AuthorizationUrl => new($"{Instance}{TenantId}/oauth2/v2.0/authorize");
     public Uri TokenUrl => new($"{Instance}{TenantId}/oauth2/v2.0/token");
 
@@ -142,3 +136,5 @@ public class AadConfig
         };
     }
 }
+
+public partial class Program{}
