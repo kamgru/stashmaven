@@ -3,7 +3,9 @@ using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.CatalogFeatures;
 
-public class ListTaxDefinitionsHandler
+[Injectable]
+public class ListTaxDefinitionsHandler(
+    StashMavenContext context)
 {
     public class ListTaxDefinitionsRequest
     {
@@ -24,21 +26,13 @@ public class ListTaxDefinitionsHandler
         public required decimal Rate { get; set; }
     }
 
-    private readonly StashMavenContext _context;
-
-    public ListTaxDefinitionsHandler(
-        StashMavenContext context)
-    {
-        _context = context;
-    }
-
     public async Task<ListTaxDefinitionsResponse> ListTaxDefinitionsAsync(
         ListTaxDefinitionsRequest request)
     {
         int page = Math.Max(1, request.Page);
         int pageSize = Math.Clamp(request.PageSize, 10, 100);
 
-        List<TaxDefinitionItem> taxDefinitions = await _context.TaxDefinitions
+        List<TaxDefinitionItem> taxDefinitions = await context.TaxDefinitions
             .Select(x => new TaxDefinitionItem
             {
                 Name = x.Name,
@@ -49,7 +43,7 @@ public class ListTaxDefinitionsHandler
             .Take(pageSize)
             .ToListAsync();
 
-        int totalCount = await _context.TaxDefinitions.CountAsync();
+        int totalCount = await context.TaxDefinitions.CountAsync();
 
         return new ListTaxDefinitionsResponse
         {

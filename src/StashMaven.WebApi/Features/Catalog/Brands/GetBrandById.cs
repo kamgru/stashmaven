@@ -25,6 +25,7 @@ public partial class BrandController
     }
 }
 
+[Injectable]
 public class GetBrandByIdHandler(
     StashMavenContext context)
 {

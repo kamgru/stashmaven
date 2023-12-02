@@ -26,6 +26,7 @@ public partial class BrandController
     }
 }
 
+[Injectable]
 public class PatchBrandHandler(
     StashMavenContext context)
 {

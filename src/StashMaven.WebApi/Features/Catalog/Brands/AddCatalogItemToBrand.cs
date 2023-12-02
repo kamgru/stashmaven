@@ -24,6 +24,7 @@ public partial class BrandController
     }
 }
 
+[Injectable]
 public class AddCatalogItemToBrandHandler(
     StashMavenContext context)
 {

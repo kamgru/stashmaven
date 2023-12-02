@@ -4,30 +4,26 @@ using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.CatalogFeatures;
 
-public class CreateCatalogItemHandler
+[Injectable]
+public class CreateCatalogItemHandler(
+    StashMavenContext context)
 {
     public class CreateCatalogItemRequest
     {
         [MinLength(5)]
         public required string Sku { get; set; }
+
         [MinLength(3)]
         public required string Name { get; set; } = null!;
+
         public UnitOfMeasure UnitOfMeasure { get; set; }
         public required string TaxDefinitionId { get; set; }
-    }
-
-    private readonly StashMavenContext _context;
-
-    public CreateCatalogItemHandler(
-        StashMavenContext context)
-    {
-        _context = context;
     }
 
     public async Task<StashMavenResult<CatalogItemId>> CreateCatalogItemAsync(
         CreateCatalogItemRequest request)
     {
-        TaxDefinition? taxDefinition = await _context.TaxDefinitions
+        TaxDefinition? taxDefinition = await context.TaxDefinitions
             .SingleOrDefaultAsync(t => t.TaxDefinitionId.Value == request.TaxDefinitionId);
 
         if (taxDefinition == null)
@@ -48,8 +44,8 @@ public class CreateCatalogItemHandler
             UpdatedOn = DateTime.UtcNow
         };
 
-        await _context.CatalogItems.AddAsync(catalogItem);
-        await _context.SaveChangesAsync();
+        await context.CatalogItems.AddAsync(catalogItem);
+        await context.SaveChangesAsync();
 
         return StashMavenResult<CatalogItemId>.Success(catalogItemId);
     }

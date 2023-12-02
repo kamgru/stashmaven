@@ -3,7 +3,8 @@ using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.PartnerFeatures;
 
-public class GetPartnerByIdHandler
+[Injectable]
+public class GetPartnerByIdHandler(StashMavenContext context)
 {
     public class GetPartnerResponse
     {
@@ -32,18 +33,10 @@ public class GetPartnerByIdHandler
         }
     }
 
-    private readonly StashMavenContext _context;
-
-    public GetPartnerByIdHandler(
-        StashMavenContext context)
-    {
-        _context = context;
-    }
-
     public async Task<StashMavenResult<GetPartnerResponse>> GetPartnerByIdAsync(
         string partnerId)
     {
-        Partner? partner = await _context.Partners
+        Partner? partner = await context.Partners
             .Include(p => p.Address)
             .Include(p => p.TaxIdentifiers)
             .FirstOrDefaultAsync(p => p.PartnerId.Value == partnerId);

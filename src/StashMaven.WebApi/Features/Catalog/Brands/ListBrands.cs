@@ -20,6 +20,7 @@ public partial class BrandController
     }
 }
 
+[Injectable]
 public class ListBrandsHandler(
     StashMavenContext context)
 {

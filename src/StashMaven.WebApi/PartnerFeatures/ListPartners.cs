@@ -3,7 +3,9 @@ using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.PartnerFeatures;
 
-public class ListPartnersHandler
+[Injectable]
+public class ListPartnersHandler(
+    StashMavenContext context)
 {
     private const int MinPageSize = 5;
     private const int MaxPageSize = 100;
@@ -39,21 +41,13 @@ public class ListPartnersHandler
         public int TotalCount { get; set; }
     }
 
-    private readonly StashMavenContext _context;
-
-    public ListPartnersHandler(
-        StashMavenContext context)
-    {
-        _context = context;
-    }
-
     public async Task<ListPartnerResponse> ListPartnersAsync(
         ListPartnerRequest request)
     {
         request.PageSize = Math.Clamp(request.PageSize, MinPageSize, MaxPageSize);
         request.Page = Math.Max(request.Page, MinPage);
 
-        IQueryable<Partner> partners = _context.Partners
+        IQueryable<Partner> partners = context.Partners
             .Include(p => p.Address)
             .Include(p => p.TaxIdentifiers)
             .Select(p => new Partner

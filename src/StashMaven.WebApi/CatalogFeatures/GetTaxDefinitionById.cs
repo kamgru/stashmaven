@@ -3,7 +3,9 @@ using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.CatalogFeatures;
 
-public class GetTaxDefinitionByIdHandler
+[Injectable]
+public class GetTaxDefinitionByIdHandler(
+    StashMavenContext context)
 {
     public class GetTaxDefinitionByIdResponse
     {
@@ -11,18 +13,10 @@ public class GetTaxDefinitionByIdHandler
         public required decimal Rate { get; set; }
     }
 
-    private readonly StashMavenContext _context;
-
-    public GetTaxDefinitionByIdHandler(
-        StashMavenContext context)
-    {
-        _context = context;
-    }
-
     public async Task<StashMavenResult<GetTaxDefinitionByIdResponse>> GetTaxDefinitionByIdAsync(
         string taxDefinitionId)
     {
-        TaxDefinition? taxDefinition = await _context.TaxDefinitions
+        TaxDefinition? taxDefinition = await context.TaxDefinitions
             .FirstOrDefaultAsync(td => td.TaxDefinitionId.Value == taxDefinitionId);
 
         if (taxDefinition == null)

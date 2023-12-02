@@ -1,11 +1,11 @@
+using System.Reflection;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
-using StashMaven.WebApi.CatalogFeatures;
+using StashMaven.WebApi;
 using StashMaven.WebApi.Data;
 using StashMaven.WebApi.Features.Catalog.Brands;
-using StashMaven.WebApi.PartnerFeatures;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -59,21 +59,18 @@ builder.Services.AddDbContext<StashMavenContext>(opt =>
                                             "WriteModel connection string is missing.");
     opt.UseNpgsql(writeModelConnectionString);
 });
-builder.Services.AddScoped<CreatePartnerHandler>();
-builder.Services.AddScoped<GetPartnerByIdHandler>();
-builder.Services.AddScoped<ListPartnersHandler>();
-builder.Services.AddScoped<UpdatePartnerHandler>();
-builder.Services.AddScoped<CreateTaxDefinitionHandler>();
-builder.Services.AddScoped<ListTaxDefinitionsHandler>();
-builder.Services.AddScoped<GetTaxDefinitionByIdHandler>();
-builder.Services.AddScoped<CreateCatalogItemHandler>();
-builder.Services.AddScoped<ListCatalogItemsHandler>();
-builder.Services.AddScoped<PatchCatalogItemHandler>();
-builder.Services.AddScoped<AddCatalogItemToBrandHandler>();
-builder.Services.AddScoped<CreateBrandHandler>();
-builder.Services.AddScoped<ListBrandsHandler>();
-builder.Services.AddScoped<PatchBrandHandler>();
 builder.Services.AddScoped<GetBrandByIdHandler>();
+
+List<Type> injectables = Assembly.GetExecutingAssembly()
+    .GetTypes()
+    .Where(x => x.IsDefined(typeof(InjectableAttribute)))
+    .ToList();
+
+foreach (Type injectable in injectables)
+{
+    builder.Services.AddScoped(injectable);
+}
+
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("allow-all", policyBuilder =>
@@ -137,4 +134,4 @@ public class AadConfig(IConfigurationSection aadSection)
     }
 }
 
-public partial class Program{}
+public partial class Program;

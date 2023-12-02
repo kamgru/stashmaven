@@ -2,20 +2,14 @@ using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.CatalogFeatures;
 
-public class CreateTaxDefinitionHandler
+[Injectable]
+public class CreateTaxDefinitionHandler(
+    StashMavenContext context)
 {
     public class CreateTaxDefinitionRequest
     {
         public required string Name { get; set; }
         public required decimal Rate { get; set; }
-    }
-
-    private readonly StashMavenContext _context;
-
-    public CreateTaxDefinitionHandler(
-        StashMavenContext context)
-    {
-        _context = context;
     }
 
     public async Task<TaxDefinitionId> CreateTaxDefinitionAsync(
@@ -28,8 +22,8 @@ public class CreateTaxDefinitionHandler
             Rate = request.Rate
         };
 
-        await _context.TaxDefinitions.AddAsync(taxDefinition);
-        await _context.SaveChangesAsync();
+        await context.TaxDefinitions.AddAsync(taxDefinition);
+        await context.SaveChangesAsync();
 
         return taxDefinition.TaxDefinitionId;
     }

@@ -1,7 +1,3 @@
-using System.Net;
-using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.Data;
 using StashMaven.WebApi.Features.Catalog.Brands;
 
 namespace StashMaven.Tests.WebApi.Catalog.Brands;
@@ -37,7 +33,6 @@ public class CreateBrandTests(
         Brand? brand = await context.Brands
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.BrandId.Value == result.Value);
-        await context.DisposeAsync();
 
         Assert.NotNull(brand);
         Assert.Equal(name, brand.Name);
@@ -53,7 +48,7 @@ public class CreateBrandTests(
             new CreateBrandHandler.CreateBrandRequest
             {
                 Name = "Te",
-                ShortCode = "TB"
+                ShortCode = Guid.NewGuid().ToString()
             });
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -85,7 +80,6 @@ public class CreateBrandTests(
         Brand? brand = await context.Brands
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.ShortCode == "T");
-        await context.DisposeAsync();
 
         Assert.Null(brand);
     }

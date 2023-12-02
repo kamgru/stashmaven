@@ -3,7 +3,9 @@ using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.PartnerFeatures;
 
-public class UpdatePartnerHandler
+[Injectable]
+public class UpdatePartnerHandler(
+    StashMavenContext context)
 {
     public class AddressPatch
     {
@@ -30,19 +32,11 @@ public class UpdatePartnerHandler
         public AddressPatch? Address { get; set; }
     }
 
-    private readonly StashMavenContext _context;
-
-    public UpdatePartnerHandler(
-        StashMavenContext context)
-    {
-        _context = context;
-    }
-
     public async Task PatchPartnerAsync(
         string partnerId,
         PatchPartnerRequest request)
     {
-        Partner partner = await _context.Partners
+        Partner partner = await context.Partners
                               .Include(p => p.Address)
                               .Include(p => p.TaxIdentifiers)
                               .FirstOrDefaultAsync(p => p.PartnerId.Value == partnerId)
@@ -85,10 +79,10 @@ public class UpdatePartnerHandler
                 .ToList();
         }
 
-        if (_context.ChangeTracker.HasChanges())
+        if (context.ChangeTracker.HasChanges())
         {
             partner.UpdatedOn = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
     }
 }

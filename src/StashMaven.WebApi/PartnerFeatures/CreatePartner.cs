@@ -3,7 +3,8 @@ using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.PartnerFeatures;
 
-public class CreatePartnerHandler
+[Injectable]
+public class CreatePartnerHandler(StashMavenContext context)
 {
     public class CreatePartnerRequest
     {
@@ -35,18 +36,10 @@ public class CreatePartnerHandler
         public required PartnerAddress Address { get; set; }
     }
 
-    private readonly StashMavenContext _context;
-
-    public CreatePartnerHandler(
-        StashMavenContext context)
-    {
-        _context = context;
-    }
-
     public async Task<PartnerId> CreatePartnerAsync(
         CreatePartnerRequest request)
     {
-        PartnerId partnerId = new PartnerId(Guid.NewGuid().ToString());
+        PartnerId partnerId = new(Guid.NewGuid().ToString());
 
         //TODO: validation:
         // - null checks, duh
@@ -87,8 +80,8 @@ public class CreatePartnerHandler
                 .ToList()
         };
 
-        _context.Partners.Add(partner);
-        await _context.SaveChangesAsync();
+        context.Partners.Add(partner);
+        await context.SaveChangesAsync();
 
         return partnerId;
     }

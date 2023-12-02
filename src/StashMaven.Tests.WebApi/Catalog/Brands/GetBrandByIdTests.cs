@@ -1,7 +1,3 @@
-using System.Net;
-using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.Data;
 using StashMaven.WebApi.Features.Catalog.Brands;
 
 namespace StashMaven.Tests.WebApi.Catalog.Brands;

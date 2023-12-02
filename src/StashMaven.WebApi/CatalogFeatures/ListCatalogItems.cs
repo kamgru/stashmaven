@@ -3,7 +3,9 @@ using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.CatalogFeatures;
 
-public class ListCatalogItemsHandler
+[Injectable]
+public class ListCatalogItemsHandler(
+    StashMavenContext context)
 {
     private const int MinPageSize = 5;
     private const int MaxPageSize = 100;
@@ -35,21 +37,13 @@ public class ListCatalogItemsHandler
         public int TotalCount { get; set; }
     }
 
-    private readonly StashMavenContext _context;
-
-    public ListCatalogItemsHandler(
-        StashMavenContext context)
-    {
-        _context = context;
-    }
-
     public async Task<ListCatalogItemsResponse> ListCatalogItemsAsync(
         ListCatalogItemsRequest request)
     {
         request.PageSize = Math.Clamp(request.PageSize, MinPageSize, MaxPageSize);
         request.Page = Math.Max(request.Page, MinPage);
 
-        IQueryable<CatalogItem> catalogItems = _context.CatalogItems
+        IQueryable<CatalogItem> catalogItems = context.CatalogItems
             .Include(c => c.TaxDefinition)
             .Select(c => new CatalogItem
             {
@@ -63,7 +57,6 @@ public class ListCatalogItemsHandler
 
         if (!string.IsNullOrWhiteSpace(request.Search) && request.Search.Length >= MinSearchLength)
         {
-
             string search = $"%{request.Search}%";
             catalogItems = catalogItems.Where(p =>
                 EF.Functions.ILike(p.Sku, search)
