@@ -41,7 +41,7 @@ public class AddRecordToShipment(
         AddRecordToShipmentRequest request)
     {
         Shipment? shipment = await context.Shipments
-            .Include(shipment => shipment.ShipmentRecords)
+            .Include(shipment => shipment.Records)
             .SingleOrDefaultAsync(s => s.ShipmentId.Value == shipmentId);
 
         if (shipment == null)
@@ -65,13 +65,13 @@ public class AddRecordToShipment(
             return StashMavenResult.Error($"Tax definition {inventoryItem.TaxDefinitionId.Value} not found");
         }
 
-        shipment.ShipmentRecords.Add(new ShipmentRecord
+        shipment.Records.Add(new ShipmentRecord
         {
-            InventoryItemId = new InventoryItemId(inventoryItem.InventoryItemId.Value),
             Quantity = request.Quantity,
             UnitOfMeasure = inventoryItem.UnitOfMeasure,
             UnitPrice = request.UnitPrice,
-            TaxRate = taxDefinition.Rate
+            TaxRate = taxDefinition.Rate,
+            InventoryItem = inventoryItem
         });
 
         await context.SaveChangesAsync();

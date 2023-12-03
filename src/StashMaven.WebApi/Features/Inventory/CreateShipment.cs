@@ -32,7 +32,6 @@ public class CreateShipmentHandler(
     public class CreateShipmentRequest
     {
         public required string ShipmentKindId { get; set; }
-        public ShipmentDirection ShipmentDirection { get; set; }
         public Currency Currency { get; set; }
     }
 
@@ -55,8 +54,7 @@ public class CreateShipmentHandler(
         Shipment shipment = new()
         {
             ShipmentId = new ShipmentId(Guid.NewGuid().ToString()),
-            ShipmentDirection = request.ShipmentDirection,
-            ShipmentKindId = new ShipmentKindId(request.ShipmentKindId),
+            Kind = shipmentKind,
             Currency = request.Currency,
             CreatedOn = DateTime.UtcNow,
             UpdatedOn = DateTime.UtcNow,

@@ -63,18 +63,11 @@ public class StashMavenContext : DbContext
             x.OwnsOne(e => e.SupplierId)
                 .Property(e => e.Value)
                 .HasColumnName("SupplierId");
-
-            x.OwnsOne(e => e.ShipmentKindId)
-                .Property(e => e.Value)
-                .HasColumnName("ShipmentKindId");
         });
 
         modelBuilder.Entity<ShipmentRecord>(x =>
         {
             x.ToTable("ShipmentRecord", "inv");
-            x.OwnsOne(e => e.InventoryItemId)
-                .Property(e => e.Value)
-                .HasColumnName("InventoryItemId");
         });
 
         modelBuilder.Entity<InventoryItem>(x =>
@@ -100,6 +93,12 @@ public class StashMavenContext : DbContext
                 .IsUnique();
         });
 
+        modelBuilder.Entity<SourceReference>(x =>
+        {
+            x.ToTable("SourceReference", "inv");
+            x.HasMany(e => e.Shipments)
+                .WithOne(e => e.SourceReference);
+        });
     }
 
     public DbSet<Partner> Partners => Set<Partner>();
@@ -113,5 +112,6 @@ public class StashMavenContext : DbContext
     public DbSet<Shipment> Shipments => Set<Shipment>();
     public DbSet<ShipmentRecord> ShipmentRecords => Set<ShipmentRecord>();
     public DbSet<ShipmentKind> ShipmentKinds => Set<ShipmentKind>();
+    public DbSet<SourceReference> SourceReferences => Set<SourceReference>();
     public DbSet<InventoryItem> InventoryItems => Set<InventoryItem>();
 }

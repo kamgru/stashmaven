@@ -77,7 +77,7 @@ public class PatchBrandTests(
         {
             BrandId = brandId,
             Name = "Test Brand",
-            ShortCode = "TB"
+            ShortCode = Guid.NewGuid().ToString()
         };
 
         await using StashMavenContext context = fixture.CreateDbContext();

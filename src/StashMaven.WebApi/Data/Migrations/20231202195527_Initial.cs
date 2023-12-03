@@ -77,23 +77,20 @@ namespace StashMaven.WebApi.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shipment",
+                name: "ShipmentKind",
                 schema: "inv",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ShipmentId = table.Column<string>(type: "text", nullable: false),
-                    SupplierId = table.Column<string>(type: "text", nullable: true),
-                    ShipmentDirection = table.Column<int>(type: "integer", nullable: false),
-                    ShipmentAcceptance = table.Column<int>(type: "integer", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Currency = table.Column<int>(type: "integer", nullable: false)
+                    ShipmentKindId = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    ShortCode = table.Column<string>(type: "text", nullable: false),
+                    ShipmentDirection = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shipment", x => x.Id);
+                    table.PrimaryKey("PK_ShipmentKind", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,28 +165,30 @@ namespace StashMaven.WebApi.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShipmentRecord",
+                name: "Shipment",
                 schema: "inv",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    InventoryItemId = table.Column<string>(type: "text", nullable: false),
-                    Quantity = table.Column<decimal>(type: "numeric", nullable: false),
-                    UnitOfMeasure = table.Column<int>(type: "integer", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "numeric", nullable: false),
-                    TaxRate = table.Column<decimal>(type: "numeric", nullable: false),
-                    ShipmentId = table.Column<int>(type: "integer", nullable: true)
+                    ShipmentId = table.Column<string>(type: "text", nullable: false),
+                    SupplierId = table.Column<string>(type: "text", nullable: true),
+                    ShipmentAcceptance = table.Column<int>(type: "integer", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Currency = table.Column<int>(type: "integer", nullable: false),
+                    KindId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShipmentRecord", x => x.Id);
+                    table.PrimaryKey("PK_Shipment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ShipmentRecord_Shipment_ShipmentId",
-                        column: x => x.ShipmentId,
+                        name: "FK_Shipment_ShipmentKind_KindId",
+                        column: x => x.KindId,
                         principalSchema: "inv",
-                        principalTable: "Shipment",
-                        principalColumn: "Id");
+                        principalTable: "ShipmentKind",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -226,6 +225,38 @@ namespace StashMaven.WebApi.Data.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ShipmentRecord",
+                schema: "inv",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Quantity = table.Column<decimal>(type: "numeric", nullable: false),
+                    UnitOfMeasure = table.Column<int>(type: "integer", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    TaxRate = table.Column<decimal>(type: "numeric", nullable: false),
+                    InventoryItemId = table.Column<int>(type: "integer", nullable: false),
+                    ShipmentId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShipmentRecord", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShipmentRecord_InventoryItem_InventoryItemId",
+                        column: x => x.InventoryItemId,
+                        principalSchema: "inv",
+                        principalTable: "InventoryItem",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ShipmentRecord_Shipment_ShipmentId",
+                        column: x => x.ShipmentId,
+                        principalSchema: "inv",
+                        principalTable: "Shipment",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Address_PartnerId",
                 schema: "prt",
@@ -244,6 +275,25 @@ namespace StashMaven.WebApi.Data.Migrations
                 schema: "cat",
                 table: "CatalogItem",
                 column: "TaxDefinitionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shipment_KindId",
+                schema: "inv",
+                table: "Shipment",
+                column: "KindId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShipmentKind_ShortCode",
+                schema: "inv",
+                table: "ShipmentKind",
+                column: "ShortCode",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShipmentRecord_InventoryItemId",
+                schema: "inv",
+                table: "ShipmentRecord",
+                column: "InventoryItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShipmentRecord_ShipmentId",
@@ -270,10 +320,6 @@ namespace StashMaven.WebApi.Data.Migrations
                 schema: "cat");
 
             migrationBuilder.DropTable(
-                name: "InventoryItem",
-                schema: "inv");
-
-            migrationBuilder.DropTable(
                 name: "ShipmentRecord",
                 schema: "inv");
 
@@ -290,12 +336,20 @@ namespace StashMaven.WebApi.Data.Migrations
                 schema: "cat");
 
             migrationBuilder.DropTable(
+                name: "InventoryItem",
+                schema: "inv");
+
+            migrationBuilder.DropTable(
                 name: "Shipment",
                 schema: "inv");
 
             migrationBuilder.DropTable(
                 name: "Partner",
                 schema: "prt");
+
+            migrationBuilder.DropTable(
+                name: "ShipmentKind",
+                schema: "inv");
         }
     }
 }

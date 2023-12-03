@@ -48,7 +48,8 @@ public class GetShipmentByIdHandler(
         GetShipmentByIdRequest request)
     {
         Shipment? shipment = await context.Shipments
-            .Include(shipment => shipment.SupplierId)
+            .Include(s => s.SupplierId)
+            .Include(s => s.Kind)
             .SingleOrDefaultAsync(s => s.ShipmentId.Value == request.ShipmentId);
 
         if (shipment == null)
@@ -60,7 +61,7 @@ public class GetShipmentByIdHandler(
         {
             SupplierId = shipment.SupplierId?.Value,
             Currency = shipment.Currency,
-            ShipmentDirection = shipment.ShipmentDirection,
+            ShipmentDirection = shipment.Kind.ShipmentDirection,
         });
     }
 }
