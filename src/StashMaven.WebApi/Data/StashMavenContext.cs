@@ -99,6 +99,14 @@ public class StashMavenContext : DbContext
             x.HasMany(e => e.Shipments)
                 .WithOne(e => e.SourceReference);
         });
+
+        modelBuilder.Entity<Stockpile>(x =>
+        {
+            x.ToTable("Stockpile", "inv");
+            x.OwnsOne(e => e.StockpileId)
+                .Property(e => e.Value)
+                .HasColumnName("StockpileId");
+        });
     }
 
     public DbSet<Partner> Partners => Set<Partner>();
@@ -114,4 +122,5 @@ public class StashMavenContext : DbContext
     public DbSet<ShipmentKind> ShipmentKinds => Set<ShipmentKind>();
     public DbSet<SourceReference> SourceReferences => Set<SourceReference>();
     public DbSet<InventoryItem> InventoryItems => Set<InventoryItem>();
+    public DbSet<Stockpile> Stockpiles => Set<Stockpile>();
 }

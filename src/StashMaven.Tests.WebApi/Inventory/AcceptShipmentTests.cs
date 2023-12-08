@@ -39,9 +39,16 @@ public class AcceptShipmentTests(
         }
 
         await using StashMavenContext context = fixture.CreateDbContext();
+        Stockpile stockpile = new()
+        {
+            StockpileId = new StockpileId("stockpile-1"),
+            Name = "Stockpile 1",
+        };
+        context.Stockpiles.Add(stockpile);
         InventoryItem inventoryItem1 = new()
         {
             InventoryItemId = new InventoryItemId(inventoryItemId1),
+            Stockpile = stockpile,
             Sku = "sku-1",
             Name = "name-1",
             Quantity = 0,
@@ -52,6 +59,7 @@ public class AcceptShipmentTests(
         InventoryItem inventoryItem2 = new()
         {
             InventoryItemId = new InventoryItemId(inventoryItemId2),
+            Stockpile = stockpile,
             Sku = "sku-2",
             Name = "name-2",
             Quantity = 0,
@@ -89,6 +97,7 @@ public class AcceptShipmentTests(
             {
                 ShipmentId = new ShipmentId($"{shipmentIdPrefix}{i}"),
                 SupplierId = new SupplierId("supplier-1"),
+                Stockpile = stockpile,
                 Kind = random.Next(0, 100) >= 50 ? inShipment : outShipment,
                 ShipmentAcceptance = ShipmentAcceptance.Pending,
                 CreatedOn = DateTime.UtcNow,
@@ -165,9 +174,16 @@ public class AcceptShipmentTests(
     public async Task WhenRequestValid_ShipmentShouldBeAccepted()
     {
         await using StashMavenContext context = fixture.CreateDbContext();
+        Stockpile stockpile = new()
+        {
+            StockpileId = new StockpileId("stockpile-1"),
+            Name = "Stockpile 1",
+        };
+        context.Stockpiles.Add(stockpile);
         InventoryItem inventoryItem = new()
         {
             InventoryItemId = new InventoryItemId("inventory-item-3"),
+            Stockpile = stockpile,
             Sku = "sku-1",
             Name = "name-1",
             Quantity = 0,
@@ -188,6 +204,7 @@ public class AcceptShipmentTests(
         {
             ShipmentId = new ShipmentId("test-accept-shipment-1"),
             SupplierId = new SupplierId("supplier-1"),
+            Stockpile = stockpile,
             Kind = inShipment,
             ShipmentAcceptance = ShipmentAcceptance.Pending,
             Records =
@@ -220,9 +237,16 @@ public class AcceptShipmentTests(
     public async Task GivenMultipleRecordsForSingleItem_WhenShipmentAccepted_QuantityShouldBeCorrect()
     {
         await using StashMavenContext context = fixture.CreateDbContext();
+        Stockpile stockpile = new()
+        {
+            StockpileId = new StockpileId("stockpile-1"),
+            Name = "Stockpile 1",
+        };
+        context.Stockpiles.Add(stockpile);
         InventoryItem item1 = new()
         {
             InventoryItemId = new InventoryItemId(Guid.NewGuid().ToString()),
+            Stockpile = stockpile,
             Sku = "sku-2",
             Name = "name-2",
             Quantity = 0,
@@ -233,6 +257,7 @@ public class AcceptShipmentTests(
         InventoryItem item2 = new()
         {
             InventoryItemId = new InventoryItemId(Guid.NewGuid().ToString()),
+            Stockpile = stockpile,
             Sku = "sku-3",
             Name = "name-3",
             Quantity = 0,
@@ -255,6 +280,7 @@ public class AcceptShipmentTests(
         {
             ShipmentId = new ShipmentId("test-accept-shipment-2"),
             SupplierId = new SupplierId("supplier-1"),
+            Stockpile = stockpile,
             Kind = inShipment,
             ShipmentAcceptance = ShipmentAcceptance.Pending,
             Records =

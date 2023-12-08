@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 
 namespace StashMaven.WebApi.Data;
 
@@ -17,6 +16,7 @@ public class InventoryItem
     public decimal UnitPrice { get; set; }
     public required TaxDefinitionId TaxDefinitionId { get; set; }
     public ICollection<ShipmentRecord> ShipmentRecords { get; set; } = new List<ShipmentRecord>();
+    public Stockpile Stockpile { get; set; } = null!;
 
     [Timestamp]
     public uint Version { get; set; }
@@ -56,7 +56,7 @@ public class ShipmentKind
     public required string Name { get; set; }
     public required string ShortCode { get; set; }
     public ShipmentDirection ShipmentDirection { get; set; }
-    public List<Shipment> Shipments { get; set; } = new();
+    public List<Shipment> Shipments { get; set; } = [];
 }
 
 public record ShipmentId(
@@ -77,11 +77,24 @@ public class Shipment
     public List<ShipmentRecord> Records { get; set; } = new();
     public ShipmentKind Kind { get; set; } = null!;
     public SourceReference? SourceReference { get; set; }
+    public Stockpile Stockpile { get; set; } = null!;
 }
 
 public class SourceReference
 {
     public int Id { get; set; }
     public required string Identifier { get; set; }
+    public ICollection<Shipment> Shipments { get; set; } = new List<Shipment>();
+}
+
+public record StockpileId(
+    string Value);
+
+public class Stockpile
+{
+    public int Id { get; set; }
+    public required StockpileId StockpileId { get; set; }
+    public required string Name { get; set; }
+    public ICollection<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
     public ICollection<Shipment> Shipments { get; set; } = new List<Shipment>();
 }
