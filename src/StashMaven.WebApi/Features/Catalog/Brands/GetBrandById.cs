@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.Data;
-
 namespace StashMaven.WebApi.Features.Catalog.Brands;
 
 public partial class BrandController

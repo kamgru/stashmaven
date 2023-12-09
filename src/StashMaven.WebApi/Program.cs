@@ -31,6 +31,7 @@ if (app.Environment.IsDevelopment())
         opt.OAuthClientId(aadConfig.ClientId);
         opt.OAuthUsePkce();
         opt.OAuthScopeSeparator(" ");
+        opt.ShowExtensions();
     });
     app.UseCors("allow-all");
 }
