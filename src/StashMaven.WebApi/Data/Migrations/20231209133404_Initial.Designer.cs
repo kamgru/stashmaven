@@ -12,7 +12,7 @@ using StashMaven.WebApi.Data;
 namespace StashMaven.WebApi.Data.Migrations
 {
     [DbContext(typeof(StashMavenContext))]
-    [Migration("20231202195527_Initial")]
+    [Migration("20231209133404_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -155,6 +155,9 @@ namespace StashMaven.WebApi.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("StockpileId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("TaxDefinitionId")
                         .IsRequired()
                         .HasColumnType("text")
@@ -173,6 +176,8 @@ namespace StashMaven.WebApi.Data.Migrations
                         .HasColumnName("xmin");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StockpileId");
 
                     b.ToTable("InventoryItem", "inv");
                 });
@@ -204,6 +209,28 @@ namespace StashMaven.WebApi.Data.Migrations
                     b.ToTable("Partner", "prt");
                 });
 
+            modelBuilder.Entity("StashMaven.WebApi.Data.SequenceGenerator", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("NextValue")
+                        .HasColumnType("integer");
+
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SequenceGenerator", "inv");
+                });
+
             modelBuilder.Entity("StashMaven.WebApi.Data.Shipment", b =>
                 {
                     b.Property<int>("Id")
@@ -224,12 +251,22 @@ namespace StashMaven.WebApi.Data.Migrations
                     b.Property<int>("ShipmentAcceptance")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("SourceReferenceId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StockpileId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("KindId");
+
+                    b.HasIndex("SourceReferenceId");
+
+                    b.HasIndex("StockpileId");
 
                     b.ToTable("Shipment", "inv");
                 });
@@ -275,7 +312,7 @@ namespace StashMaven.WebApi.Data.Migrations
                     b.Property<decimal>("Quantity")
                         .HasColumnType("numeric");
 
-                    b.Property<int?>("ShipmentId")
+                    b.Property<int>("ShipmentId")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("TaxRate")
@@ -294,6 +331,44 @@ namespace StashMaven.WebApi.Data.Migrations
                     b.HasIndex("ShipmentId");
 
                     b.ToTable("ShipmentRecord", "inv");
+                });
+
+            modelBuilder.Entity("StashMaven.WebApi.Data.SourceReference", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Identifier")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SourceReference", "inv");
+                });
+
+            modelBuilder.Entity("StashMaven.WebApi.Data.Stockpile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ShortCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Stockpile", "inv");
                 });
 
             modelBuilder.Entity("StashMaven.WebApi.Data.TaxDefinition", b =>
@@ -423,6 +498,12 @@ namespace StashMaven.WebApi.Data.Migrations
 
             modelBuilder.Entity("StashMaven.WebApi.Data.InventoryItem", b =>
                 {
+                    b.HasOne("StashMaven.WebApi.Data.Stockpile", "Stockpile")
+                        .WithMany("InventoryItems")
+                        .HasForeignKey("StockpileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("StashMaven.WebApi.Data.InventoryItemId", "InventoryItemId", b1 =>
                         {
                             b1.Property<int>("InventoryItemId")
@@ -443,6 +524,8 @@ namespace StashMaven.WebApi.Data.Migrations
 
                     b.Navigation("InventoryItemId")
                         .IsRequired();
+
+                    b.Navigation("Stockpile");
                 });
 
             modelBuilder.Entity("StashMaven.WebApi.Data.Partner", b =>
@@ -469,11 +552,45 @@ namespace StashMaven.WebApi.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("StashMaven.WebApi.Data.SequenceGenerator", b =>
+                {
+                    b.OwnsOne("StashMaven.WebApi.Data.SequenceGeneratorId", "SequenceGeneratorId", b1 =>
+                        {
+                            b1.Property<int>("SequenceGeneratorId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("SequenceGeneratorId");
+
+                            b1.HasKey("SequenceGeneratorId");
+
+                            b1.ToTable("SequenceGenerator", "inv");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SequenceGeneratorId");
+                        });
+
+                    b.Navigation("SequenceGeneratorId")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("StashMaven.WebApi.Data.Shipment", b =>
                 {
                     b.HasOne("StashMaven.WebApi.Data.ShipmentKind", "Kind")
                         .WithMany("Shipments")
                         .HasForeignKey("KindId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StashMaven.WebApi.Data.SourceReference", "SourceReference")
+                        .WithMany("Shipments")
+                        .HasForeignKey("SourceReferenceId");
+
+                    b.HasOne("StashMaven.WebApi.Data.Stockpile", "Stockpile")
+                        .WithMany("Shipments")
+                        .HasForeignKey("StockpileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -486,6 +603,24 @@ namespace StashMaven.WebApi.Data.Migrations
                                 .IsRequired()
                                 .HasColumnType("text")
                                 .HasColumnName("ShipmentId");
+
+                            b1.HasKey("ShipmentId");
+
+                            b1.ToTable("Shipment", "inv");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ShipmentId");
+                        });
+
+                    b.OwnsOne("StashMaven.WebApi.Data.ShipmentSeqId", "ShipmentSeqId", b1 =>
+                        {
+                            b1.Property<int>("ShipmentId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("ShipmentSeqId");
 
                             b1.HasKey("ShipmentId");
 
@@ -518,11 +653,35 @@ namespace StashMaven.WebApi.Data.Migrations
                     b.Navigation("ShipmentId")
                         .IsRequired();
 
+                    b.Navigation("ShipmentSeqId");
+
+                    b.Navigation("SourceReference");
+
+                    b.Navigation("Stockpile");
+
                     b.Navigation("SupplierId");
                 });
 
             modelBuilder.Entity("StashMaven.WebApi.Data.ShipmentKind", b =>
                 {
+                    b.OwnsOne("StashMaven.WebApi.Data.SequenceGeneratorId", "SequenceGeneratorId", b1 =>
+                        {
+                            b1.Property<int>("ShipmentKindId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("SequenceGeneratorId");
+
+                            b1.HasKey("ShipmentKindId");
+
+                            b1.ToTable("ShipmentKind", "inv");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ShipmentKindId");
+                        });
+
                     b.OwnsOne("StashMaven.WebApi.Data.ShipmentKindId", "ShipmentKindId", b1 =>
                         {
                             b1.Property<int>("ShipmentKindId")
@@ -541,6 +700,9 @@ namespace StashMaven.WebApi.Data.Migrations
                                 .HasForeignKey("ShipmentKindId");
                         });
 
+                    b.Navigation("SequenceGeneratorId")
+                        .IsRequired();
+
                     b.Navigation("ShipmentKindId")
                         .IsRequired();
                 });
@@ -553,11 +715,39 @@ namespace StashMaven.WebApi.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StashMaven.WebApi.Data.Shipment", null)
+                    b.HasOne("StashMaven.WebApi.Data.Shipment", "Shipment")
                         .WithMany("Records")
-                        .HasForeignKey("ShipmentId");
+                        .HasForeignKey("ShipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("InventoryItem");
+
+                    b.Navigation("Shipment");
+                });
+
+            modelBuilder.Entity("StashMaven.WebApi.Data.Stockpile", b =>
+                {
+                    b.OwnsOne("StashMaven.WebApi.Data.StockpileId", "StockpileId", b1 =>
+                        {
+                            b1.Property<int>("StockpileId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("StockpileId");
+
+                            b1.HasKey("StockpileId");
+
+                            b1.ToTable("Stockpile", "inv");
+
+                            b1.WithOwner()
+                                .HasForeignKey("StockpileId");
+                        });
+
+                    b.Navigation("StockpileId")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("StashMaven.WebApi.Data.TaxDefinition", b =>
@@ -619,6 +809,18 @@ namespace StashMaven.WebApi.Data.Migrations
 
             modelBuilder.Entity("StashMaven.WebApi.Data.ShipmentKind", b =>
                 {
+                    b.Navigation("Shipments");
+                });
+
+            modelBuilder.Entity("StashMaven.WebApi.Data.SourceReference", b =>
+                {
+                    b.Navigation("Shipments");
+                });
+
+            modelBuilder.Entity("StashMaven.WebApi.Data.Stockpile", b =>
+                {
+                    b.Navigation("InventoryItems");
+
                     b.Navigation("Shipments");
                 });
 #pragma warning restore 612, 618

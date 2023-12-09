@@ -37,6 +37,7 @@ public class AcceptShipment(
             .Include(s => s.Kind)
             .Include(s => s.Records)
             .ThenInclude(r => r.InventoryItem)
+            .Include(s => s.Stockpile)
             .FirstOrDefaultAsync(s => s.ShipmentId.Value == shipmentId);
 
         if (shipment == null)
@@ -63,6 +64,21 @@ public class AcceptShipment(
             recordGroup.Key.Quantity += (int)shipment.Kind.ShipmentDirection * recordGroup.Sum(x => x.Quantity);
         }
 
+        SequenceGenerator? sequenceGenerator = await context.SequenceGenerators
+            .FirstOrDefaultAsync(x => x.SequenceGeneratorId.Value == shipment.Kind.SequenceGeneratorId.Value);
+
+        if (sequenceGenerator == null)
+        {
+            return StashMavenResult.Error($"Sequence generator {shipment.Kind.SequenceGeneratorId.Value} not found.");
+        }
+
+        shipment.ShipmentSeqId = shipment.ShipmentSeqId = GenerateNextSequence(
+            sequenceGenerator,
+            shipment.Stockpile,
+            shipment.Kind);
+
+        sequenceGenerator.NextValue++;
+
         bool changesSaved = false;
         while (!changesSaved)
         {
@@ -75,47 +91,70 @@ public class AcceptShipment(
             {
                 foreach (EntityEntry entry in e.Entries)
                 {
-                    if (entry.Entity is not InventoryItem currentInventoryItem)
+                    switch (entry.Entity)
                     {
-                        continue;
-                    }
-
-                    PropertyValues proposedValues = entry.CurrentValues;
-                    PropertyValues? databaseValues = entry.GetDatabaseValues();
-
-                    if (databaseValues == null)
-                    {
-                        return StashMavenResult.Error(
-                            $"Fatal error during concurrency resolution: database values for {currentInventoryItem.InventoryItemId} are null");
-                    }
-
-                    foreach (IProperty property in proposedValues.Properties)
-                    {
-                        if (property.Name != nameof(InventoryItem.Quantity))
+                        case InventoryItem currentInventoryItem:
                         {
-                            continue;
+                            PropertyValues proposedValues = entry.CurrentValues;
+                            PropertyValues? databaseValues = entry.GetDatabaseValues();
+
+                            if (databaseValues == null)
+                            {
+                                return StashMavenResult.Error(
+                                    $"Fatal error during concurrency resolution: database values for {currentInventoryItem.InventoryItemId} are null");
+                            }
+
+                            foreach (IProperty property in proposedValues.Properties)
+                            {
+                                if (property.Name != nameof(InventoryItem.Quantity))
+                                {
+                                    continue;
+                                }
+
+                                object? databaseValue = databaseValues[property];
+
+                                if (databaseValue == null)
+                                {
+                                    return StashMavenResult.Error(
+                                        $"Fatal error during concurrency resolution: database value for {currentInventoryItem.InventoryItemId} is null");
+                                }
+
+                                decimal quantityChange = shipment.Records
+                                    .Where(x => x.InventoryItem == currentInventoryItem)
+                                    .Sum(x => x.Quantity * (int)shipment.Kind.ShipmentDirection);
+
+                                proposedValues[property] = (decimal)databaseValue + quantityChange;
+                            }
+
+                            entry.OriginalValues.SetValues(databaseValues);
+                            break;
                         }
+                        case SequenceGenerator:
 
-                        object? databaseValue = databaseValues[property];
+                            await entry.ReloadAsync();
 
-                        if (databaseValue == null)
-                        {
-                            return StashMavenResult.Error(
-                                $"Fatal error during concurrency resolution: database value for {currentInventoryItem.InventoryItemId} is null");
-                        }
+                            shipment.ShipmentSeqId = GenerateNextSequence(
+                                sequenceGenerator,
+                                shipment.Stockpile,
+                                shipment.Kind);
 
-                        decimal quantityChange = shipment.Records
-                            .Where(x => x.InventoryItem == currentInventoryItem)
-                            .Sum(x => x.Quantity * (int)shipment.Kind.ShipmentDirection);
-
-                        proposedValues[property] = (decimal)databaseValue + quantityChange;
+                            sequenceGenerator.NextValue++;
+                            break;
                     }
-
-                    entry.OriginalValues.SetValues(databaseValues);
                 }
             }
         }
 
         return StashMavenResult.Success();
+    }
+
+    private ShipmentSeqId GenerateNextSequence(
+        SequenceGenerator sequenceGenerator,
+        Stockpile stockpile,
+        ShipmentKind shipmentKind)
+    {
+        string shipmentSequenceIdentifier =
+            $"{shipmentKind.ShortCode} {sequenceGenerator.NextValue}/{stockpile.ShortCode}/{DateTime.UtcNow.Year:YY}";
+        return new ShipmentSeqId(shipmentSequenceIdentifier);
     }
 }

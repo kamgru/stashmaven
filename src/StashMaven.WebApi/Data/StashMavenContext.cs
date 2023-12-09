@@ -59,10 +59,12 @@ public class StashMavenContext : DbContext
             x.OwnsOne(e => e.ShipmentId)
                 .Property(e => e.Value)
                 .HasColumnName("ShipmentId");
-
             x.OwnsOne(e => e.SupplierId)
                 .Property(e => e.Value)
                 .HasColumnName("SupplierId");
+            x.OwnsOne(e => e.ShipmentSeqId)
+                .Property(e => e.Value)
+                .HasColumnName("ShipmentSeqId");
         });
 
         modelBuilder.Entity<ShipmentRecord>(x =>
@@ -91,6 +93,9 @@ public class StashMavenContext : DbContext
                 .HasColumnName("ShipmentKindId");
             x.HasIndex(e => e.ShortCode)
                 .IsUnique();
+            x.OwnsOne(e => e.SequenceGeneratorId)
+                .Property(e => e.Value)
+                .HasColumnName("SequenceGeneratorId");
         });
 
         modelBuilder.Entity<SourceReference>(x =>
@@ -106,6 +111,16 @@ public class StashMavenContext : DbContext
             x.OwnsOne(e => e.StockpileId)
                 .Property(e => e.Value)
                 .HasColumnName("StockpileId");
+        });
+
+        modelBuilder.Entity<SequenceGenerator>(x =>
+        {
+            x.ToTable("SequenceGenerator", "inv");
+            x.OwnsOne(e => e.SequenceGeneratorId)
+                .Property(e => e.Value)
+                .HasColumnName("SequenceGeneratorId");
+            x.Property(e => e.Version)
+                .IsRowVersion();
         });
     }
 
@@ -123,4 +138,5 @@ public class StashMavenContext : DbContext
     public DbSet<SourceReference> SourceReferences => Set<SourceReference>();
     public DbSet<InventoryItem> InventoryItems => Set<InventoryItem>();
     public DbSet<Stockpile> Stockpiles => Set<Stockpile>();
+    public DbSet<SequenceGenerator> SequenceGenerators => Set<SequenceGenerator>();
 }

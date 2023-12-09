@@ -43,6 +43,7 @@ public class AcceptShipmentTests(
         {
             StockpileId = new StockpileId("stockpile-1"),
             Name = "Stockpile 1",
+            ShortCode = "ST1"
         };
         context.Stockpiles.Add(stockpile);
         InventoryItem inventoryItem1 = new()
@@ -71,10 +72,25 @@ public class AcceptShipmentTests(
             inventoryItem1,
             inventoryItem2
         ]);
+        SequenceGenerator sequenceGenerator1 = new()
+        {
+            SequenceGeneratorId = new SequenceGeneratorId("sequence-generator-1"),
+            NextValue = 1
+        };
+        SequenceGenerator sequenceGenerator2 = new()
+        {
+            SequenceGeneratorId = new SequenceGeneratorId("sequence-generator-2"),
+            NextValue = 1
+        };
+        context.SequenceGenerators.AddRange([
+            sequenceGenerator1,
+            sequenceGenerator2
+        ]);
 
         ShipmentKind inShipment = new()
         {
             ShipmentKindId = new ShipmentKindId("shipment-kind-1"),
+            SequenceGeneratorId = sequenceGenerator1.SequenceGeneratorId,
             Name = "Shipment Kind 1",
             ShortCode = "SK1",
             ShipmentDirection = ShipmentDirection.In
@@ -82,6 +98,7 @@ public class AcceptShipmentTests(
         ShipmentKind outShipment = new()
         {
             ShipmentKindId = new ShipmentKindId("shipment-kind-2"),
+            SequenceGeneratorId = sequenceGenerator2.SequenceGeneratorId,
             Name = "Shipment Kind 2",
             ShortCode = "SK2",
             ShipmentDirection = ShipmentDirection.Out
@@ -178,6 +195,7 @@ public class AcceptShipmentTests(
         {
             StockpileId = new StockpileId("stockpile-1"),
             Name = "Stockpile 1",
+            ShortCode = "ST1"
         };
         context.Stockpiles.Add(stockpile);
         InventoryItem inventoryItem = new()
@@ -192,9 +210,16 @@ public class AcceptShipmentTests(
             TaxDefinitionId = new TaxDefinitionId("tax-definition-1"),
         };
         context.InventoryItems.Add(inventoryItem);
+        SequenceGenerator sequenceGenerator = new()
+        {
+            SequenceGeneratorId = new SequenceGeneratorId("sequence-generator-3"),
+            NextValue = 1
+        };
+        context.SequenceGenerators.Add(sequenceGenerator);
         ShipmentKind inShipment = new()
         {
             ShipmentKindId = new ShipmentKindId("shipment-kind-3"),
+            SequenceGeneratorId = sequenceGenerator.SequenceGeneratorId,
             Name = "Shipment Kind 3",
             ShortCode = "SK3",
             ShipmentDirection = ShipmentDirection.In
@@ -241,6 +266,7 @@ public class AcceptShipmentTests(
         {
             StockpileId = new StockpileId("stockpile-1"),
             Name = "Stockpile 1",
+            ShortCode = "ST1"
         };
         context.Stockpiles.Add(stockpile);
         InventoryItem item1 = new()
@@ -269,9 +295,16 @@ public class AcceptShipmentTests(
             item1,
             item2
         ]);
+        SequenceGenerator sequenceGenerator = new()
+        {
+            SequenceGeneratorId = new SequenceGeneratorId("sequence-generator-4"),
+            NextValue = 1
+        };
+        context.SequenceGenerators.Add(sequenceGenerator);
         ShipmentKind inShipment = new()
         {
             ShipmentKindId = new ShipmentKindId("shipment-kind-4"),
+            SequenceGeneratorId = sequenceGenerator.SequenceGeneratorId,
             Name = "Shipment Kind 4",
             ShortCode = "SK4",
             ShipmentDirection = ShipmentDirection.In

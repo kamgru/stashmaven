@@ -30,6 +30,7 @@ public class CreateStockpileHandler(StashMavenContext context)
     public class CreateStockpileRequest
     {
         public required string Name { get; set; }
+        public required string ShortCode { get; set; }
     }
 
     public async Task<StashMavenResult<StockpileId>> CreateStockpileAsync(
@@ -39,6 +40,7 @@ public class CreateStockpileHandler(StashMavenContext context)
         {
             StockpileId = new StockpileId(Guid.NewGuid().ToString()),
             Name = request.Name,
+            ShortCode = request.ShortCode
         };
 
         await context.Stockpiles.AddAsync(stockpile);

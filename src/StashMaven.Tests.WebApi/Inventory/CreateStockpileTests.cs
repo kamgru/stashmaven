@@ -13,6 +13,7 @@ public class CreateStockpileTests(DefaultTestFixture fixture) : IClassFixture<De
             new CreateStockpileHandler.CreateStockpileRequest
             {
                 Name = "Test Stockpile",
+                ShortCode = "TEST"
             });
 
         result.EnsureSuccessStatusCode();

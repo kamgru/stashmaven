@@ -40,14 +40,23 @@ public class CreateShipmentKind(StashMavenContext context)
     public async Task<StashMavenResult<ShipmentKindId>> CreateShipmentKindAsync(
         CreateShipmentKindRequest request)
     {
+        SequenceGenerator sequenceGenerator = new()
+        {
+            SequenceGeneratorId = new SequenceGeneratorId(Guid.NewGuid().ToString()),
+            NextValue = 1
+        };
+
         ShipmentKind shipmentKind = new()
         {
             ShipmentKindId = new ShipmentKindId(Guid.NewGuid().ToString()),
+            SequenceGeneratorId = sequenceGenerator.SequenceGeneratorId,
             Name = request.Name,
             ShortCode = request.ShortCode,
         };
 
-        await context.ShipmentKinds.AddAsync(shipmentKind);
+        context.ShipmentKinds.Add(shipmentKind);
+        context.SequenceGenerators.Add(sequenceGenerator);
+
         try
         {
             await context.SaveChangesAsync();

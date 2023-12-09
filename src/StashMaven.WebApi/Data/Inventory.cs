@@ -53,6 +53,7 @@ public class ShipmentKind
 {
     public int Id { get; set; }
     public required ShipmentKindId ShipmentKindId { get; set; }
+    public required SequenceGeneratorId SequenceGeneratorId { get; set; }
     public required string Name { get; set; }
     public required string ShortCode { get; set; }
     public ShipmentDirection ShipmentDirection { get; set; }
@@ -65,11 +66,15 @@ public record ShipmentId(
 public record SupplierId(
     string Value);
 
+public record ShipmentSeqId(
+    string Value);
+
 public class Shipment
 {
     public int Id { get; set; }
     public required ShipmentId ShipmentId { get; set; }
     public SupplierId? SupplierId { get; set; }
+    public ShipmentSeqId? ShipmentSeqId { get; set; }
     public ShipmentAcceptance ShipmentAcceptance { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
@@ -78,6 +83,19 @@ public class Shipment
     public ShipmentKind Kind { get; set; } = null!;
     public SourceReference? SourceReference { get; set; }
     public Stockpile Stockpile { get; set; } = null!;
+}
+
+public record SequenceGeneratorId(
+    string Value);
+
+public class SequenceGenerator
+{
+    public int Id { get; set; }
+    public required SequenceGeneratorId SequenceGeneratorId { get; set; }
+    public int NextValue { get; set; }
+
+    [Timestamp]
+    public uint Version { get; set; }
 }
 
 public class SourceReference
@@ -95,6 +113,7 @@ public class Stockpile
     public int Id { get; set; }
     public required StockpileId StockpileId { get; set; }
     public required string Name { get; set; }
+    public required string ShortCode { get; set; }
     public ICollection<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
     public ICollection<Shipment> Shipments { get; set; } = new List<Shipment>();
 }
