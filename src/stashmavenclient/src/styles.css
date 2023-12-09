@@ -5,3 +5,11 @@
 tr.cursor-pointer {
     @apply bg-red-500;
 }
+
+form button[type="submit"] {
+    @apply bg-green-500;
+}
+
+form button:disabled {
+    @apply bg-gray-500;
+}

@@ -1,13 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.Data;
-
 namespace StashMaven.WebApi.Features.Catalog.Brands;
 
 public partial class BrandController
 {
     [HttpGet]
     [Route("list")]
+    [ProducesResponseType<ListBrandsHandler.ListBrandsResponse>(StatusCodes.Status200OK)]
     public async Task<IActionResult> ListBrandsAsync(
         [FromQuery]
         ListBrandsHandler.ListBrandsRequest request,
@@ -38,10 +35,13 @@ public class ListBrandsHandler(
 
     public class ListBrandsRequest
     {
+        [Range(MinPage, int.MaxValue)]
         public int Page { get; set; }
+        [Range(MinPageSize, MaxPageSize)]
         public int PageSize { get; set; }
+        [MinLength(MinSearchLength)]
         public string? Search { get; set; }
-        public bool IsAscending { get; set; }
+        public bool IsAscending { get; set; } = true;
     }
 
     public class ListBrandsResponse

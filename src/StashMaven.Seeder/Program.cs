@@ -4,10 +4,10 @@ using System.Text.Json;
 HttpClient httpClient = new();
 
 httpClient.BaseAddress = new Uri("http://localhost:5253/api/v1/");
-string jsonArray = File.ReadAllText("mock_partners.json");
+string partnersJson = File.ReadAllText("mock_partners.json");
 
 List<CreatePartnerRequest> partners =
-    JsonSerializer.Deserialize<List<CreatePartnerRequest>>(jsonArray,
+    JsonSerializer.Deserialize<List<CreatePartnerRequest>>(partnersJson,
         new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
     ?? throw new InvalidOperationException("Failed to deserialize partners.");
 
@@ -17,6 +17,28 @@ foreach (CreatePartnerRequest partner in partners)
     StringContent content = new(json, Encoding.UTF8, "application/json");
     HttpResponseMessage response = await httpClient.PostAsync("partner", content);
     response.EnsureSuccessStatusCode();
+}
+
+string brandsJson = File.ReadAllText("mock_brands.json");
+
+List<CreateBrandRequest> brands =
+    JsonSerializer.Deserialize<List<CreateBrandRequest>>(brandsJson,
+        new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+    ?? throw new InvalidOperationException("Failed to deserialize brands.");
+
+foreach (CreateBrandRequest brand in brands)
+{
+    string json = JsonSerializer.Serialize(brand);
+    StringContent content = new(json, Encoding.UTF8, "application/json");
+    HttpResponseMessage response = await httpClient.PostAsync("brand", content);
+    response.EnsureSuccessStatusCode();
+}
+
+
+public class CreateBrandRequest
+{
+    public required string ShortCode { get; set; }
+    public required string Name { get; set; }
 }
 
 public class CreatePartnerRequest
