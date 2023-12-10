@@ -1,4 +1,4 @@
-namespace StashMaven.WebApi.PartnerFeatures;
+namespace StashMaven.WebApi;
 
 public class EntityNotFoundException : Exception
 {

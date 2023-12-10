@@ -1,7 +1,20 @@
-using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.Data;
+namespace StashMaven.WebApi.Features.Partners;
 
-namespace StashMaven.WebApi.PartnerFeatures;
+public partial class PartnerController
+{
+    [HttpGet]
+    [Route("list")]
+    public async Task<IActionResult> ListPartnersAsync(
+        [FromQuery]
+        ListPartnersHandler.ListPartnerRequest request,
+        [FromServices]
+        ListPartnersHandler handler)
+    {
+        ListPartnersHandler.ListPartnerResponse response =
+            await handler.ListPartnersAsync(request);
+        return Ok(response);
+    }
+}
 
 [Injectable]
 public class ListPartnersHandler(

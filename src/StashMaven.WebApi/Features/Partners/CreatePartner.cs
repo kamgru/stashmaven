@@ -1,7 +1,17 @@
-using System.ComponentModel.DataAnnotations;
-using StashMaven.WebApi.Data;
+namespace StashMaven.WebApi.Features.Partners;
 
-namespace StashMaven.WebApi.PartnerFeatures;
+public partial class PartnerController
+{
+    [HttpPost]
+    public async Task<IActionResult> CreatePartnerAsync(
+        CreatePartnerHandler.CreatePartnerRequest request,
+        [FromServices]
+        CreatePartnerHandler handler)
+    {
+        PartnerId partnerId = await handler.CreatePartnerAsync(request);
+        return Created($"/api/v1/partner/{partnerId}", partnerId.ToString());
+    }
+}
 
 [Injectable]
 public class CreatePartnerHandler(StashMavenContext context)

@@ -25,7 +25,7 @@ public class Partner
     public required string LegalName { get; set; }
     public required string CustomIdentifier { get; set; }
     public Address? Address { get; set; }
-    public List<TaxIdentifier> TaxIdentifiers { get; set; } = new();
+    public List<TaxIdentifier> TaxIdentifiers { get; set; } = [];
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
 }

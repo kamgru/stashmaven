@@ -2,9 +2,9 @@
   {
     "customIdentifier": "54670be3-176f-4027-af36-eb4ab0c8dec1",
     "legalName": "Stephens-Johnson",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "61-6794739",
         "isPrimary": true
       }
@@ -21,9 +21,9 @@
   {
     "customIdentifier": "6e67c56b-3fa9-4316-b066-bb03a57a8f1b",
     "legalName": "Garcia, Bell and Garcia",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "91-3012542",
         "isPrimary": true
       }
@@ -40,9 +40,9 @@
   {
     "customIdentifier": "f8e97be4-f260-4066-a61f-5dc1ccfa0a21",
     "legalName": "Klein and Sons",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "16-6537633",
         "isPrimary": true
       }
@@ -59,9 +59,9 @@
   {
     "customIdentifier": "f400125e-38e9-4cb5-b7fa-69d5b8842e99",
     "legalName": "Mccullough, Miller and Collins",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "33-7854920",
         "isPrimary": true
       }
@@ -78,9 +78,9 @@
   {
     "customIdentifier": "75f52084-662d-4b2c-9d88-b0c4594d24ee",
     "legalName": "Knapp, Ballard and Morgan",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "77-1358533",
         "isPrimary": true
       }
@@ -97,9 +97,9 @@
   {
     "customIdentifier": "457b7825-c661-46d3-afaf-f9bdee2a6e31",
     "legalName": "House Ltd",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "16-6089746",
         "isPrimary": true
       }
@@ -116,9 +116,9 @@
   {
     "customIdentifier": "99d6d8ff-753c-4c45-b535-be250227754e",
     "legalName": "Adams, Lopez and Stevenson",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "91-1470215",
         "isPrimary": true
       }
@@ -135,9 +135,9 @@
   {
     "customIdentifier": "ce305b58-5383-4dca-a58a-d07d1ae560d5",
     "legalName": "Lang PLC",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "68-2153177",
         "isPrimary": true
       }
@@ -154,9 +154,9 @@
   {
     "customIdentifier": "e559b300-6d65-4eff-a8e9-d8702c57c537",
     "legalName": "Smith, Mitchell and Peters",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "03-3777476",
         "isPrimary": true
       }
@@ -173,9 +173,9 @@
   {
     "customIdentifier": "2d12705e-051e-4b96-ae28-6b9cba7eb4da",
     "legalName": "Campbell Inc",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "27-4754625",
         "isPrimary": true
       }
@@ -192,9 +192,9 @@
   {
     "customIdentifier": "bed9b10d-0026-40d4-b271-aada3f7d4e34",
     "legalName": "Rose Ltd",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "27-0921677",
         "isPrimary": true
       }
@@ -211,9 +211,9 @@
   {
     "customIdentifier": "da68710f-76da-4245-9508-963329913fe4",
     "legalName": "Browning-Wright",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "30-0796651",
         "isPrimary": true
       }
@@ -230,9 +230,9 @@
   {
     "customIdentifier": "8ec26aef-d83f-4021-ba62-d5c8f966f724",
     "legalName": "Griffin, Morris and Sanchez",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "35-4793281",
         "isPrimary": true
       }
@@ -249,9 +249,9 @@
   {
     "customIdentifier": "6efdcc08-065f-4e3e-8641-bfbe1a2b4dee",
     "legalName": "Gibson-Hart",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "95-4045326",
         "isPrimary": true
       }
@@ -268,9 +268,9 @@
   {
     "customIdentifier": "8fbc17bc-1c21-43cf-a692-fe15df9eec0b",
     "legalName": "Sutton-Bird",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "45-8644491",
         "isPrimary": true
       }
@@ -287,9 +287,9 @@
   {
     "customIdentifier": "a2a5e527-b6ac-4e6b-bd84-d01db830c26e",
     "legalName": "Powell, Gonzalez and Cooke",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "32-6208854",
         "isPrimary": true
       }
@@ -306,9 +306,9 @@
   {
     "customIdentifier": "830d0e1d-ea8d-4490-bb20-166ee35f8503",
     "legalName": "Adams, Ford and Willis",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "65-9873464",
         "isPrimary": true
       }
@@ -325,9 +325,9 @@
   {
     "customIdentifier": "cc42ef03-caf5-4bc1-96f8-0ba0444834f4",
     "legalName": "Holland, Rivera and Walton",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "33-1556136",
         "isPrimary": true
       }
@@ -344,9 +344,9 @@
   {
     "customIdentifier": "f54bd1f3-6c4b-45aa-ba71-e3a8792448ec",
     "legalName": "Mccall, King and Baker",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "27-2361379",
         "isPrimary": true
       }
@@ -363,9 +363,9 @@
   {
     "customIdentifier": "8ca9a4bb-e293-4ab9-9db7-4ae9dcf44203",
     "legalName": "Mendez-Jordan",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "32-3987079",
         "isPrimary": true
       }
@@ -382,9 +382,9 @@
   {
     "customIdentifier": "00e93569-7b0d-46a8-b5fb-875da5a16017",
     "legalName": "Castillo Ltd",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "43-8615856",
         "isPrimary": true
       }
@@ -401,9 +401,9 @@
   {
     "customIdentifier": "d63d4013-fa01-44e5-b7f8-089812eb78bc",
     "legalName": "Robinson, Gonzalez and Newman",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "74-3948411",
         "isPrimary": true
       }
@@ -420,9 +420,9 @@
   {
     "customIdentifier": "c29e6742-3dfa-45e9-8ea5-2c73792e03ef",
     "legalName": "Henderson, Bradley and Gallegos",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "65-0268458",
         "isPrimary": true
       }
@@ -439,9 +439,9 @@
   {
     "customIdentifier": "05f259f6-7f1b-43eb-8c69-13ba1689ae56",
     "legalName": "Curry and Sons",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "15-1869250",
         "isPrimary": true
       }
@@ -458,9 +458,9 @@
   {
     "customIdentifier": "fbb14bf6-c9fc-466b-8633-81212cf04988",
     "legalName": "Payne Group",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "01-8058776",
         "isPrimary": true
       }
@@ -477,9 +477,9 @@
   {
     "customIdentifier": "c42863f4-9a8a-447a-b272-75a4d338d95f",
     "legalName": "Gonzalez-Pierce",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "04-3993465",
         "isPrimary": true
       }
@@ -496,9 +496,9 @@
   {
     "customIdentifier": "8c5e253d-b489-4925-b820-80e6885d9fea",
     "legalName": "Ruiz Group",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "34-3765593",
         "isPrimary": true
       }
@@ -515,9 +515,9 @@
   {
     "customIdentifier": "46777294-2425-463b-a1a2-c076efcca724",
     "legalName": "Cross Ltd",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "12-6645581",
         "isPrimary": true
       }
@@ -534,9 +534,9 @@
   {
     "customIdentifier": "f02e5be1-cd10-4688-9156-207017890089",
     "legalName": "Vargas-Keller",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "80-8939285",
         "isPrimary": true
       }
@@ -553,9 +553,9 @@
   {
     "customIdentifier": "86d08cf6-0e8e-45f6-a472-1d38837be8b9",
     "legalName": "Munoz-Fields",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "73-1018577",
         "isPrimary": true
       }
@@ -572,9 +572,9 @@
   {
     "customIdentifier": "c5a05e56-b843-4696-bc04-5cb4dc75fc5d",
     "legalName": "Gonzalez, Brown and Wagner",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "84-5203614",
         "isPrimary": true
       }
@@ -591,9 +591,9 @@
   {
     "customIdentifier": "a8be316a-c3cf-4fd1-8044-0e557e6a1a36",
     "legalName": "Clark Inc",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "90-7494432",
         "isPrimary": true
       }
@@ -610,9 +610,9 @@
   {
     "customIdentifier": "1cd39cd5-e3b3-455e-898d-a1dc9ff034fc",
     "legalName": "Frank, Lang and Ingram",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "13-5709557",
         "isPrimary": true
       }
@@ -629,9 +629,9 @@
   {
     "customIdentifier": "2c777189-7b38-48dc-9bff-21b86b4d06de",
     "legalName": "Haynes, Long and Arias",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "04-1203542",
         "isPrimary": true
       }
@@ -648,9 +648,9 @@
   {
     "customIdentifier": "68434f9e-55bb-4466-b8c0-d3357cc22db4",
     "legalName": "Miller LLC",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "44-3096493",
         "isPrimary": true
       }
@@ -667,9 +667,9 @@
   {
     "customIdentifier": "50c22c24-160e-443b-9c10-1683ae9bf8cf",
     "legalName": "Ortega, Moreno and Kirk",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "75-3382324",
         "isPrimary": true
       }
@@ -686,9 +686,9 @@
   {
     "customIdentifier": "ff66d2c6-6335-43d2-b0aa-aba764d55cac",
     "legalName": "Martin and Sons",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "34-2658830",
         "isPrimary": true
       }
@@ -705,9 +705,9 @@
   {
     "customIdentifier": "b12bcaef-0c45-4c57-a4b5-3a3298e1ebac",
     "legalName": "Marshall Inc",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "91-1802254",
         "isPrimary": true
       }
@@ -724,9 +724,9 @@
   {
     "customIdentifier": "08b52c7b-8a05-478e-a36b-05964b08477a",
     "legalName": "Davidson-Edwards",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "74-8537841",
         "isPrimary": true
       }
@@ -743,9 +743,9 @@
   {
     "customIdentifier": "168b00bd-51a1-46ea-98d7-ab4657f0e38f",
     "legalName": "Moore-Jimenez",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "88-3514183",
         "isPrimary": true
       }
@@ -762,9 +762,9 @@
   {
     "customIdentifier": "36ea1807-801d-45aa-959f-0d9cbee530eb",
     "legalName": "Turner-Gray",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "85-6100651",
         "isPrimary": true
       }
@@ -781,9 +781,9 @@
   {
     "customIdentifier": "0c29dc1f-d2c0-4366-b42d-e3bf8f180121",
     "legalName": "Harrison, Miller and Guerrero",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "48-0416760",
         "isPrimary": true
       }
@@ -800,9 +800,9 @@
   {
     "customIdentifier": "e2c7a21c-8678-437a-bdcd-240452bf66a1",
     "legalName": "Smith PLC",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "45-9266169",
         "isPrimary": true
       }
@@ -819,9 +819,9 @@
   {
     "customIdentifier": "90380743-4298-4272-bb83-3a1a6b4500a1",
     "legalName": "Johnson Ltd",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "22-0139007",
         "isPrimary": true
       }
@@ -838,9 +838,9 @@
   {
     "customIdentifier": "e63901a3-b596-4066-a84c-465f656e2c4f",
     "legalName": "Murray, Weber and Turner",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "45-0465268",
         "isPrimary": true
       }
@@ -857,9 +857,9 @@
   {
     "customIdentifier": "7f1e4b4a-8cfc-42b7-99a2-31f1c77a4aae",
     "legalName": "Levine-Case",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "76-4094605",
         "isPrimary": true
       }
@@ -876,9 +876,9 @@
   {
     "customIdentifier": "615c592f-4158-449b-9e56-9bfe53a67ea4",
     "legalName": "Owen-Barrett",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "84-3954705",
         "isPrimary": true
       }
@@ -895,9 +895,9 @@
   {
     "customIdentifier": "9042102f-43c9-40d1-9651-77450a5259c2",
     "legalName": "Gardner and Sons",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "26-9845651",
         "isPrimary": true
       }
@@ -914,9 +914,9 @@
   {
     "customIdentifier": "845ee843-fe04-44e5-8bb7-62d99964f0a3",
     "legalName": "Reed, Sanders and Henderson",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "98-9864554",
         "isPrimary": true
       }
@@ -933,9 +933,9 @@
   {
     "customIdentifier": "4185b61c-4222-4c49-ad7f-7b72c204050d",
     "legalName": "Decker-Beck",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "05-4406542",
         "isPrimary": true
       }
@@ -952,9 +952,9 @@
   {
     "customIdentifier": "03d6eb66-211a-42c7-b6ad-560d3a757039",
     "legalName": "Thomas-Walker",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "26-4574581",
         "isPrimary": true
       }
@@ -971,9 +971,9 @@
   {
     "customIdentifier": "62cf3f25-cfe9-4949-bb0b-7c795a950334",
     "legalName": "Shepard Inc",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "58-3382739",
         "isPrimary": true
       }
@@ -990,9 +990,9 @@
   {
     "customIdentifier": "2c65127a-82ad-4550-823b-e22050647fd1",
     "legalName": "Cunningham-Rodriguez",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "86-0616864",
         "isPrimary": true
       }
@@ -1009,9 +1009,9 @@
   {
     "customIdentifier": "bc772195-9333-40cd-994c-fdd47b784514",
     "legalName": "Watson-Smith",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "75-1713037",
         "isPrimary": true
       }
@@ -1028,9 +1028,9 @@
   {
     "customIdentifier": "0b82817c-a166-4205-8b9a-626ad181fa7d",
     "legalName": "Morris Group",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "31-6136522",
         "isPrimary": true
       }
@@ -1047,9 +1047,9 @@
   {
     "customIdentifier": "4d0f86d9-c63c-46d5-b9b4-3c4f73e9c83a",
     "legalName": "Fernandez LLC",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "27-1247420",
         "isPrimary": true
       }
@@ -1066,9 +1066,9 @@
   {
     "customIdentifier": "f8bf7c4b-bff1-417e-934e-8b7ef76ccacd",
     "legalName": "Harrison-Jones",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "31-8175087",
         "isPrimary": true
       }
@@ -1085,9 +1085,9 @@
   {
     "customIdentifier": "4ec8574a-f6a6-4bc7-ae57-21830afee429",
     "legalName": "Garcia, Phillips and Reeves",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "82-8851456",
         "isPrimary": true
       }
@@ -1104,9 +1104,9 @@
   {
     "customIdentifier": "706335c5-3e8a-4b50-b600-965f15b5d2af",
     "legalName": "Johnson-Powell",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "26-4301279",
         "isPrimary": true
       }
@@ -1123,9 +1123,9 @@
   {
     "customIdentifier": "9bd63163-a661-4287-b453-d589470e751f",
     "legalName": "Scott-Joseph",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "90-1371521",
         "isPrimary": true
       }
@@ -1142,9 +1142,9 @@
   {
     "customIdentifier": "68c17a52-5945-4ec1-b8ff-a34e0832d790",
     "legalName": "Dillon LLC",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "25-1856593",
         "isPrimary": true
       }
@@ -1161,9 +1161,9 @@
   {
     "customIdentifier": "2454a72b-8788-419e-ab96-3673a98ec103",
     "legalName": "Robertson, Phillips and Williams",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "82-1105374",
         "isPrimary": true
       }
@@ -1180,9 +1180,9 @@
   {
     "customIdentifier": "d486dd15-48f0-41c8-a9a5-7e42d0bee210",
     "legalName": "Lee, Williams and Jones",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "94-3711300",
         "isPrimary": true
       }
@@ -1199,9 +1199,9 @@
   {
     "customIdentifier": "8154c9cf-4dca-4704-a5d8-4251f9564ca9",
     "legalName": "Pearson PLC",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "86-5818360",
         "isPrimary": true
       }
@@ -1218,9 +1218,9 @@
   {
     "customIdentifier": "9b7985af-c334-4b79-9df5-265e95a183f1",
     "legalName": "Ferguson, Jones and Melton",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "14-3209315",
         "isPrimary": true
       }
@@ -1237,9 +1237,9 @@
   {
     "customIdentifier": "470ee095-56fd-4ccd-8d54-425d7712afb0",
     "legalName": "Oliver, Guzman and Mathews",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "41-9573778",
         "isPrimary": true
       }
@@ -1256,9 +1256,9 @@
   {
     "customIdentifier": "93956028-a051-4625-8e23-97a836f42c04",
     "legalName": "Mcdowell, Yu and Johnson",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "44-3392719",
         "isPrimary": true
       }
@@ -1275,9 +1275,9 @@
   {
     "customIdentifier": "614d136d-0856-43cd-813f-1f78030b76f8",
     "legalName": "Williamson, Bennett and Watson",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "37-4498647",
         "isPrimary": true
       }
@@ -1294,9 +1294,9 @@
   {
     "customIdentifier": "1e3e76a0-095c-4b38-bd1f-6e388c01add7",
     "legalName": "Avery-Young",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "48-6930214",
         "isPrimary": true
       }
@@ -1313,9 +1313,9 @@
   {
     "customIdentifier": "ebdc0108-d65a-4c4c-8092-0e5afed6303e",
     "legalName": "Miller-Johnson",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "53-4563672",
         "isPrimary": true
       }
@@ -1332,9 +1332,9 @@
   {
     "customIdentifier": "8833f03a-a9af-4a4a-a792-20c05d3bc994",
     "legalName": "Mercer-Bright",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "47-0832233",
         "isPrimary": true
       }
@@ -1351,9 +1351,9 @@
   {
     "customIdentifier": "8c7fdbec-ba74-43ba-8f83-0c30dd3f6407",
     "legalName": "Brown-Moore",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "59-9274960",
         "isPrimary": true
       }
@@ -1370,9 +1370,9 @@
   {
     "customIdentifier": "a4f4f7b9-28ec-489b-8ad1-14e8cfd35c40",
     "legalName": "Meyer PLC",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "31-5407227",
         "isPrimary": true
       }
@@ -1389,9 +1389,9 @@
   {
     "customIdentifier": "17f1a5ef-d24a-4111-8f0d-1ef95c289140",
     "legalName": "Jones, Moyer and Cunningham",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "15-3986681",
         "isPrimary": true
       }
@@ -1408,9 +1408,9 @@
   {
     "customIdentifier": "faf60849-5759-463c-8760-1747f9409b3e",
     "legalName": "Mcfarland-Perkins",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "84-2113442",
         "isPrimary": true
       }
@@ -1427,9 +1427,9 @@
   {
     "customIdentifier": "5defca83-ea77-44e0-a74c-934eef71ae2c",
     "legalName": "Brown PLC",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "44-8311240",
         "isPrimary": true
       }
@@ -1446,9 +1446,9 @@
   {
     "customIdentifier": "ebc09052-09eb-44ca-baaf-1bea4d5a7c51",
     "legalName": "Nunez, Wells and Murphy",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "05-1242975",
         "isPrimary": true
       }
@@ -1465,9 +1465,9 @@
   {
     "customIdentifier": "ca29394e-a607-4f7e-8e3e-5fe412527c6e",
     "legalName": "Lopez, Buckley and Smith",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "71-4594622",
         "isPrimary": true
       }
@@ -1484,9 +1484,9 @@
   {
     "customIdentifier": "676456ae-2209-4127-a35a-b66b03fbf86b",
     "legalName": "Hale Ltd",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "98-7535385",
         "isPrimary": true
       }
@@ -1503,9 +1503,9 @@
   {
     "customIdentifier": "0be7a853-b30f-4a5e-a0d1-d6d9fad6c570",
     "legalName": "Mccall, Vasquez and Soto",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "75-3508375",
         "isPrimary": true
       }
@@ -1522,9 +1522,9 @@
   {
     "customIdentifier": "9dab7d61-6c4b-4f0b-ad24-a7e3bf7683c1",
     "legalName": "Guerrero Ltd",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "01-7527861",
         "isPrimary": true
       }
@@ -1541,9 +1541,9 @@
   {
     "customIdentifier": "71513a0a-58dd-44a2-a1ba-bfa27ad47cbf",
     "legalName": "Mason-Salinas",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "54-1606074",
         "isPrimary": true
       }
@@ -1560,9 +1560,9 @@
   {
     "customIdentifier": "7216169e-8d1f-408d-a6c8-c0cac16accc6",
     "legalName": "Robinson Group",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "12-9201557",
         "isPrimary": true
       }
@@ -1579,9 +1579,9 @@
   {
     "customIdentifier": "72dc7a98-f9e5-40a8-a62a-aa6a1b5802b6",
     "legalName": "Perry-Bryan",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "56-8543168",
         "isPrimary": true
       }
@@ -1598,9 +1598,9 @@
   {
     "customIdentifier": "76a43a79-c99f-48e9-97cd-875ae02e2c22",
     "legalName": "Shaw Group",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "15-2768699",
         "isPrimary": true
       }
@@ -1617,9 +1617,9 @@
   {
     "customIdentifier": "6d69c11a-db6a-4257-b3a7-efe3af31bf1d",
     "legalName": "Martin-Wolfe",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "47-5036572",
         "isPrimary": true
       }
@@ -1636,9 +1636,9 @@
   {
     "customIdentifier": "911d9297-399f-4ff7-880d-eb3ffbb36cf8",
     "legalName": "Hill Ltd",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "92-5616837",
         "isPrimary": true
       }
@@ -1655,9 +1655,9 @@
   {
     "customIdentifier": "3dc0f293-207f-4f24-9254-2fb8f87742f9",
     "legalName": "Mata, Jackson and Hunt",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "82-3726575",
         "isPrimary": true
       }
@@ -1674,9 +1674,9 @@
   {
     "customIdentifier": "d73926b9-44d3-4e57-aff3-b5384d3cb849",
     "legalName": "Alexander, Doyle and Jackson",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "75-6764164",
         "isPrimary": true
       }
@@ -1693,9 +1693,9 @@
   {
     "customIdentifier": "9ab8000e-c7fc-4894-8980-a2e89b8bc0c4",
     "legalName": "Ramos Group",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "82-2640852",
         "isPrimary": true
       }
@@ -1712,9 +1712,9 @@
   {
     "customIdentifier": "8c4199fb-4753-40e6-9826-2123c2513ca5",
     "legalName": "Burke-Robinson",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "72-1344155",
         "isPrimary": true
       }
@@ -1731,9 +1731,9 @@
   {
     "customIdentifier": "a53fbdb2-66fa-40c0-8dda-ca4ff100ed8b",
     "legalName": "Combs-Thompson",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "86-0157436",
         "isPrimary": true
       }
@@ -1750,9 +1750,9 @@
   {
     "customIdentifier": "21d76a4a-41a9-4b70-b389-4cd1e4940be5",
     "legalName": "Rodriguez-Washington",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "45-1714124",
         "isPrimary": true
       }
@@ -1769,9 +1769,9 @@
   {
     "customIdentifier": "9e9abcea-951c-45cb-8065-9fe50baffb8e",
     "legalName": "Nelson, Goodwin and Wheeler",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "35-1746792",
         "isPrimary": true
       }
@@ -1788,9 +1788,9 @@
   {
     "customIdentifier": "cd132260-15da-4016-97fc-16e3d4849c07",
     "legalName": "Nguyen and Sons",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "27-1149802",
         "isPrimary": true
       }
@@ -1807,9 +1807,9 @@
   {
     "customIdentifier": "2a28fce9-3462-4639-bd41-79f4edcbe5e7",
     "legalName": "Roach-Houston",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "52-2453795",
         "isPrimary": true
       }
@@ -1826,9 +1826,9 @@
   {
     "customIdentifier": "19b97339-c833-4fec-82cc-fbdcd865e8b6",
     "legalName": "Wise Group",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "67-3206681",
         "isPrimary": true
       }
@@ -1845,9 +1845,9 @@
   {
     "customIdentifier": "d25d4225-6d75-47e4-b223-2461518c64e8",
     "legalName": "Smith Group",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "30-4436332",
         "isPrimary": true
       }
@@ -1864,9 +1864,9 @@
   {
     "customIdentifier": "7c8bb903-54f1-45f0-ab6a-99c7b7c5cfd0",
     "legalName": "Hughes, May and Pitts",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "54-4119858",
         "isPrimary": true
       }
@@ -1883,9 +1883,9 @@
   {
     "customIdentifier": "061d42fb-96a0-4850-bc5f-034b8324e046",
     "legalName": "Tyler LLC",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "84-2317338",
         "isPrimary": true
       }
@@ -1902,9 +1902,9 @@
   {
     "customIdentifier": "fa3ff473-8f39-4691-ae34-575a8b954ac2",
     "legalName": "Cross-Rodriguez",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "61-5767114",
         "isPrimary": true
       }
@@ -1921,9 +1921,9 @@
   {
     "customIdentifier": "ee1a6912-ba77-40d6-93cb-0aa67c2133a9",
     "legalName": "Aguirre-Mcdonald",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "16-6353178",
         "isPrimary": true
       }
@@ -1940,9 +1940,9 @@
   {
     "customIdentifier": "dbde6ecd-8555-4b3c-85de-64151e53f543",
     "legalName": "Ward-Pena",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "55-8737784",
         "isPrimary": true
       }
@@ -1959,9 +1959,9 @@
   {
     "customIdentifier": "bb1a5c98-b9bc-4454-8758-062001e34ac6",
     "legalName": "Stevenson-Rodriguez",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "58-5060225",
         "isPrimary": true
       }
@@ -1978,9 +1978,9 @@
   {
     "customIdentifier": "0e28955c-5cb2-4dea-a7dd-0494d1f83964",
     "legalName": "Andrews-Bender",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "41-3003763",
         "isPrimary": true
       }
@@ -1997,9 +1997,9 @@
   {
     "customIdentifier": "97297536-9331-4f6b-818a-9c4b7cea24f0",
     "legalName": "Miller, Rosales and Hart",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "30-7110695",
         "isPrimary": true
       }
@@ -2016,9 +2016,9 @@
   {
     "customIdentifier": "aa246a6a-69f2-4ef5-b8dd-cb107bbe7f6c",
     "legalName": "Kelly-Green",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "53-5217553",
         "isPrimary": true
       }
@@ -2035,9 +2035,9 @@
   {
     "customIdentifier": "691065b3-c1cd-4a84-b781-6fbd0f977903",
     "legalName": "Myers Group",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "73-5627530",
         "isPrimary": true
       }
@@ -2054,9 +2054,9 @@
   {
     "customIdentifier": "2efcdae8-c7ce-4a1f-b8b6-19f3dd29182e",
     "legalName": "Mason-Kim",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "75-1945110",
         "isPrimary": true
       }
@@ -2073,9 +2073,9 @@
   {
     "customIdentifier": "a0bd145d-dd5a-42ef-a39c-5ab00f4a8089",
     "legalName": "Padilla-Ryan",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "50-4556520",
         "isPrimary": true
       }
@@ -2092,9 +2092,9 @@
   {
     "customIdentifier": "e48e4816-b49a-4e92-b480-c1a65d08fcd5",
     "legalName": "Carr-Moody",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "94-9664520",
         "isPrimary": true
       }
@@ -2111,9 +2111,9 @@
   {
     "customIdentifier": "055b0694-f97e-485d-9f1d-fe1205fe8b7d",
     "legalName": "Espinoza Inc",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "75-3277620",
         "isPrimary": true
       }
@@ -2130,9 +2130,9 @@
   {
     "customIdentifier": "6aa81320-13a2-4c7a-8f4c-d8b673aaeb12",
     "legalName": "Stokes Ltd",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "94-9703214",
         "isPrimary": true
       }
@@ -2149,9 +2149,9 @@
   {
     "customIdentifier": "a8ea7787-c374-4bcc-9d36-56189abf8c90",
     "legalName": "Sims and Sons",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "15-4286112",
         "isPrimary": true
       }
@@ -2168,9 +2168,9 @@
   {
     "customIdentifier": "2bcac735-23d2-4885-a6b8-641710f5144c",
     "legalName": "Baker, Johnson and Bass",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "16-3316582",
         "isPrimary": true
       }
@@ -2187,9 +2187,9 @@
   {
     "customIdentifier": "4b72dba8-26ee-4522-ab2d-9564381bea74",
     "legalName": "Jones-Owens",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "82-3927836",
         "isPrimary": true
       }
@@ -2206,9 +2206,9 @@
   {
     "customIdentifier": "260b9545-dc36-478d-b840-6b863c9aacef",
     "legalName": "Vasquez, Harvey and Hardin",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "30-3988440",
         "isPrimary": true
       }
@@ -2225,9 +2225,9 @@
   {
     "customIdentifier": "d8382381-2adb-4c1d-9193-c8d51819030e",
     "legalName": "Bell Group",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "99-6287796",
         "isPrimary": true
       }
@@ -2244,9 +2244,9 @@
   {
     "customIdentifier": "722819fb-710c-4bef-8175-917632b059cf",
     "legalName": "Fuentes-Caldwell",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "58-9143295",
         "isPrimary": true
       }
@@ -2263,9 +2263,9 @@
   {
     "customIdentifier": "6d32e546-0b2d-434f-8b4c-93a93107e537",
     "legalName": "Lindsey, Dickerson and Martinez",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "38-3139197",
         "isPrimary": true
       }
@@ -2282,9 +2282,9 @@
   {
     "customIdentifier": "744600ec-2caa-46f2-a4fd-14725c7930f5",
     "legalName": "Welch-Miles",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "32-2290903",
         "isPrimary": true
       }
@@ -2301,9 +2301,9 @@
   {
     "customIdentifier": "cc8087d0-e710-47bc-a576-aa14a8619216",
     "legalName": "Harper, Tran and Hood",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "31-6086984",
         "isPrimary": true
       }
@@ -2320,9 +2320,9 @@
   {
     "customIdentifier": "28e3b8ab-b27c-42a3-a9e3-495c9b113b64",
     "legalName": "Roberts, Alexander and Marshall",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "91-5908089",
         "isPrimary": true
       }
@@ -2339,9 +2339,9 @@
   {
     "customIdentifier": "f21c9b80-8f4e-4c1f-a7d8-760b78f6f498",
     "legalName": "Gamble-Wallace",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "15-9900115",
         "isPrimary": true
       }
@@ -2358,9 +2358,9 @@
   {
     "customIdentifier": "140e7928-88c5-4c53-a9fd-bcfe446f9f6d",
     "legalName": "Alexander, Cole and Bartlett",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "27-1198587",
         "isPrimary": true
       }
@@ -2377,9 +2377,9 @@
   {
     "customIdentifier": "40e7cf95-dea3-4c0b-81e4-cd399e72d411",
     "legalName": "Evans-Morris",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "46-2374592",
         "isPrimary": true
       }
@@ -2396,9 +2396,9 @@
   {
     "customIdentifier": "d4e8c8d2-e936-4b0e-bca9-31fdb165e801",
     "legalName": "George-Lambert",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "10-6562500",
         "isPrimary": true
       }
@@ -2415,9 +2415,9 @@
   {
     "customIdentifier": "70464c27-8cc7-4c90-a9bb-8c31e59a6b9a",
     "legalName": "Kelly, Hampton and Willis",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "59-7195149",
         "isPrimary": true
       }
@@ -2434,9 +2434,9 @@
   {
     "customIdentifier": "b9286c36-7b3d-4434-899d-64221ac9b0f5",
     "legalName": "Soto Group",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "82-7825452",
         "isPrimary": true
       }
@@ -2453,9 +2453,9 @@
   {
     "customIdentifier": "78930236-9ee6-4210-86ad-61cb1233ea23",
     "legalName": "Nixon and Sons",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "47-0440853",
         "isPrimary": true
       }
@@ -2472,9 +2472,9 @@
   {
     "customIdentifier": "be689acb-4cd9-4400-8e6d-0f460fb099b8",
     "legalName": "Nash, Smith and Costa",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "65-0824423",
         "isPrimary": true
       }
@@ -2491,9 +2491,9 @@
   {
     "customIdentifier": "6c1ab762-23e0-482f-a122-982c7c60fe26",
     "legalName": "Hawkins PLC",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "75-4134715",
         "isPrimary": true
       }
@@ -2510,9 +2510,9 @@
   {
     "customIdentifier": "ec9fd61d-1e33-42e1-a18b-8ab684c7bab9",
     "legalName": "Meadows-Hoffman",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "21-6999380",
         "isPrimary": true
       }
@@ -2529,9 +2529,9 @@
   {
     "customIdentifier": "d9971829-a455-4b80-83dc-7268e7162672",
     "legalName": "Anderson-Burton",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "63-2065102",
         "isPrimary": true
       }
@@ -2548,9 +2548,9 @@
   {
     "customIdentifier": "03fc4a20-0fa4-4968-acfc-9e15dc103d73",
     "legalName": "Abbott, Knox and Casey",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 0,
+        "type": "Nip",
         "value": "15-6959424",
         "isPrimary": true
       }
@@ -2567,9 +2567,9 @@
   {
     "customIdentifier": "9c8e40b7-3f66-4321-a759-6e15ebcbc06b",
     "legalName": "Bowers Group",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "38-1037657",
         "isPrimary": true
       }
@@ -2586,9 +2586,9 @@
   {
     "customIdentifier": "f67380f0-35fc-4f97-b83b-513f574abf0e",
     "legalName": "Williams, Ayers and Brown",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "81-3884928",
         "isPrimary": true
       }
@@ -2605,9 +2605,9 @@
   {
     "customIdentifier": "ce407fff-c016-451b-a06c-70449b45f138",
     "legalName": "Sheppard-Chapman",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "25-5503006",
         "isPrimary": true
       }
@@ -2624,9 +2624,9 @@
   {
     "customIdentifier": "e146c0de-ea94-4fcd-adf9-640aebf1cf35",
     "legalName": "Arnold LLC",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "76-7810422",
         "isPrimary": true
       }
@@ -2643,9 +2643,9 @@
   {
     "customIdentifier": "587251d4-53f8-4830-b91d-1b752ef9a070",
     "legalName": "Little-Thomas",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "74-3824053",
         "isPrimary": true
       }
@@ -2662,9 +2662,9 @@
   {
     "customIdentifier": "0e127e84-0d72-4835-964d-1ae4acd0f40d",
     "legalName": "Johnson-Harrison",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "64-4329614",
         "isPrimary": true
       }
@@ -2681,9 +2681,9 @@
   {
     "customIdentifier": "f6e1bf6e-f072-40c8-b526-edde74a3ddb3",
     "legalName": "Hawkins-Kennedy",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "03-5593006",
         "isPrimary": true
       }
@@ -2700,9 +2700,9 @@
   {
     "customIdentifier": "668ddaf6-adb7-4876-af00-5b7b71e51ee8",
     "legalName": "Delacruz, Burns and Silva",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "55-3154590",
         "isPrimary": true
       }
@@ -2719,9 +2719,9 @@
   {
     "customIdentifier": "7a010569-6ac1-4e6d-af6b-fde230b15ddf",
     "legalName": "Johnson, Nichols and Bowman",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "42-1305263",
         "isPrimary": true
       }
@@ -2738,9 +2738,9 @@
   {
     "customIdentifier": "ca1688df-ee86-44ff-bda0-f6aad0e11cc6",
     "legalName": "Hardy-Henderson",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "38-8922736",
         "isPrimary": true
       }
@@ -2757,9 +2757,9 @@
   {
     "customIdentifier": "c01850b2-99f0-4e1c-9643-0f4901a520e5",
     "legalName": "Davis, Moore and Richards",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 1,
+        "type": "Nip",
         "value": "39-2046043",
         "isPrimary": true
       }
@@ -2776,9 +2776,9 @@
   {
     "customIdentifier": "d578cdbc-2a39-46b4-9bcd-7696befcc66b",
     "legalName": "Walker-Simmons",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "94-7662056",
         "isPrimary": true
       }
@@ -2795,9 +2795,9 @@
   {
     "customIdentifier": "bcf068e3-8723-4332-9a49-4688602f8f82",
     "legalName": "Cooper-Olsen",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "54-4574842",
         "isPrimary": true
       }
@@ -2814,9 +2814,9 @@
   {
     "customIdentifier": "ee50bbc6-e932-45da-bb8b-f43465a9af68",
     "legalName": "Hernandez, Mcpherson and Lowery",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 3,
+        "type": "Nip",
         "value": "21-1002960",
         "isPrimary": true
       }
@@ -2833,9 +2833,9 @@
   {
     "customIdentifier": "74d4a1e8-3dce-4f88-976e-3d957547571e",
     "legalName": "Brown-Harmon",
-    "businessIdentifications": [
+    "taxIdentifiers": [
       {
-        "taxIdentifierType": 2,
+        "type": "Nip",
         "value": "81-4561293",
         "isPrimary": true
       }

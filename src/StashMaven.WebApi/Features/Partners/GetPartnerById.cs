@@ -1,7 +1,25 @@
-using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.Data;
+namespace StashMaven.WebApi.Features.Partners;
 
-namespace StashMaven.WebApi.PartnerFeatures;
+public partial class PartnerController
+{
+    [HttpGet]
+    [Route("{partnerId}")]
+    public async Task<IActionResult> GetPartnerByIdAsync(
+        string partnerId,
+        [FromServices]
+        GetPartnerByIdHandler handler)
+    {
+        StashMavenResult<GetPartnerByIdHandler.GetPartnerResponse> response =
+            await handler.GetPartnerByIdAsync(partnerId);
+
+        if (!response.IsSuccess)
+        {
+            return NotFound();
+        }
+
+        return Ok(response.Data);
+    }
+}
 
 [Injectable]
 public class GetPartnerByIdHandler(StashMavenContext context)
@@ -40,7 +58,6 @@ public class GetPartnerByIdHandler(StashMavenContext context)
             .Include(p => p.Address)
             .Include(p => p.TaxIdentifiers)
             .FirstOrDefaultAsync(p => p.PartnerId.Value == partnerId);
-
 
         if (partner == null)
         {

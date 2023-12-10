@@ -1,7 +1,19 @@
-using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.Data;
+namespace StashMaven.WebApi.Features.Partners;
 
-namespace StashMaven.WebApi.PartnerFeatures;
+public partial class PartnerController
+{
+    [HttpPatch]
+    [Route("{partnerId}")]
+    public async Task<IActionResult> UpdatePartnerAsync(
+        string partnerId,
+        UpdatePartnerHandler.PatchPartnerRequest request,
+        [FromServices]
+        UpdatePartnerHandler handler)
+    {
+        await handler.PatchPartnerAsync(partnerId, request);
+        return Ok();
+    }
+}
 
 [Injectable]
 public class UpdatePartnerHandler(
