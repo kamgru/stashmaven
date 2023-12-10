@@ -1,5 +1,4 @@
 using System.Text.Json;
-using StashMaven.WebApi.Features.Catalog.Brands;
 
 namespace StashMaven.WebApi.Features.Partners;
 
