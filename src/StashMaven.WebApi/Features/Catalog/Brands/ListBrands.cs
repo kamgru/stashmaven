@@ -46,7 +46,7 @@ public class ListBrandsHandler(
 
     public class ListBrandsResponse
     {
-        public List<Brand> Brands { get; set; } = new();
+        public List<Brand> Items { get; set; } = new();
         public int TotalCount { get; set; }
     }
 
@@ -70,7 +70,7 @@ public class ListBrandsHandler(
         {
             string searchPhrase = $"%{request.Search}%";
             brands = brands.Where(
-                x => EF.Functions.Like(x.Name, searchPhrase));
+                x => EF.Functions.ILike(x.Name, searchPhrase));
         }
 
         int totalCount = await brands.CountAsync();
@@ -81,7 +81,7 @@ public class ListBrandsHandler(
 
         return new ListBrandsResponse
         {
-            Brands = await brands.ToListAsync(),
+            Items = await brands.ToListAsync(),
             TotalCount = totalCount,
         };
     }

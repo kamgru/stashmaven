@@ -2,14 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
-tr.cursor-pointer {
-    @apply bg-red-500;
+/*.cursor-pointer {*/
+/*    @apply bg-red-500;*/
+/*}*/
+
+/*form button[type="submit"] {*/
+/*    @apply bg-green-500;*/
+/*}*/
+
+/*form button:disabled {*/
+/*    @apply bg-gray-500;*/
+/*}*/
+
+/*th {*/
+/*    text-align: left;*/
+/*}*/
+/*table {*/
+/*    width: 100%;*/
+/*}*/
+/*td {*/
+/*    overflow: hidden;*/
+/*    text-overflow: ellipsis;*/
+/*    white-space: nowrap;*/
+/*    max-width: 0;*/
+/*}*/
+
+table {
+    width: 100%; /* changing to auto stops the truncation */
+    border-spacing: 5px;
 }
 
-form button[type="submit"] {
-    @apply bg-green-500;
+th {
+    background: #000;
+    color: #EEE;
+    font-weight: normal;
+    padding: 5px;
 }
 
-form button:disabled {
-    @apply bg-gray-500;
+
+td {
+    background: #AAA;
+    font-weight: bold;
+    /*max-width: 0;*/
+    overflow: hidden;
+    padding: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

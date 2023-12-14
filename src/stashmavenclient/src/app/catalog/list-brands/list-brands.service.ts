@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Brand} from "../brand";
 import {Observable} from "rxjs";
+import {ISuperTableListService, SuperTableListRequest, SuperTableListResponse} from "../../common/super-table/super-table-list-service";
 
 export class ListBrandsRequest {
     page: number = 1
@@ -19,11 +20,17 @@ export interface ListBrandsResponse {
 @Injectable({
     providedIn: 'root'
 })
-export class ListBrandsService {
+export class ListBrandsService implements ISuperTableListService<Brand> {
 
     constructor(
         private http: HttpClient,
     ) {
+    }
+
+    list(req: SuperTableListRequest): Observable<SuperTableListResponse<Brand>> {
+        console.log(req)
+        console.log(req.toHttpParams())
+        return this.http.get<SuperTableListResponse<Brand>>('http://localhost:5253/api/v1/brand/list', {params: req.toHttpParams()})
     }
 
     listBrands(req: ListBrandsRequest): Observable<ListBrandsResponse> {

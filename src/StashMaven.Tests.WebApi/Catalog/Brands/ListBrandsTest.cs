@@ -25,7 +25,7 @@ public class ListBrandsTest(
                 });
 
         Assert.NotNull(result);
-        Assert.Equal(expectedCount, result.Brands.Count);
+        Assert.Equal(expectedCount, result.Items.Count);
         Assert.Equal(ListBrandsTestFixture.BrandSeedCount, result.TotalCount);
     }
 
@@ -57,7 +57,7 @@ public class ListBrandsTest(
             .Take(expectedCount)
             .ToList();
 
-        result.Brands.Should().BeEquivalentTo(expectedBrands);
+        result.Items.Should().BeEquivalentTo(expectedBrands);
     }
 
     [Fact]
@@ -89,7 +89,7 @@ public class ListBrandsTest(
             .Take(expectedCount)
             .ToList();
 
-        result.Brands.Should().BeEquivalentTo(expectedBrands);
+        result.Items.Should().BeEquivalentTo(expectedBrands);
     }
 }
 

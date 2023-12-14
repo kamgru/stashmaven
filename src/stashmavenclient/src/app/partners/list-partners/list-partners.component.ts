@@ -45,6 +45,7 @@ export class ListPartnersComponent {
 
     @HostListener('window:keydown', ['$event'])
     handleKeyDown(event: KeyboardEvent) {
+        console.log(event)
         this.currentEvent$.next(event);
     }
 
