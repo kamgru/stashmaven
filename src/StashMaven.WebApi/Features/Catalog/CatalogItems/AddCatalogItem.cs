@@ -1,14 +1,29 @@
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.Data;
+namespace StashMaven.WebApi.Features.Catalog.CatalogItems;
 
-namespace StashMaven.WebApi.CatalogFeatures;
+public partial class CatalogItemController
+{
+    [HttpPost]
+    public async Task<IActionResult> AddCatalogItemAsync(
+        AddCatalogItemHandler.ADdCatalogItemRequest request,
+        [FromServices]
+        AddCatalogItemHandler handler)
+    {
+        StashMavenResult<CatalogItemId> response = await handler.AddCatalogItemAsync(request);
+
+        if (!response.IsSuccess)
+        {
+            return BadRequest(response.Message);
+        }
+
+        return Created($"api/v1/catalog/catalog-item/{response.Data?.Value}", response.Data);
+    }
+}
 
 [Injectable]
-public class CreateCatalogItemHandler(
+public class AddCatalogItemHandler(
     StashMavenContext context)
 {
-    public class CreateCatalogItemRequest
+    public class ADdCatalogItemRequest
     {
         [MinLength(5)]
         public required string Sku { get; set; }
@@ -20,8 +35,8 @@ public class CreateCatalogItemHandler(
         public required string TaxDefinitionId { get; set; }
     }
 
-    public async Task<StashMavenResult<CatalogItemId>> CreateCatalogItemAsync(
-        CreateCatalogItemRequest request)
+    public async Task<StashMavenResult<CatalogItemId>> AddCatalogItemAsync(
+        ADdCatalogItemRequest request)
     {
         TaxDefinition? taxDefinition = await context.TaxDefinitions
             .SingleOrDefaultAsync(t => t.TaxDefinitionId.Value == request.TaxDefinitionId);

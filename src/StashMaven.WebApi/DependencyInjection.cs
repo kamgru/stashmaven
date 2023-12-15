@@ -22,7 +22,11 @@ public static class ServiceCollectionExtensions
     public static void AddFeatures(
         this IServiceCollection services)
     {
-        List<Type> injectables = Assembly.GetExecutingAssembly()
+        Assembly assembly = Assembly.GetAssembly(typeof(Program))
+                            ?? throw new InvalidOperationException(
+                                "Could not find StashMaven.WebApi assembly.");
+
+        List<Type> injectables = assembly
             .GetTypes()
             .Where(x => x.IsDefined(typeof(InjectableAttribute)))
             .ToList();
@@ -38,7 +42,7 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         AadConfig aadConfig = configuration.GetAadConfiguration();
-        
+
         services.AddSwaggerGen(opt =>
         {
             opt.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -69,13 +73,13 @@ public static class ServiceCollectionExtensions
             });
         });
     }
-    
+
     public static void AddWebApiAuthentication(
         this IServiceCollection services,
         IConfiguration configuration)
     {
         AadConfig aadConfig = configuration.GetAadConfiguration();
-        
+
         services.AddAuthentication()
             .AddMicrosoftIdentityWebApi(aadConfig.RawConfiguration);
     }
@@ -117,8 +121,7 @@ public class AadConfig(IConfigurationSection aadSection)
     {
         return new Dictionary<string, string>
         {
-            {$"api://{ClientId}/{_apiScope}", $"{_apiScope}"}
+            { $"api://{ClientId}/{_apiScope}", $"{_apiScope}" }
         };
     }
 }
-

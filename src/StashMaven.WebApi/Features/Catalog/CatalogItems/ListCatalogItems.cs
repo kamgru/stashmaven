@@ -1,7 +1,20 @@
-using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.Data;
+namespace StashMaven.WebApi.Features.Catalog.CatalogItems;
 
-namespace StashMaven.WebApi.CatalogFeatures;
+public partial class CatalogItemController
+{
+    [HttpGet]
+    [Route("list")]
+    public async Task<IActionResult> ListCatalogItemsAsync(
+        [FromQuery]
+        ListCatalogItemsHandler.ListCatalogItemsRequest request,
+        [FromServices]
+        ListCatalogItemsHandler handler)
+    {
+        ListCatalogItemsHandler.ListCatalogItemsResponse response =
+            await handler.ListCatalogItemsAsync(request);
+        return Ok(response);
+    }
+}
 
 [Injectable]
 public class ListCatalogItemsHandler(

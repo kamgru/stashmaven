@@ -1,7 +1,20 @@
-using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.Data;
+namespace StashMaven.WebApi.Features.Common.TaxDefinitions;
 
-namespace StashMaven.WebApi.CatalogFeatures;
+public partial class TaxDefinitionController
+{
+    [HttpGet]
+    [Route("list")]
+    public async Task<IActionResult> ListTaxDefinitionsAsync(
+        [FromQuery]
+        ListTaxDefinitionsHandler.ListTaxDefinitionsRequest request,
+        [FromServices]
+        ListTaxDefinitionsHandler handler)
+    {
+        ListTaxDefinitionsHandler.ListTaxDefinitionsResponse response =
+            await handler.ListTaxDefinitionsAsync(request);
+        return Ok(response);
+    }
+}
 
 [Injectable]
 public class ListTaxDefinitionsHandler(
@@ -15,7 +28,7 @@ public class ListTaxDefinitionsHandler(
 
     public class ListTaxDefinitionsResponse
     {
-        public List<TaxDefinitionItem> TaxDefinitions { get; set; } = new();
+        public List<TaxDefinitionItem> Items { get; set; } = new();
         public int TotalCount { get; set; }
     }
 
@@ -47,7 +60,7 @@ public class ListTaxDefinitionsHandler(
 
         return new ListTaxDefinitionsResponse
         {
-            TaxDefinitions = taxDefinitions,
+            Items = taxDefinitions,
             TotalCount = totalCount
         };
     }

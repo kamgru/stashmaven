@@ -1,8 +1,23 @@
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.Data;
+namespace StashMaven.WebApi.Features.Catalog.CatalogItems;
 
-namespace StashMaven.WebApi.CatalogFeatures;
+public partial class CatalogItemController
+{
+    [HttpPatch]
+    public async Task<IActionResult> PatchCatalogItemAsync(
+        PatchCatalogItemHandler.PatchCatalogItemRequest request,
+        [FromServices]
+        PatchCatalogItemHandler handler)
+    {
+        StashMavenResult response = await handler.PatchCatalogItemAsync(request);
+
+        if (!response.IsSuccess)
+        {
+            return BadRequest(response.Message);
+        }
+
+        return Ok();
+    }
+}
 
 [Injectable]
 public class PatchCatalogItemHandler(

@@ -1,0 +1,29 @@
+<div>
+    <form class="form-container" [formGroup]="addCatalogItemForm" (ngSubmit)="onSubmit()">
+        <div class="form-control">
+            <label for="item-name">Name</label>
+            <input type="text" id="item-name" formControlName="name">
+        </div>
+        <div class="form-control">
+            <label for="sku">SKU</label>
+            <input type="text" id="sku" formControlName="sku">
+        </div>
+        <div class="form-control">
+            <label for="tax">Tax</label>
+            <select id="tax" formControlName="taxDefinitionId">
+                <option *ngFor="let tax of taxDefinitions" [value]="tax.taxDefinitionId">{{ tax.name }}</option>
+            </select>
+        </div>
+        <div class="form-control">
+            <label for="unit">Unit</label>
+            <select id="unit" formControlName="unitOfMeasure">
+                <option *ngFor="let unit of unitsOfMeasure" [value]="unit">{{ unit }}</option>
+            </select>
+        </div>
+
+        <div class="">
+            <button class="mr-2" type="submit" [disabled]="!addCatalogItemForm.valid">Submit</button>
+            <button type="button" (click)="notifyOnCancel()">Cancel</button>
+        </div>
+    </form>
+</div>
