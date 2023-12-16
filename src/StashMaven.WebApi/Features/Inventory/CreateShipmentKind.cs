@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.Features.Inventory;
 
@@ -29,8 +26,6 @@ public partial class InventoryController
 [Injectable]
 public class CreateShipmentKind(StashMavenContext context)
 {
-    private const string PostgresUniqueViolation = "23505";
-
     public class CreateShipmentKindRequest
     {
         public required string Name { get; set; }
@@ -64,7 +59,7 @@ public class CreateShipmentKind(StashMavenContext context)
         }
         catch (DbUpdateException e)
         {
-            if (e.InnerException is PostgresException { SqlState: PostgresUniqueViolation })
+            if (e.InnerException is PostgresException { SqlState: StashMavenContext.PostgresUniqueViolation })
             {
                 return StashMavenResult<ShipmentKindId>.Error($"Shipment kind {request.ShortCode} already exists.");
             }

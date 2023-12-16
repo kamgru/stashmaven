@@ -54,7 +54,7 @@ public class AddCatalogItemHandler(
             Sku = request.Sku,
             Name = request.Name,
             UnitOfMeasure = request.UnitOfMeasure,
-            TaxDefinition = taxDefinition,
+            TaxDefinitionId = taxDefinition.TaxDefinitionId,
             CreatedOn = DateTime.UtcNow,
             UpdatedOn = DateTime.UtcNow
         };

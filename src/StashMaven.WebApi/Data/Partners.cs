@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 namespace StashMaven.WebApi.Data;
 
 public class Address
@@ -13,6 +15,14 @@ public class Address
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
     public Partner Partner { get; set; } = null!;
+
+    public class TypeConfig : IEntityTypeConfiguration<Address>
+    {
+        public void Configure(EntityTypeBuilder<Address> builder)
+        {
+            builder.ToTable("Address", "prt");
+        }
+    }
 }
 
 public record PartnerId(
@@ -28,6 +38,17 @@ public class Partner
     public List<TaxIdentifier> TaxIdentifiers { get; set; } = [];
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
+
+    public class TypeConfig : IEntityTypeConfiguration<Partner>
+    {
+        public void Configure(EntityTypeBuilder<Partner> builder)
+        {
+            builder.ToTable("Partner", "prt");
+            builder.OwnsOne(e => e.PartnerId)
+                .Property(e => e.Value)
+                .HasColumnName("PartnerId");
+        }
+    }
 }
 
 public class TaxIdentifier
@@ -40,6 +61,14 @@ public class TaxIdentifier
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
     public Partner Partner { get; set; } = null!;
+
+    public class TypeConfig : IEntityTypeConfiguration<TaxIdentifier>
+    {
+        public void Configure(EntityTypeBuilder<TaxIdentifier> builder)
+        {
+            builder.ToTable("TaxIdentifier", "prt");
+        }
+    }
 }
 
 public enum TaxIdentifierType

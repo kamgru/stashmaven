@@ -73,7 +73,7 @@ public class PatchCatalogItemHandler(
                 return StashMavenResult.Error($"Tax definition {request.TaxDefinitionId} not found");
             }
 
-            catalogItem.TaxDefinition = taxDefinition;
+            catalogItem.TaxDefinitionId = taxDefinition.TaxDefinitionId;
         }
 
         catalogItem.UpdatedOn = DateTime.UtcNow;

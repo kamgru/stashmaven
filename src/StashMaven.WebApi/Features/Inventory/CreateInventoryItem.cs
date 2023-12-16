@@ -1,7 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
-using StashMaven.WebApi.Data;
-
 namespace StashMaven.WebApi.Features.Inventory;
 
 public partial class InventoryController
@@ -38,8 +34,6 @@ public class CreateInventoryItemHandler(
     {
         CatalogItem? catalogItem = await context.CatalogItems
             .Include(c => c.CatalogItemId)
-            .Include(c => c.TaxDefinition)
-            .ThenInclude(taxDefinition => taxDefinition!.TaxDefinitionId)
             .FirstOrDefaultAsync(c => c.CatalogItemId.Value == request.CatalogItemId);
 
         if (catalogItem == null)
@@ -52,7 +46,7 @@ public class CreateInventoryItemHandler(
             InventoryItemId = new InventoryItemId(catalogItem.CatalogItemId.Value),
             Sku = catalogItem.Sku,
             Name = catalogItem.Name,
-            TaxDefinitionId = catalogItem.TaxDefinition!.TaxDefinitionId,
+            TaxDefinitionId = catalogItem.TaxDefinitionId,
             Version = 0
         };
 

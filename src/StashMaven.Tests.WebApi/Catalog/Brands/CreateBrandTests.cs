@@ -57,7 +57,6 @@ public class CreateBrandTests(
         Brand? brand = await context.Brands
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Name == "Te");
-        await context.DisposeAsync();
 
         Assert.Null(brand);
     }

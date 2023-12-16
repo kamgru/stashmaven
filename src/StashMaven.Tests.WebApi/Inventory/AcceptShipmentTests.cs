@@ -43,7 +43,7 @@ public class AcceptShipmentTests(
         {
             StockpileId = new StockpileId("stockpile-1"),
             Name = "Stockpile 1",
-            ShortCode = "ST1"
+            ShortCode = Guid.NewGuid().ToString().Substring(0, Stockpile.ShortCodeMaxLength)
         };
         context.Stockpiles.Add(stockpile);
         InventoryItem inventoryItem1 = new()
@@ -266,7 +266,7 @@ public class AcceptShipmentTests(
         {
             StockpileId = new StockpileId("stockpile-1"),
             Name = "Stockpile 1",
-            ShortCode = "ST1"
+            ShortCode = Guid.NewGuid().ToString().Substring(0, Stockpile.ShortCodeMaxLength)
         };
         context.Stockpiles.Add(stockpile);
         InventoryItem item1 = new()

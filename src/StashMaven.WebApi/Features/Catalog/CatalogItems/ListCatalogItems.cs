@@ -56,15 +56,16 @@ public class ListCatalogItemsHandler(
         request.PageSize = Math.Clamp(request.PageSize, MinPageSize, MaxPageSize);
         request.Page = Math.Max(request.Page, MinPage);
 
+        List<TaxDefinition> taxDefinitions = await context.TaxDefinitions.ToListAsync();
+
         IQueryable<CatalogItem> catalogItems = context.CatalogItems
-            .Include(c => c.TaxDefinition)
             .Select(c => new CatalogItem
             {
                 CatalogItemId = c.CatalogItemId.Value,
                 Sku = c.Sku,
                 Name = c.Name,
                 UnitOfMeasure = c.UnitOfMeasure,
-                Tax = c.TaxDefinition!.Name,
+                Tax = taxDefinitions.First(x => x.TaxDefinitionId.Value == c.TaxDefinitionId.Value).Name,
                 CreatedOn = c.CreatedOn,
             });
 

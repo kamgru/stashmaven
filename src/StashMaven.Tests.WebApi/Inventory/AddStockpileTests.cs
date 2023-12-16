@@ -1,19 +1,19 @@
-using StashMaven.WebApi.Features.Inventory;
+using StashMaven.WebApi.Features.Inventory.Stockpiles;
 
 namespace StashMaven.Tests.WebApi.Inventory;
 
-public class CreateStockpileTests(DefaultTestFixture fixture) : IClassFixture<DefaultTestFixture>
+public class AddStockpileTests(DefaultTestFixture fixture) : IClassFixture<DefaultTestFixture>
 {
     [Fact]
-    public async Task WhenRequestValid_ShouldCreateStockpile()
+    public async Task WhenRequestValid_ShouldAddStockpile()
     {
         HttpClient client = fixture.CreateClient();
 
-        HttpResponseMessage result = await client.PostAsJsonAsync("api/v1/inventory/stockpile",
-            new CreateStockpileHandler.CreateStockpileRequest
+        HttpResponseMessage result = await client.PostAsJsonAsync("api/v1/stockpile",
+            new AddStockpileHandler.AddStockpileRequest
             {
                 Name = "Test Stockpile",
-                ShortCode = "TEST"
+                ShortCode = Guid.NewGuid().ToString()[..Stockpile.ShortCodeMaxLength]
             });
 
         result.EnsureSuccessStatusCode();

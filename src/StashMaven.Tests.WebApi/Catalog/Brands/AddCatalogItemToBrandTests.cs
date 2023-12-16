@@ -89,17 +89,20 @@ public class AddCatalogItemToBrandTestFixture: TestFixture
             ShortCode = "B1"
         });
 
+        TaxDefinition taxDefinition = new()
+        {
+            TaxDefinitionId = new TaxDefinitionId("tax-1"),
+            Name = "Tax 1",
+            Rate = 0.1m
+        };
+        context.TaxDefinitions.Add(taxDefinition);
+
         context.CatalogItems.Add(new CatalogItem
         {
             CatalogItemId = new CatalogItemId("catalog-item-1"),
             Name = "Catalog Item 1",
             Sku = "CI1A",
-            TaxDefinition = new TaxDefinition
-            {
-                TaxDefinitionId = new TaxDefinitionId("tax-1"),
-                Name = "Tax 1",
-                Rate = 0.1m
-            },
+            TaxDefinitionId = taxDefinition.TaxDefinitionId,
             UnitOfMeasure = UnitOfMeasure.Pc
         });
 
