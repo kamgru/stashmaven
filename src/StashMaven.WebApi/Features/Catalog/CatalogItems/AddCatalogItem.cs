@@ -1,21 +1,24 @@
+using Npgsql;
+
 namespace StashMaven.WebApi.Features.Catalog.CatalogItems;
 
 public partial class CatalogItemController
 {
     [HttpPost]
     public async Task<IActionResult> AddCatalogItemAsync(
-        AddCatalogItemHandler.ADdCatalogItemRequest request,
+        AddCatalogItemHandler.AddCatalogItemRequest request,
         [FromServices]
         AddCatalogItemHandler handler)
     {
-        StashMavenResult<CatalogItemId> response = await handler.AddCatalogItemAsync(request);
+        StashMavenResult<AddCatalogItemHandler.AddCatalogItemResponse> response =
+            await handler.AddCatalogItemAsync(request);
 
-        if (!response.IsSuccess)
+        if (!response.IsSuccess || response.Data is null)
         {
             return BadRequest(response.Message);
         }
 
-        return Created($"api/v1/catalog/catalog-item/{response.Data?.Value}", response.Data);
+        return Created($"api/v1/catalog/catalog-item/{response.Data.CatalogItemId}", response.Data);
     }
 }
 
@@ -23,27 +26,35 @@ public partial class CatalogItemController
 public class AddCatalogItemHandler(
     StashMavenContext context)
 {
-    public class ADdCatalogItemRequest
+    public class AddCatalogItemRequest
     {
         [MinLength(5)]
+        [MaxLength(50)]
         public required string Sku { get; set; }
 
         [MinLength(3)]
+        [MaxLength(256)]
         public required string Name { get; set; } = null!;
 
         public UnitOfMeasure UnitOfMeasure { get; set; }
         public required string TaxDefinitionId { get; set; }
     }
 
-    public async Task<StashMavenResult<CatalogItemId>> AddCatalogItemAsync(
-        ADdCatalogItemRequest request)
+    public class AddCatalogItemResponse
+    {
+        public required string CatalogItemId { get; set; }
+    }
+
+    public async Task<StashMavenResult<AddCatalogItemResponse>> AddCatalogItemAsync(
+        AddCatalogItemRequest request)
     {
         TaxDefinition? taxDefinition = await context.TaxDefinitions
             .SingleOrDefaultAsync(t => t.TaxDefinitionId.Value == request.TaxDefinitionId);
 
         if (taxDefinition == null)
         {
-            return StashMavenResult<CatalogItemId>.Error($"Tax definition {request.TaxDefinitionId} not found");
+            return StashMavenResult<AddCatalogItemResponse>.Error(
+                $"Tax definition {request.TaxDefinitionId} not found");
         }
 
         CatalogItemId catalogItemId = new(Guid.NewGuid().ToString());
@@ -59,9 +70,25 @@ public class AddCatalogItemHandler(
             UpdatedOn = DateTime.UtcNow
         };
 
-        await context.CatalogItems.AddAsync(catalogItem);
-        await context.SaveChangesAsync();
+        context.CatalogItems.Add(catalogItem);
 
-        return StashMavenResult<CatalogItemId>.Success(catalogItemId);
+        try
+        {
+            await context.SaveChangesAsync();
+            return StashMavenResult<AddCatalogItemResponse>.Success(new AddCatalogItemResponse
+            {
+                CatalogItemId = catalogItemId.Value
+            });
+        }
+        catch (DbUpdateException ex)
+        {
+            if (ex.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation })
+            {
+                return StashMavenResult<AddCatalogItemResponse>.Error(
+                    $"Catalog item with SKU {request.Sku} already exists");
+            }
+
+            throw;
+        }
     }
 }

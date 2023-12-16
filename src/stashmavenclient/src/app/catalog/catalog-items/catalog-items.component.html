@@ -1,1 +1,7 @@
-<app-add-catalog-item></app-add-catalog-item>
+<div *ngIf="uiState == 'add'">
+    <app-add-catalog-item (onAdded)="uiState = UiState.List" (onCancel)="uiState = UiState.List"></app-add-catalog-item>
+</div>
+
+<div class="h-4/5 mr-2" *ngIf="uiState == 'list'">
+    <app-list-catalog-items (onAdd)="uiState = UiState.Add"></app-list-catalog-items>
+</div>

@@ -1,0 +1,31 @@
+<div class="flex flex-cols items-center justify-between">
+    <div class="form-control py-2">
+        <input type="text" placeholder="search" (keyup)="search$.next(searchInput.value)" #searchInput
+               [(ngModel)]="search">
+    </div>
+    <button class="btn" (click)="onAdd.emit()">add</button>
+</div>
+<table class="table-auto grid border-collapse overflow-scroll max-h-full" #table>
+    <thead class="contents">
+    <tr class="grid grid-cols-catalog-items text-left bg-slate-900 text-gray-200 p-2 sticky top-0 max-h-[40px]">
+        <th>No.</th>
+        <th>Sku</th>
+        <th>Name</th>
+        <th>Tax</th>
+        <th>Unit</th>
+    </tr>
+    </thead>
+    <tbody class="contents">
+    <tr *ngIf="data.items.length === 0" class="grid grid-cols-catalog-items text-base">
+        <td class="border-b border-gray-200 py-1 col-span-5 text-center">No items found</td>
+    </tr>
+    <tr class="grid grid-cols-catalog-items text-base" *ngFor="let item of data.items; index as idx"
+        [class.current-idx]="idx == currentIndex">
+        <td class="border-b border-gray-200 py-1">{{ idx + 1 }}</td>
+        <td class="border-b border-gray-200 py-1">{{ item.sku }}</td>
+        <td class="border-b border-gray-200 py-1">{{ item.name }}</td>
+        <td class="border-b border-gray-200 py-1">{{ item.tax }}</td>
+        <td class="border-b border-gray-200 py-1">{{ item.unitOfMeasure }}</td>
+    </tbody>
+</table>
+<div id="grid-delimiter"></div>

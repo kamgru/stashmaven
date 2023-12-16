@@ -8,14 +8,14 @@ public partial class TaxDefinitionController
         [FromServices]
         AddTaxDefinitionHandler handler)
     {
-        StashMavenResult<TaxDefinitionId> result = await handler.AddTaxDefinitionAsync(request);
+        StashMavenResult<AddTaxDefinitionHandler.AddTaxDefinitionResponse> result = await handler.AddTaxDefinitionAsync(request);
 
-        if (!result.IsSuccess)
+        if (!result.IsSuccess || result.Data is null)
         {
             return BadRequest(result.Message);
         }
 
-        return Created($"api/v1/catalog/TaxDefinition/{result.Data!.Value}", result.Data);
+        return Created($"api/v1/catalog/TaxDefinition/{result.Data.TaxDefinitionId}", result.Data);
     }
 }
 
@@ -29,7 +29,12 @@ public class AddTaxDefinitionHandler(
         public required decimal Rate { get; set; }
     }
 
-    public async Task<StashMavenResult<TaxDefinitionId>> AddTaxDefinitionAsync(
+    public class AddTaxDefinitionResponse
+    {
+        public required string TaxDefinitionId { get; set; }
+    }
+
+    public async Task<StashMavenResult<AddTaxDefinitionResponse>> AddTaxDefinitionAsync(
         AddTaxDefinitionRequest request)
     {
         TaxDefinition taxDefinition = new()
@@ -42,6 +47,9 @@ public class AddTaxDefinitionHandler(
         await context.TaxDefinitions.AddAsync(taxDefinition);
         await context.SaveChangesAsync();
 
-        return StashMavenResult<TaxDefinitionId>.Success(taxDefinition.TaxDefinitionId);
+        return StashMavenResult<AddTaxDefinitionResponse>.Success(new AddTaxDefinitionResponse
+        {
+            TaxDefinitionId = taxDefinition.TaxDefinitionId.Value
+        });
     }
 }

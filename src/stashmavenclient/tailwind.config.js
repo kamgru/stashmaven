@@ -4,7 +4,11 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateColumns: {
+        'catalog-items': 'minmax(20px, 50px) repeat(2, minmax(150px, 1fr)) repeat(2, minmax(30px, 0.5fr))'
+      }
+    },
   },
   plugins: [
     require('@tailwindcss/typography'),

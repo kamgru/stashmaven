@@ -23,7 +23,7 @@
 
         <div class="">
             <button class="mr-2" type="submit" [disabled]="!addCatalogItemForm.valid">Submit</button>
-            <button type="button" (click)="notifyOnCancel()">Cancel</button>
+            <button type="button" class="btn" (click)="onCancel.emit()">Cancel</button>
         </div>
     </form>
 </div>

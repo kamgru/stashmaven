@@ -46,7 +46,7 @@ public class ListCatalogItemsHandler(
 
     public class ListCatalogItemsResponse
     {
-        public List<CatalogItem> CatalogItems { get; set; } = new();
+        public List<CatalogItem> Items { get; set; } = [];
         public int TotalCount { get; set; }
     }
 
@@ -56,17 +56,21 @@ public class ListCatalogItemsHandler(
         request.PageSize = Math.Clamp(request.PageSize, MinPageSize, MaxPageSize);
         request.Page = Math.Max(request.Page, MinPage);
 
-        List<TaxDefinition> taxDefinitions = await context.TaxDefinitions.ToListAsync();
+        await context.TaxDefinitions.ToListAsync();
 
         IQueryable<CatalogItem> catalogItems = context.CatalogItems
+            .Join(context.TaxDefinitions,
+                c => c.TaxDefinitionId.Value,
+                t => t.TaxDefinitionId.Value,
+                (c, t) => new { catalogItem = c, taxDefinition = t })
             .Select(c => new CatalogItem
             {
-                CatalogItemId = c.CatalogItemId.Value,
-                Sku = c.Sku,
-                Name = c.Name,
-                UnitOfMeasure = c.UnitOfMeasure,
-                Tax = taxDefinitions.First(x => x.TaxDefinitionId.Value == c.TaxDefinitionId.Value).Name,
-                CreatedOn = c.CreatedOn,
+                CatalogItemId = c.catalogItem.CatalogItemId.Value,
+                Sku = c.catalogItem.Sku,
+                Name = c.catalogItem.Name,
+                UnitOfMeasure = c.catalogItem.UnitOfMeasure,
+                Tax = c.taxDefinition.Name,
+                CreatedOn = c.catalogItem.CreatedOn,
             });
 
         if (!string.IsNullOrWhiteSpace(request.Search) && request.Search.Length >= MinSearchLength)
@@ -107,7 +111,7 @@ public class ListCatalogItemsHandler(
 
         return new ListCatalogItemsResponse
         {
-            CatalogItems = catalogItemsList,
+            Items = catalogItemsList,
             TotalCount = totalCount
         };
     }

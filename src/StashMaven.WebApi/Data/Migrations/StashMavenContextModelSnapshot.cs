@@ -109,11 +109,13 @@ namespace StashMaven.WebApi.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("Sku")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("UnitOfMeasure")
                         .HasColumnType("integer");
@@ -124,6 +126,9 @@ namespace StashMaven.WebApi.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("Sku")
+                        .IsUnique();
 
                     b.ToTable("CatalogItem", "cat");
                 });

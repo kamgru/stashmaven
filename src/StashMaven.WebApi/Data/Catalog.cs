@@ -30,6 +30,9 @@ public class Brand
 
 public class CatalogItem
 {
+    private const int MaxSkuLength = 50;
+    private const int MaxNameLength = 256;
+
     public int Id { get; set; }
     public required CatalogItemId CatalogItemId { get; set; }
     public required string Name { get; set; }
@@ -52,6 +55,12 @@ public class CatalogItem
             builder.OwnsOne(e => e.TaxDefinitionId)
                 .Property(e => e.Value)
                 .HasColumnName("TaxDefinitionId");
+            builder.Property(e => e.Sku)
+                .HasMaxLength(MaxSkuLength);
+            builder.HasIndex(e => e.Sku)
+                .IsUnique();
+            builder.Property(e => e.Name)
+                .HasMaxLength(MaxNameLength);
         }
     }
 }

@@ -146,8 +146,8 @@ namespace StashMaven.WebApi.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CatalogItemId = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Sku = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Sku = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     UnitOfMeasure = table.Column<int>(type: "integer", nullable: false),
                     TaxDefinitionId = table.Column<string>(type: "text", nullable: false),
                     BarCode = table.Column<string>(type: "text", nullable: true),
@@ -338,6 +338,13 @@ namespace StashMaven.WebApi.Data.Migrations
                 schema: "cat",
                 table: "CatalogItem",
                 column: "BrandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatalogItem_Sku",
+                schema: "cat",
+                table: "CatalogItem",
+                column: "Sku",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_InventoryItem_StockpileId",

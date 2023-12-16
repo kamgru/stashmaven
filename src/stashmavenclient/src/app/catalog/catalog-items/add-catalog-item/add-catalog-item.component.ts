@@ -1,4 +1,4 @@
-import {Component, signal} from '@angular/core';
+import {Component, EventEmitter, Output, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {
@@ -26,6 +26,9 @@ export class AddCatalogItemComponent {
         unitOfMeasure: [this.unitsOfMeasure, Validators.required],
     });
 
+    @Output() onAdded = new EventEmitter<void>();
+    @Output() onCancel = new EventEmitter<void>();
+
     constructor(
         private formBuilder: FormBuilder,
         private listTaxDefinitionsService: ListTaxDefinitionsService,
@@ -42,10 +45,6 @@ export class AddCatalogItemComponent {
         });
     }
 
-    notifyOnCancel() {
-
-    }
-
     onSubmit() {
         if (!this.addCatalogItemForm.valid) {
             return;
@@ -59,9 +58,9 @@ export class AddCatalogItemComponent {
         );
 
         this.addCatalogItemService.add(req)
-            .subscribe(() => {
+            .subscribe(id => {
                 this.addCatalogItemForm.reset();
-                this.notifyOnCancel();
+                this.onAdded.emit();
             });
     }
 }

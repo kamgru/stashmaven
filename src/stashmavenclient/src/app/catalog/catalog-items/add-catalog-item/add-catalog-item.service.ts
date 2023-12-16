@@ -12,10 +12,6 @@ export class AddCatalogItemRequest {
     }
 }
 
-export interface AddCatalogItemResponse {
-    value: string;
-}
-
 @Injectable({
     providedIn: 'root'
 })
@@ -26,8 +22,8 @@ export class AddCatalogItemService {
     ) {
     }
 
-    add(req: AddCatalogItemRequest): Observable<AddCatalogItemResponse> {
-        return this.http.post<AddCatalogItemResponse>('http://localhost:5253/api/v1/catalogitem', req);
+    add(req: AddCatalogItemRequest): Observable<string> {
+        return this.http.post<string>('http://localhost:5253/api/v1/catalogitem', req);
     }
 
 }
