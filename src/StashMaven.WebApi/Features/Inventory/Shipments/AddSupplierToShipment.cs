@@ -1,13 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.Data;
+namespace StashMaven.WebApi.Features.Inventory.Shipments;
 
-namespace StashMaven.WebApi.Features.Inventory;
-
-public partial class InventoryController
+public partial class ShipmentController
 {
     [HttpPatch]
-    [Route("shipment/{shipmentId}/add-supplier")]
+    [Route("{shipmentId}/add-supplier")]
     public async Task<IActionResult> AddSupplierToShipmentAsync(
         string shipmentId,
         AddSupplierToShipmentHandler.AddSupplierToShipmentRequest request,

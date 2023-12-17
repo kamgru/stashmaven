@@ -1,9 +1,8 @@
-using System.Security.Cryptography;
 using Microsoft.Identity.Client;
 
 namespace StashMaven.SeedTool;
 
-static class TokenCacheHelper
+internal static class TokenCache
 {
     public static void EnableSerialization(
         ITokenCache tokenCache)

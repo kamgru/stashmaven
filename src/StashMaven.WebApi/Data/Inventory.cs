@@ -44,7 +44,7 @@ public class InventoryItem
     public required string Name { get; set; }
     public decimal Quantity { get; set; }
     public UnitOfMeasure UnitOfMeasure { get; set; }
-    public decimal UnitPrice { get; set; }
+    public decimal LastPurchasePrice { get; set; }
     public required TaxDefinitionId TaxDefinitionId { get; set; }
     public ICollection<ShipmentRecord> ShipmentRecords { get; set; } = new List<ShipmentRecord>();
     public Stockpile Stockpile { get; set; } = null!;

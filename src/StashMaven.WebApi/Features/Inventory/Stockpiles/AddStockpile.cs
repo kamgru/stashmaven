@@ -11,14 +11,14 @@ public partial class StockpileController
         [FromServices]
         AddStockpileHandler handler)
     {
-        StashMavenResult<StockpileId> result = await handler.AddStockpileAsync(request);
+        StashMavenResult<AddStockpileHandler.AddStockpileResponse> result = await handler.AddStockpileAsync(request);
 
-        if (!result.IsSuccess)
+        if (!result.IsSuccess || result.Data is null)
         {
             return BadRequest(result.Message);
         }
 
-        return Created($"api/v1/inventory/stockpile/{result.Data!.Value}", result.Data);
+        return Created($"api/v1/inventory/stockpile/{result.Data.StockpileId}", result.Data);
     }
 }
 
@@ -31,7 +31,9 @@ public class AddStockpileHandler(StashMavenContext context)
         public required string ShortCode { get; set; }
     }
 
-    public async Task<StashMavenResult<StockpileId>> AddStockpileAsync(
+    public record AddStockpileResponse(string StockpileId);
+
+    public async Task<StashMavenResult<AddStockpileResponse>> AddStockpileAsync(
         AddStockpileRequest request)
     {
         Stockpile stockpile = new()
@@ -46,13 +48,14 @@ public class AddStockpileHandler(StashMavenContext context)
         try
         {
             await context.SaveChangesAsync();
-            return StashMavenResult<StockpileId>.Success(stockpile.StockpileId);
+            return StashMavenResult<AddStockpileResponse>.Success(
+                new AddStockpileResponse(stockpile.StockpileId.Value));
         }
         catch (DbUpdateException e)
         {
             if (e.InnerException is PostgresException { SqlState: StashMavenContext.PostgresUniqueViolation })
             {
-                return StashMavenResult<StockpileId>.Error($"Stockpile {request.ShortCode} already exists.");
+                return StashMavenResult<AddStockpileResponse>.Error($"Stockpile {request.ShortCode} already exists.");
             }
 
             throw;

@@ -73,7 +73,7 @@ public class ListInventoryItemsHandler(StashMavenContext context)
                 Name = i.Name,
                 Sku = i.Sku,
                 Quantity = i.Quantity,
-                PurchasePrice = i.UnitPrice,
+                PurchasePrice = i.LastPurchasePrice,
                 TaxRate = taxDefinitions.First(t => t.TaxDefinitionId == i.TaxDefinitionId).Rate
             });
 

@@ -18,14 +18,15 @@ public class AddStockpileTests(DefaultTestFixture fixture) : IClassFixture<Defau
 
         result.EnsureSuccessStatusCode();
 
-        StockpileId? stockpileId = await result.Content.ReadFromJsonAsync<StockpileId>();
+        AddStockpileHandler.AddStockpileResponse? stockpileId =
+            await result.Content.ReadFromJsonAsync<AddStockpileHandler.AddStockpileResponse>();
 
         Assert.NotNull(stockpileId);
 
         await using StashMavenContext context = fixture.CreateDbContext();
 
         Stockpile? stockpile = await context.Stockpiles
-            .FirstOrDefaultAsync(x => x.StockpileId.Value == stockpileId.Value);
+            .FirstOrDefaultAsync(x => x.StockpileId.Value == stockpileId.StockpileId);
 
         Assert.NotNull(stockpile);
         Assert.Equal("Test Stockpile", stockpile.Name);

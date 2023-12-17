@@ -40,10 +40,7 @@ public class AddCatalogItemHandler(
         public required string TaxDefinitionId { get; set; }
     }
 
-    public class AddCatalogItemResponse
-    {
-        public required string CatalogItemId { get; set; }
-    }
+    public record AddCatalogItemResponse(string CatalogItemId);
 
     public async Task<StashMavenResult<AddCatalogItemResponse>> AddCatalogItemAsync(
         AddCatalogItemRequest request)
@@ -75,10 +72,7 @@ public class AddCatalogItemHandler(
         try
         {
             await context.SaveChangesAsync();
-            return StashMavenResult<AddCatalogItemResponse>.Success(new AddCatalogItemResponse
-            {
-                CatalogItemId = catalogItemId.Value
-            });
+            return StashMavenResult<AddCatalogItemResponse>.Success(new AddCatalogItemResponse(catalogItemId.Value));
         }
         catch (DbUpdateException ex)
         {

@@ -233,7 +233,7 @@ namespace StashMaven.WebApi.Data.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Quantity = table.Column<decimal>(type: "numeric", nullable: false),
                     UnitOfMeasure = table.Column<int>(type: "integer", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    LastPurchasePrice = table.Column<decimal>(type: "numeric", nullable: false),
                     TaxDefinitionId = table.Column<string>(type: "text", nullable: false),
                     StockpileId = table.Column<int>(type: "integer", nullable: false),
                     xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)

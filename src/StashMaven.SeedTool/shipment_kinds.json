@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Przyjęcie z zewnątrz",
+    "shortCode": "PZ",
+    "direction": "in"
+  },
+  {
+    "name": "Wydanie na zewnątrz",
+    "shortCode": "WZ",
+    "direction": "out"
+  }
+]

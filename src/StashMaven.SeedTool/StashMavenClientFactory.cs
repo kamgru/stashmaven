@@ -13,7 +13,7 @@ public class StashMavenClientFactory
             .WithDefaultRedirectUri()
             .Build();
 
-        TokenCacheHelper.EnableSerialization(app.UserTokenCache);
+        TokenCache.EnableSerialization(app.UserTokenCache);
         IEnumerable<IAccount>? accounts = await app.GetAccountsAsync();
         string[] scopes = ["user.read", "api://569781c4-ad95-4aec-863a-604e6c9f9a13/access_as_user"];
         AuthenticationResult result;
@@ -30,7 +30,7 @@ public class StashMavenClientFactory
 
         HttpClient client = new();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
-        client.BaseAddress = new Uri("http://localhost:5253/api/v1/");
+        client.BaseAddress = new Uri("http://localhost:5253/");
 
         return new StashMavenClient(client);
     }

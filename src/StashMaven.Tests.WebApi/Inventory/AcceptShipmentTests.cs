@@ -54,7 +54,7 @@ public class AcceptShipmentTests(
             Name = "name-1",
             Quantity = 0,
             UnitOfMeasure = UnitOfMeasure.Pc,
-            UnitPrice = 1,
+            LastPurchasePrice = 1,
             TaxDefinitionId = new TaxDefinitionId("tax-definition-1"),
         };
         InventoryItem inventoryItem2 = new()
@@ -65,7 +65,7 @@ public class AcceptShipmentTests(
             Name = "name-2",
             Quantity = 0,
             UnitOfMeasure = UnitOfMeasure.Pc,
-            UnitPrice = 1,
+            LastPurchasePrice = 1,
             TaxDefinitionId = new TaxDefinitionId("tax-definition-1"),
         };
         context.InventoryItems.AddRange([
@@ -206,7 +206,7 @@ public class AcceptShipmentTests(
             Name = "name-1",
             Quantity = 0,
             UnitOfMeasure = UnitOfMeasure.Pc,
-            UnitPrice = 1,
+            LastPurchasePrice = 1,
             TaxDefinitionId = new TaxDefinitionId("tax-definition-1"),
         };
         context.InventoryItems.Add(inventoryItem);
@@ -277,7 +277,7 @@ public class AcceptShipmentTests(
             Name = "name-2",
             Quantity = 0,
             UnitOfMeasure = UnitOfMeasure.Pc,
-            UnitPrice = 1,
+            LastPurchasePrice = 1,
             TaxDefinitionId = new TaxDefinitionId("tax-definition-1"),
         };
         InventoryItem item2 = new()
@@ -288,7 +288,7 @@ public class AcceptShipmentTests(
             Name = "name-3",
             Quantity = 0,
             UnitOfMeasure = UnitOfMeasure.Pc,
-            UnitPrice = 1,
+            LastPurchasePrice = 1,
             TaxDefinitionId = new TaxDefinitionId("tax-definition-1"),
         };
         context.InventoryItems.AddRange([

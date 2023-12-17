@@ -12,7 +12,7 @@ using StashMaven.WebApi.Data;
 namespace StashMaven.WebApi.Data.Migrations
 {
     [DbContext(typeof(StashMavenContext))]
-    [Migration("20231216205238_Initial")]
+    [Migration("20231217072902_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -144,6 +144,9 @@ namespace StashMaven.WebApi.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("LastPurchasePrice")
+                        .HasColumnType("numeric");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -160,9 +163,6 @@ namespace StashMaven.WebApi.Data.Migrations
 
                     b.Property<int>("UnitOfMeasure")
                         .HasColumnType("integer");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("numeric");
 
                     b.Property<uint>("Version")
                         .IsConcurrencyToken()
