@@ -1,13 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using StashMaven.WebApi.Data;
+namespace StashMaven.WebApi.Features.Inventory.Shipments;
 
-namespace StashMaven.WebApi.Features.Inventory;
-
-public partial class InventoryController
+public partial class ShipmentController
 {
     [HttpGet]
-    [Route("shipment")]
+    [Route("list")]
     public async Task<IActionResult> ListShipmentsAsync(
         [FromQuery]
         ListShipmentsHandler.ListShipmentsRequest request,
@@ -25,13 +21,20 @@ public class ListShipmentsHandler(StashMavenContext context)
 {
     public class ListShipmentsRequest
     {
+        public required string StockpileId { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }
     }
 
     public class ShipmentListItem
     {
-        public string ShipmentId { get; set; } = null!;
+        public required string ShipmentId { get; set; } = null!;
+        public required string KindShortCode { get; set; } = null!;
+        public string? SequenceNumber { get; set; }
+        public string? PartnerIdentifier { get; set; }
+        public string? TotalMoney { get; set; }
+        public string? AcceptanceStatus { get; set; }
+        public required DateTime CreatedOn { get; set; }
     }
 
     public class ListShipmentsResponse
@@ -46,6 +49,7 @@ public class ListShipmentsHandler(StashMavenContext context)
 
         List<Shipment> shipments = await context.Shipments
             .Include(s => s.Kind)
+            .Include(s => s.Partner)
             .OrderByDescending(s => s.CreatedOn)
             .Skip(request.Page * request.PageSize)
             .Take(request.PageSize)
@@ -55,6 +59,12 @@ public class ListShipmentsHandler(StashMavenContext context)
                 s => new ShipmentListItem
                 {
                     ShipmentId = s.ShipmentId.Value,
+                    KindShortCode = s.Kind.ShortCode,
+                    SequenceNumber = s.SequenceNumber?.Value,
+                    PartnerIdentifier = s.Partner?.CustomIdentifier,
+                    TotalMoney = "0.00",
+                    AcceptanceStatus = s.Acceptance.ToString(),
+                    CreatedOn = s.CreatedOn
                 })
             .ToList();
 

@@ -28,6 +28,13 @@ public class Brand
     }
 }
 
+public class CatalogItemTaxReference
+{
+    public required string Name { get; set; }
+    public decimal Rate { get; set; }
+    public required string TaxDefinitionIdValue { get; set; }
+}
+
 public class CatalogItem
 {
     private const int MaxSkuLength = 50;
@@ -38,7 +45,8 @@ public class CatalogItem
     public required string Name { get; set; }
     public required string Sku { get; set; }
     public required UnitOfMeasure UnitOfMeasure { get; set; }
-    public required TaxDefinitionId TaxDefinitionId { get; set; }
+    public required CatalogItemTaxReference BuyTax { get; set; }
+    public required CatalogItemTaxReference SellTax { get; set; }
     public string? BarCode { get; set; }
     public Brand? Brand { get; set; } = null!;
     public DateTime CreatedOn { get; set; }
@@ -52,15 +60,14 @@ public class CatalogItem
             builder.OwnsOne(e => e.CatalogItemId)
                 .Property(e => e.Value)
                 .HasColumnName("CatalogItemId");
-            builder.OwnsOne(e => e.TaxDefinitionId)
-                .Property(e => e.Value)
-                .HasColumnName("TaxDefinitionId");
             builder.Property(e => e.Sku)
                 .HasMaxLength(MaxSkuLength);
             builder.HasIndex(e => e.Sku)
                 .IsUnique();
             builder.Property(e => e.Name)
                 .HasMaxLength(MaxNameLength);
+            builder.ComplexProperty(e => e.BuyTax);
+            builder.ComplexProperty(e => e.SellTax);
         }
     }
 }

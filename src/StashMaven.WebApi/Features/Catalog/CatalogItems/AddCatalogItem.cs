@@ -37,7 +37,8 @@ public class AddCatalogItemHandler(
         public required string Name { get; set; } = null!;
 
         public UnitOfMeasure UnitOfMeasure { get; set; }
-        public required string TaxDefinitionId { get; set; }
+        public required string BuyTaxDefinitionId { get; set; }
+        public required string SellTaxDefinitionId { get; set; }
     }
 
     public record AddCatalogItemResponse(string CatalogItemId);
@@ -45,13 +46,22 @@ public class AddCatalogItemHandler(
     public async Task<StashMavenResult<AddCatalogItemResponse>> AddCatalogItemAsync(
         AddCatalogItemRequest request)
     {
-        TaxDefinition? taxDefinition = await context.TaxDefinitions
-            .SingleOrDefaultAsync(t => t.TaxDefinitionId.Value == request.TaxDefinitionId);
+        TaxDefinition? buyTax = await context.TaxDefinitions
+            .SingleOrDefaultAsync(t => t.TaxDefinitionId.Value == request.BuyTaxDefinitionId);
 
-        if (taxDefinition == null)
+        if (buyTax == null)
         {
             return StashMavenResult<AddCatalogItemResponse>.Error(
-                $"Tax definition {request.TaxDefinitionId} not found");
+                $"Tax definition {request.BuyTaxDefinitionId} not found");
+        }
+
+        TaxDefinition? sellTax = await context.TaxDefinitions
+            .SingleOrDefaultAsync(t => t.TaxDefinitionId.Value == request.SellTaxDefinitionId);
+
+        if (sellTax == null)
+        {
+            return StashMavenResult<AddCatalogItemResponse>.Error(
+                $"Tax definition {request.SellTaxDefinitionId} not found");
         }
 
         CatalogItemId catalogItemId = new(Guid.NewGuid().ToString());
@@ -62,7 +72,18 @@ public class AddCatalogItemHandler(
             Sku = request.Sku,
             Name = request.Name,
             UnitOfMeasure = request.UnitOfMeasure,
-            TaxDefinitionId = taxDefinition.TaxDefinitionId,
+            BuyTax = new CatalogItemTaxReference
+            {
+                Name = buyTax.Name,
+                Rate = buyTax.Rate,
+                TaxDefinitionIdValue = buyTax.TaxDefinitionId.Value
+            },
+            SellTax = new CatalogItemTaxReference
+            {
+                Name = sellTax.Name,
+                Rate = sellTax.Rate,
+                TaxDefinitionIdValue = sellTax.TaxDefinitionId.Value
+            },
             CreatedOn = DateTime.UtcNow,
             UpdatedOn = DateTime.UtcNow
         };

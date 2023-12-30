@@ -53,20 +53,19 @@ public class AddRecordToShipment(
             return StashMavenResult.Error($"Inventory item {request.InventoryItemId} not found");
         }
 
-        TaxDefinition? taxDefinition = await context.TaxDefinitions
-            .SingleOrDefaultAsync(t => t.TaxDefinitionId.Value == inventoryItem.TaxDefinitionId.Value);
 
-        if (taxDefinition == null)
-        {
-            return StashMavenResult.Error($"Tax definition {inventoryItem.TaxDefinitionId.Value} not found");
-        }
 
         shipment.Records.Add(new ShipmentRecord
         {
             Quantity = request.Quantity,
             UnitOfMeasure = inventoryItem.UnitOfMeasure,
             UnitPrice = request.UnitPrice,
-            TaxRate = taxDefinition.Rate,
+            TaxRate = shipment.Kind.Direction switch
+            {
+                ShipmentDirection.In => inventoryItem.BuyTax.Rate,
+                ShipmentDirection.Out => inventoryItem.SellTax.Rate,
+                _ => -1
+            },
             InventoryItem = inventoryItem
         });
 

@@ -1,8 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
-using StashMaven.WebApi.Data;
 
 namespace StashMaven.WebApi.Features.Inventory;
 
@@ -38,6 +35,8 @@ public class AcceptShipment(
             .Include(s => s.Records)
             .ThenInclude(r => r.InventoryItem)
             .Include(s => s.Stockpile)
+            .Include(s => s.Partner)
+            .Include(s => s.PartnerReference)
             .FirstOrDefaultAsync(s => s.ShipmentId.Value == shipmentId);
 
         if (shipment == null)
@@ -45,26 +44,27 @@ public class AcceptShipment(
             return StashMavenResult.Error($"Shipment {shipmentId} not found");
         }
 
-        if (shipment.SupplierId is null)
+        if (shipment.PartnerReference is null || shipment.Partner is null)
         {
-            return StashMavenResult.Error($"Shipment {shipmentId} has no supplier");
+            return StashMavenResult.Error($"Shipment {shipmentId} has no partner");
         }
 
-        if (shipment.ShipmentAcceptance != ShipmentAcceptance.Pending)
+        if (shipment.Acceptance != ShipmentAcceptance.Pending)
         {
             return StashMavenResult.Error($"Shipment {shipmentId} is not pending");
         }
 
-        shipment.ShipmentAcceptance = ShipmentAcceptance.Accepted;
+        shipment.Acceptance = ShipmentAcceptance.Accepted;
         shipment.UpdatedOn = DateTime.UtcNow;
 
         foreach (IGrouping<InventoryItem, ShipmentRecord> recordGroup
                  in shipment.Records.GroupBy(x => x.InventoryItem))
         {
-            recordGroup.Key.Quantity += (int)shipment.Kind.ShipmentDirection * recordGroup.Sum(x => x.Quantity);
+            recordGroup.Key.Quantity += (int)shipment.Kind.Direction * recordGroup.Sum(x => x.Quantity);
         }
 
         SequenceGenerator? sequenceGenerator = await context.SequenceGenerators
+            .Include(x => x.Entries)
             .FirstOrDefaultAsync(x => x.SequenceGeneratorId.Value == shipment.Kind.SequenceGeneratorId.Value);
 
         if (sequenceGenerator == null)
@@ -72,12 +72,17 @@ public class AcceptShipment(
             return StashMavenResult.Error($"Sequence generator {shipment.Kind.SequenceGeneratorId.Value} not found.");
         }
 
-        shipment.ShipmentSeqId = shipment.ShipmentSeqId = GenerateNextSequence(
-            sequenceGenerator,
-            shipment.Stockpile,
-            shipment.Kind);
-
-        sequenceGenerator.NextValue++;
+        try
+        {
+            shipment.SequenceNumber = shipment.SequenceNumber = GenerateNextSequence(
+                sequenceGenerator,
+                shipment.Stockpile,
+                shipment.Kind);
+        }
+        catch (StashMavenException sme)
+        {
+            return StashMavenResult.Error(sme.Message);
+        }
 
         bool changesSaved = false;
         while (!changesSaved)
@@ -121,7 +126,7 @@ public class AcceptShipment(
 
                                 decimal quantityChange = shipment.Records
                                     .Where(x => x.InventoryItem == currentInventoryItem)
-                                    .Sum(x => x.Quantity * (int)shipment.Kind.ShipmentDirection);
+                                    .Sum(x => x.Quantity * (int)shipment.Kind.Direction);
 
                                 proposedValues[property] = (decimal)databaseValue + quantityChange;
                             }
@@ -129,16 +134,22 @@ public class AcceptShipment(
                             entry.OriginalValues.SetValues(databaseValues);
                             break;
                         }
-                        case SequenceGenerator:
+                        case SequenceEntry:
 
                             await entry.ReloadAsync();
 
-                            shipment.ShipmentSeqId = GenerateNextSequence(
-                                sequenceGenerator,
-                                shipment.Stockpile,
-                                shipment.Kind);
+                            try
+                            {
+                                shipment.SequenceNumber = GenerateNextSequence(
+                                    sequenceGenerator,
+                                    shipment.Stockpile,
+                                    shipment.Kind);
+                            }
+                            catch (StashMavenException sme)
+                            {
+                                return StashMavenResult.Error(sme.Message);
+                            }
 
-                            sequenceGenerator.NextValue++;
                             break;
                     }
                 }
@@ -148,13 +159,25 @@ public class AcceptShipment(
         return StashMavenResult.Success();
     }
 
-    private ShipmentSeqId GenerateNextSequence(
+    private ShipmentSequenceNumber GenerateNextSequence(
         SequenceGenerator sequenceGenerator,
         Stockpile stockpile,
         ShipmentKind shipmentKind)
     {
+        SequenceEntry? entry = sequenceGenerator.Entries
+            .FirstOrDefault(x => x.Delimiter == stockpile.ShortCode && x.Group == shipmentKind.ShortCode);
+
+        if (entry == null)
+        {
+            throw new StashMavenException(
+                $"Sequence entry for stockpile {stockpile.Name} not found. This should never happen.");
+        }
+
         string shipmentSequenceIdentifier =
-            $"{shipmentKind.ShortCode} {sequenceGenerator.NextValue}/{stockpile.ShortCode}/{DateTime.UtcNow.Year:YY}";
-        return new ShipmentSeqId(shipmentSequenceIdentifier);
+            $"{entry.Group} {entry.NextValue}/{entry.Delimiter}/{DateTime.UtcNow:yy}";
+
+        entry.NextValue += 1;
+
+        return new ShipmentSequenceNumber(shipmentSequenceIdentifier);
     }
 }

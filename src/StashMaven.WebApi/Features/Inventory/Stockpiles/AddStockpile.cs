@@ -43,6 +43,24 @@ public class AddStockpileHandler(StashMavenContext context)
             ShortCode = request.ShortCode
         };
 
+        List<ShipmentKind> shipmentKinds = await context.ShipmentKinds.ToListAsync();
+
+        SequenceGenerator sequenceGenerator = new()
+        {
+            SequenceGeneratorId = new SequenceGeneratorId(Guid.NewGuid().ToString()),
+            Version = 0,
+        };
+
+        sequenceGenerator.Entries = shipmentKinds.Select(x => new SequenceEntry
+            {
+                Group = request.ShortCode,
+                Delimiter = x.ShortCode,
+                NextValue = 1,
+                SequenceGenerator = sequenceGenerator,
+                Version = 0
+            })
+            .ToList();
+
         await context.Stockpiles.AddAsync(stockpile);
 
         try

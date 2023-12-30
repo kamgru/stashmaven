@@ -28,12 +28,50 @@ public class TaxDefinition
 
     public class TypeConfig : IEntityTypeConfiguration<TaxDefinition>
     {
-        public void Configure(EntityTypeBuilder<TaxDefinition> builder)
+        public void Configure(
+            EntityTypeBuilder<TaxDefinition> builder)
         {
             builder.ToTable("TaxDefinition", "com");
             builder.OwnsOne(e => e.TaxDefinitionId)
                 .Property(e => e.Value)
                 .HasColumnName("TaxDefinitionId");
+        }
+    }
+}
+
+public class CompanyOption
+{
+    public int Id { get; set; }
+    public required string Key { get; set; }
+    public required string Value { get; set; }
+
+    public class TypeConfig : IEntityTypeConfiguration<CompanyOption>
+    {
+        public void Configure(
+            EntityTypeBuilder<CompanyOption> builder)
+        {
+            builder.ToTable("CompanyOption", "com");
+        }
+    }
+}
+
+public class StashMavenOption
+{
+    public static class Keys
+    {
+        public const string DefaultStockpileShortCode = "defaultStockpileShortCode";
+    }
+
+    public int Id { get; set; }
+    public required string Key { get; set; }
+    public required string Value { get; set; }
+
+    public class TypeConfig : IEntityTypeConfiguration<StashMavenOption>
+    {
+        public void Configure(
+            EntityTypeBuilder<StashMavenOption> builder)
+        {
+            builder.ToTable("StashMavenOption", "com");
         }
     }
 }

@@ -38,11 +38,23 @@ public class AddShipmentKind(StashMavenContext context)
     public async Task<StashMavenResult<AddShipmentKindResponse>> AddShipmentKindAsync(
         AddShipmentKindRequest request)
     {
+        List<Stockpile> stockpiles = await context.Stockpiles.ToListAsync();
+
         SequenceGenerator sequenceGenerator = new()
         {
             SequenceGeneratorId = new SequenceGeneratorId(Guid.NewGuid().ToString()),
-            NextValue = 1
+            Version = 0,
         };
+
+        sequenceGenerator.Entries = stockpiles.Select(x => new SequenceEntry
+            {
+                Group = request.ShortCode,
+                Delimiter = x.ShortCode,
+                NextValue = 1,
+                SequenceGenerator = sequenceGenerator,
+                Version = 0
+            })
+            .ToList();
 
         ShipmentKind shipmentKind = new()
         {
@@ -50,7 +62,7 @@ public class AddShipmentKind(StashMavenContext context)
             SequenceGeneratorId = sequenceGenerator.SequenceGeneratorId,
             Name = request.Name,
             ShortCode = request.ShortCode,
-            ShipmentDirection = request.Direction
+            Direction = request.Direction
         };
 
         context.ShipmentKinds.Add(shipmentKind);

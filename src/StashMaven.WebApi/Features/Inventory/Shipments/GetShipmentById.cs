@@ -45,7 +45,7 @@ public class GetShipmentByIdHandler(
 
     public class GetShipmentByIdResponse
     {
-        public string? SupplierId { get; set; }
+        public string? PartnerId { get; set; }
         public Currency Currency { get; set; }
         public ShipmentDirection ShipmentDirection { get; set; }
         public List<ShipmentRecord> Records { get; set; } = [];
@@ -55,10 +55,10 @@ public class GetShipmentByIdHandler(
         GetShipmentByIdRequest request)
     {
         Shipment? shipment = await context.Shipments
-            .Include(s => s.SupplierId)
             .Include(s => s.Kind)
             .Include(s => s.Records)
             .ThenInclude(shipmentRecord => shipmentRecord.InventoryItem)
+            .Include(shipment => shipment.PartnerReference)
             .SingleOrDefaultAsync(s => s.ShipmentId.Value == request.ShipmentId);
 
         if (shipment == null)
@@ -68,9 +68,9 @@ public class GetShipmentByIdHandler(
 
         return StashMavenResult<GetShipmentByIdResponse>.Success(new GetShipmentByIdResponse
         {
-            SupplierId = shipment.SupplierId?.Value,
+            PartnerId = shipment.Partner?.PartnerId.Value,
             Currency = shipment.Currency,
-            ShipmentDirection = shipment.Kind.ShipmentDirection,
+            ShipmentDirection = shipment.Kind.Direction,
             Records = shipment.Records.Select(r => new ShipmentRecord
             {
                 InventoryItemId = r.InventoryItem.InventoryItemId.Value,

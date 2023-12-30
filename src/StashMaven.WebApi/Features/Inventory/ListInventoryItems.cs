@@ -62,8 +62,6 @@ public class ListInventoryItemsHandler(StashMavenContext context)
         request.PageSize = Math.Clamp(request.PageSize, MinPageSize, MaxPageSize);
         request.Page = Math.Max(request.Page, MinPage);
 
-        List<TaxDefinition> taxDefinitions = await context.TaxDefinitions.ToListAsync();
-
         IQueryable<InventoryItem> inventoryItems = context.Stockpiles
             .Where(x => x.StockpileId.Value == request.StockpileId)
             .SelectMany(x => x.InventoryItems)
@@ -74,7 +72,7 @@ public class ListInventoryItemsHandler(StashMavenContext context)
                 Sku = i.Sku,
                 Quantity = i.Quantity,
                 PurchasePrice = i.LastPurchasePrice,
-                TaxRate = taxDefinitions.First(t => t.TaxDefinitionId == i.TaxDefinitionId).Rate
+                TaxRate = i.SellTax.Rate
             });
 
         if (!string.IsNullOrWhiteSpace(request.Search) && request.Search.Length >= MinSearchLength)

@@ -35,7 +35,9 @@ public class DeleteTaxDefinitionHandler(StashMavenContext context)
         DeleteTaxDefinitionRequest request)
     {
         if (await context.CatalogItems
-                .AnyAsync(x => x.TaxDefinitionId.Value == request.TaxDefinitionId))
+                .AnyAsync(x =>
+                    x.BuyTax.TaxDefinitionIdValue == request.TaxDefinitionId
+                    || x.SellTax.TaxDefinitionIdValue == request.TaxDefinitionId))
         {
             return StashMavenResult.Error("Tax definition is in use and cannot be deleted");
         }

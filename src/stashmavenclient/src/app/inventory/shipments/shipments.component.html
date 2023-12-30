@@ -1,0 +1,13 @@
+<div class="pt-4">
+    <button class="btn w-24" type="button">Add</button>
+    <div class="top-0">
+        <ul>
+            <li *ngFor="let kind of shipmentKinds">
+                <button class="btn " type="button" (click)="onAdd(kind)">{{kind.shortCode}} - {{kind.name}}</button>
+            </li>
+        </ul>
+    </div>
+</div>
+<div *ngIf="uiState == 'add'">
+    <app-add-shipment></app-add-shipment>
+</div>

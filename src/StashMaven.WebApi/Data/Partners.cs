@@ -38,6 +38,7 @@ public class Partner
     public List<TaxIdentifier> TaxIdentifiers { get; set; } = [];
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
+    public List<Shipment> Shipments { get; set; } = [];
 
     public class TypeConfig : IEntityTypeConfiguration<Partner>
     {

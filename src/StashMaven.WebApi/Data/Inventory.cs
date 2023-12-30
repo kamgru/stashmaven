@@ -30,11 +30,15 @@ public record SequenceGeneratorId(
 public record ShipmentId(
     string Value);
 
-public record SupplierId(
+public record ShipmentSequenceNumber(
     string Value);
 
-public record ShipmentSeqId(
-    string Value);
+public class InventoryItemTaxReference
+{
+    public required string Name { get; set; }
+    public decimal Rate { get; set; }
+    public required string TaxDefintionIdValue { get; set; }
+}
 
 public class InventoryItem
 {
@@ -45,7 +49,8 @@ public class InventoryItem
     public decimal Quantity { get; set; }
     public UnitOfMeasure UnitOfMeasure { get; set; }
     public decimal LastPurchasePrice { get; set; }
-    public required TaxDefinitionId TaxDefinitionId { get; set; }
+    public required InventoryItemTaxReference BuyTax { get; set; }
+    public required InventoryItemTaxReference SellTax { get; set; }
     public ICollection<ShipmentRecord> ShipmentRecords { get; set; } = new List<ShipmentRecord>();
     public Stockpile Stockpile { get; set; } = null!;
 
@@ -61,11 +66,10 @@ public class InventoryItem
             builder.OwnsOne(e => e.InventoryItemId)
                 .Property(e => e.Value)
                 .HasColumnName("InventoryItemId");
-            builder.OwnsOne(e => e.TaxDefinitionId)
-                .Property(e => e.Value)
-                .HasColumnName("TaxDefinitionId");
             builder.Property(e => e.Version)
                 .IsRowVersion();
+            builder.ComplexProperty(e => e.BuyTax);
+            builder.ComplexProperty(e => e.SellTax);
         }
     }
 }
@@ -97,7 +101,7 @@ public class ShipmentKind
     public required SequenceGeneratorId SequenceGeneratorId { get; set; }
     public required string Name { get; set; }
     public required string ShortCode { get; set; }
-    public ShipmentDirection ShipmentDirection { get; set; }
+    public ShipmentDirection Direction { get; set; }
     public List<Shipment> Shipments { get; set; } = [];
 
     public class TypeConfig : IEntityTypeConfiguration<ShipmentKind>
@@ -118,13 +122,28 @@ public class ShipmentKind
     }
 }
 
+public class ShipmentPartnerReference
+{
+    public int Id { get; set; }
+    public required string LegalName { get; set; }
+    public required string Address { get; set; }
+
+    public class TypeConfig : IEntityTypeConfiguration<ShipmentPartnerReference>
+    {
+        public void Configure(
+            EntityTypeBuilder<ShipmentPartnerReference> builder)
+        {
+            builder.ToTable("ShipmentPartnerReference", "inv");
+        }
+    }
+
+}
 public class Shipment
 {
     public int Id { get; set; }
     public required ShipmentId ShipmentId { get; set; }
-    public SupplierId? SupplierId { get; set; }
-    public ShipmentSeqId? ShipmentSeqId { get; set; }
-    public ShipmentAcceptance ShipmentAcceptance { get; set; }
+    public ShipmentSequenceNumber? SequenceNumber { get; set; }
+    public ShipmentAcceptance Acceptance { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
     public Currency Currency { get; set; }
@@ -132,6 +151,8 @@ public class Shipment
     public ShipmentKind Kind { get; set; } = null!;
     public SourceReference? SourceReference { get; set; }
     public Stockpile Stockpile { get; set; } = null!;
+    public ShipmentPartnerReference? PartnerReference { get; set; }
+    public Partner? Partner { get; set; }
 
     public class TypeConfig : IEntityTypeConfiguration<Shipment>
     {
@@ -142,12 +163,34 @@ public class Shipment
             builder.OwnsOne(e => e.ShipmentId)
                 .Property(e => e.Value)
                 .HasColumnName("ShipmentId");
-            builder.OwnsOne(e => e.SupplierId)
+            builder.OwnsOne(e => e.SequenceNumber)
                 .Property(e => e.Value)
-                .HasColumnName("SupplierId");
-            builder.OwnsOne(e => e.ShipmentSeqId)
-                .Property(e => e.Value)
-                .HasColumnName("ShipmentSeqId");
+                .HasColumnName("SequenceNumber");
+        }
+    }
+}
+
+public class SequenceEntry
+{
+    public int Id { get; set; }
+    public SequenceGenerator SequenceGenerator { get; set; } = null!;
+    public required string Delimiter { get; set; }
+    public required string Group { get; set; }
+    public int NextValue { get; set; }
+
+    [Timestamp]
+    public uint Version { get; set; }
+
+    public class TypeConfig : IEntityTypeConfiguration<SequenceEntry>
+    {
+        public void Configure(
+            EntityTypeBuilder<SequenceEntry> builder)
+        {
+            builder.ToTable("SequenceEntry", "inv");
+            builder.HasIndex(e => new {e.Group, e.Delimiter})
+                .IsUnique();
+            builder.Property(e => e.Version)
+                .IsRowVersion();
         }
     }
 }
@@ -156,7 +199,7 @@ public class SequenceGenerator
 {
     public int Id { get; set; }
     public required SequenceGeneratorId SequenceGeneratorId { get; set; }
-    public int NextValue { get; set; }
+    public ICollection<SequenceEntry> Entries { get; set; } = new List<SequenceEntry>();
 
     [Timestamp]
     public uint Version { get; set; }

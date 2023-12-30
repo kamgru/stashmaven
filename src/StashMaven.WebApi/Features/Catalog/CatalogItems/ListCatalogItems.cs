@@ -59,18 +59,14 @@ public class ListCatalogItemsHandler(
         await context.TaxDefinitions.ToListAsync();
 
         IQueryable<CatalogItem> catalogItems = context.CatalogItems
-            .Join(context.TaxDefinitions,
-                c => c.TaxDefinitionId.Value,
-                t => t.TaxDefinitionId.Value,
-                (c, t) => new { catalogItem = c, taxDefinition = t })
             .Select(c => new CatalogItem
             {
-                CatalogItemId = c.catalogItem.CatalogItemId.Value,
-                Sku = c.catalogItem.Sku,
-                Name = c.catalogItem.Name,
-                UnitOfMeasure = c.catalogItem.UnitOfMeasure,
-                Tax = c.taxDefinition.Name,
-                CreatedOn = c.catalogItem.CreatedOn,
+                CatalogItemId = c.CatalogItemId.Value,
+                Sku = c.Sku,
+                Name = c.Name,
+                UnitOfMeasure = c.UnitOfMeasure,
+                Tax = c.SellTax.Name,
+                CreatedOn = c.CreatedOn,
             });
 
         if (!string.IsNullOrWhiteSpace(request.Search) && request.Search.Length >= MinSearchLength)

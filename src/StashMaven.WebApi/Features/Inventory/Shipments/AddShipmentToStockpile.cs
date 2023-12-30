@@ -1,11 +1,6 @@
-using Microsoft.AspNetCore.Authorization;
-
 namespace StashMaven.WebApi.Features.Inventory.Shipments;
 
-[Authorize]
-[ApiController]
-[Route("api/v1/[controller]")]
-public partial class ShipmentController : ControllerBase
+public partial class ShipmentController
 {
     [HttpPost]
     public async Task<IActionResult> AddShipmentAsync(

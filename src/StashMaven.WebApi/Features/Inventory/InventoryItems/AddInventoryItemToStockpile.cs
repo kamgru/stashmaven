@@ -71,7 +71,18 @@ public class AddInventoryItemHandler(
             InventoryItemId = new InventoryItemId(catalogItem.CatalogItemId.Value),
             Sku = catalogItem.Sku,
             Name = catalogItem.Name,
-            TaxDefinitionId = catalogItem.TaxDefinitionId,
+            BuyTax = new InventoryItemTaxReference
+            {
+                Name = catalogItem.BuyTax.Name,
+                Rate = catalogItem.BuyTax.Rate,
+                TaxDefintionIdValue = catalogItem.BuyTax.TaxDefinitionIdValue
+            },
+            SellTax = new InventoryItemTaxReference
+            {
+                Name = catalogItem.SellTax.Name,
+                Rate = catalogItem.SellTax.Rate,
+                TaxDefintionIdValue = catalogItem.SellTax.TaxDefinitionIdValue
+            },
             Version = 0,
             Stockpile = stockpile
         };

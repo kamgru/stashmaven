@@ -9,7 +9,7 @@ public class StashMavenClient(HttpClient client)
         public required string TaxDefinitionId { get; set; }
     }
 
-    public async Task<string> AddTaxDefinition(
+    public async Task<string> AddTaxDefinitionAsync(
         string name,
         decimal rate)
     {
@@ -31,7 +31,7 @@ public class StashMavenClient(HttpClient client)
         public required string StockpileId { get; set; }
     }
 
-    public async Task<string> AddStockpile(
+    public async Task<string> AddStockpileAsync(
         string name,
         string shortCode)
     {
@@ -53,7 +53,7 @@ public class StashMavenClient(HttpClient client)
         public required string InventoryItemId { get; set; }
     }
 
-    public async Task<string> AddInventoryItem(
+    public async Task<string> AddInventoryItemAsync(
         string catalogItemId,
         string stockpileId)
     {
@@ -75,7 +75,7 @@ public class StashMavenClient(HttpClient client)
         public required string CatalogItemId { get; set; }
     }
 
-    public async Task<string> AddCatalogItem(
+    public async Task<string> AddCatalogItemAsync(
         string sku,
         string name,
         string unitOfMeasure,
@@ -101,7 +101,7 @@ public class StashMavenClient(HttpClient client)
         public required string ShipmentKindId { get; set; }
     }
 
-    public async Task<string> AddShipmentKind(
+    public async Task<string> AddShipmentKindAsync(
         string name,
         string shortCode,
         string direction)
@@ -118,5 +118,20 @@ public class StashMavenClient(HttpClient client)
         AddShipmentKindResponse? result = await response.Content.ReadFromJsonAsync<AddShipmentKindResponse>();
         return result?.ShipmentKindId
                ?? throw new InvalidOperationException("Unable to deserialize shipment kind");
+    }
+
+    public async Task UpsertOptionAsync(
+        string key,
+        string value,
+        string type)
+    {
+        HttpResponseMessage response = await client.PutAsJsonAsync("api/v1/option", new
+        {
+            key,
+            value,
+            type
+        });
+        
+        response.EnsureSuccessStatusCode();
     }
 }
