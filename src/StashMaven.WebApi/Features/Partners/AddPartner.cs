@@ -3,20 +3,28 @@ namespace StashMaven.WebApi.Features.Partners;
 public partial class PartnerController
 {
     [HttpPost]
-    public async Task<IActionResult> CreatePartnerAsync(
-        CreatePartnerHandler.CreatePartnerRequest request,
+    [ProducesResponseType<AddPartnerHandler.AddPartnerResponse>(StatusCodes.Status201Created)]
+    [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AddPartnerAsync(
+        AddPartnerHandler.AddPartnerRequest request,
         [FromServices]
-        CreatePartnerHandler handler)
+        AddPartnerHandler handler)
     {
-        PartnerId partnerId = await handler.CreatePartnerAsync(request);
-        return Created($"/api/v1/partner/{partnerId}", partnerId.ToString());
+        StashMavenResult<AddPartnerHandler.AddPartnerResponse> result = await handler.AddPartnerAsync(request);
+
+        if (!result.IsSuccess || result.Data is null)
+        {
+            return BadRequest(result.Message);
+        }
+
+        return Created($"/api/v1/partner/{result.Data.PartnerId}", result.Data);
     }
 }
 
 [Injectable]
-public class CreatePartnerHandler(StashMavenContext context)
+public class AddPartnerHandler(StashMavenContext context)
 {
-    public class CreatePartnerRequest
+    public class AddPartnerRequest
     {
         public class PartnerAddress
         {
@@ -33,21 +41,27 @@ public class CreatePartnerHandler(StashMavenContext context)
 
         public class TaxIdentifier
         {
-            public required TaxIdentifierType TaxIdentifierType { get; set; }
+            public required TaxIdentifierType Type { get; set; }
             public required string Value { get; set; }
             public bool IsPrimary { get; set; }
         }
 
-        [MinLength(3)]
+        [MinLength(Partner.CustomIdentifierMinLength)]
+        [MaxLength(Partner.CustomIdentifierMaxLength)]
         public required string CustomIdentifier { get; set; }
 
+        [MinLength(Partner.LegalNameMinLength)]
+        [MaxLength(Partner.LegalNameMaxLength)]
         public required string LegalName { get; set; }
-        public required List<TaxIdentifier> BusinessIdentifications { get; set; }
+
+        public required List<TaxIdentifier> TaxIdentifiers { get; set; } = [];
         public required PartnerAddress Address { get; set; }
     }
 
-    public async Task<PartnerId> CreatePartnerAsync(
-        CreatePartnerRequest request)
+    public record AddPartnerResponse(string PartnerId);
+
+    public async Task<StashMavenResult<AddPartnerResponse>> AddPartnerAsync(
+        AddPartnerRequest request)
     {
         PartnerId partnerId = new(Guid.NewGuid().ToString());
 
@@ -78,10 +92,10 @@ public class CreatePartnerHandler(StashMavenContext context)
                 CreatedOn = DateTime.UtcNow,
                 UpdatedOn = DateTime.UtcNow
             },
-            TaxIdentifiers = request.BusinessIdentifications
+            TaxIdentifiers = request.TaxIdentifiers
                 .Select(bi => new TaxIdentifier
                 {
-                    Type = bi.TaxIdentifierType,
+                    Type = bi.Type,
                     Value = bi.Value,
                     IsPrimary = bi.IsPrimary,
                     CreatedOn = DateTime.UtcNow,
@@ -93,6 +107,6 @@ public class CreatePartnerHandler(StashMavenContext context)
         context.Partners.Add(partner);
         await context.SaveChangesAsync();
 
-        return partnerId;
+        return StashMavenResult<AddPartnerResponse>.Success(new AddPartnerResponse(partnerId.Value));
     }
 }

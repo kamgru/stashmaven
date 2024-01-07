@@ -17,7 +17,6 @@ public class CatalogItem
     public string? TaxDefinitionId { get; set; }
 }
 
-
 public class ShipmentKind
 {
     public string? Name { get; set; }
@@ -30,7 +29,6 @@ public class Option
     public string? Key { get; set; }
     public string? Value { get; set; }
 }
-
 
 public class OptionsCollection
 {
@@ -47,12 +45,12 @@ class Program
         string optionsJson = await File.ReadAllTextAsync("options.json");
 
         OptionsCollection options = JsonSerializer.Deserialize<OptionsCollection>(optionsJson,
-                                                 new JsonSerializerOptions
-                                                 {
-                                                     PropertyNameCaseInsensitive = true
-                                                 })
-                                             ?? throw new InvalidOperationException(
-                                                 "Unable to deserialize options");
+                                        new JsonSerializerOptions
+                                        {
+                                            PropertyNameCaseInsensitive = true
+                                        })
+                                    ?? throw new InvalidOperationException(
+                                        "Unable to deserialize options");
 
         foreach (Option option in options.Company)
         {
@@ -67,12 +65,12 @@ class Program
         string shipmentKindsJson = await File.ReadAllTextAsync("shipment_kinds.json");
 
         List<ShipmentKind> shipmentKinds = JsonSerializer.Deserialize<List<ShipmentKind>>(shipmentKindsJson,
-                                                 new JsonSerializerOptions
-                                                 {
-                                                     PropertyNameCaseInsensitive = true
-                                                 })
-                                             ?? throw new InvalidOperationException(
-                                                 "Unable to deserialize shipment kinds");
+                                               new JsonSerializerOptions
+                                               {
+                                                   PropertyNameCaseInsensitive = true
+                                               })
+                                           ?? throw new InvalidOperationException(
+                                               "Unable to deserialize shipment kinds");
 
         foreach (ShipmentKind shipmentKind in shipmentKinds)
         {
@@ -109,17 +107,19 @@ class Program
         List<string> catalogItemIds = [];
         foreach (CatalogItem catalogItem in catalogItems)
         {
-            string catalogItemId = await client.AddCatalogItemAsync(catalogItem.Sku!, catalogItem.Name!, units[random.Next(0, 3)],
+            string catalogItemId = await client.AddCatalogItemAsync(
+                catalogItem.Sku!,
+                catalogItem.Name!,
+                units[random.Next(0, 3)],
+                taxDefinitions[random.Next(0, taxDefinitions.Count)].TaxDefinitionId!,
                 taxDefinitions[random.Next(0, taxDefinitions.Count)].TaxDefinitionId!);
             catalogItemIds.Add(catalogItemId);
         }
 
-        string stockpileId = await client.AddStockpileAsync("Default", "DEF");
-        foreach(string catalogItemId in catalogItemIds)
+        string stockpileId = await client.AddStockpileAsync("Default", "M1");
+        foreach (string catalogItemId in catalogItemIds)
         {
             await client.AddInventoryItemAsync(catalogItemId, stockpileId);
         }
-
-
     }
 }

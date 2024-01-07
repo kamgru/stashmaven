@@ -79,14 +79,16 @@ public class StashMavenClient(HttpClient client)
         string sku,
         string name,
         string unitOfMeasure,
-        string taxDefinitionId)
+        string buyTaxDefinitionId,
+        string sellTaxDefinitionId)
     {
         HttpResponseMessage response = await client.PostAsJsonAsync("api/v1/CatalogItem", new
         {
             sku,
             name,
             unitOfMeasure,
-            taxDefinitionId
+            buyTaxDefinitionId,
+            sellTaxDefinitionId
         });
 
         response.EnsureSuccessStatusCode();
@@ -131,7 +133,11 @@ public class StashMavenClient(HttpClient client)
             value,
             type
         });
-        
+
+        if (!response.IsSuccessStatusCode)
+        {
+            Console.WriteLine(await response.Content.ReadAsStringAsync());
+        }
         response.EnsureSuccessStatusCode();
     }
 }

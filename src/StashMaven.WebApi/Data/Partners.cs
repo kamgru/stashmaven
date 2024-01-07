@@ -30,6 +30,11 @@ public record PartnerId(
 
 public class Partner
 {
+    public const int LegalNameMaxLength = 2048;
+    public const int CustomIdentifierMaxLength = 50;
+    public const int LegalNameMinLength = 3;
+    public const int CustomIdentifierMinLength = 3;
+    
     public int Id { get; set; }
     public required PartnerId PartnerId { get; set; }
     public required string LegalName { get; set; }
@@ -48,6 +53,10 @@ public class Partner
             builder.OwnsOne(e => e.PartnerId)
                 .Property(e => e.Value)
                 .HasColumnName("PartnerId");
+            builder.Property(e => e.LegalName)
+                .HasMaxLength(LegalNameMaxLength);
+            builder.Property(e => e.CustomIdentifier)
+                .HasMaxLength(CustomIdentifierMaxLength);
         }
     }
 }
