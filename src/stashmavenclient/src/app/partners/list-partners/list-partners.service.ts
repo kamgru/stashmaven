@@ -17,7 +17,7 @@ export class ListPartnersRequest {
 }
 
 export interface ListPartnersResponse {
-    partners: Partner[]
+    items: Partner[]
     totalCount: number
 }
 

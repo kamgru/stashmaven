@@ -32,6 +32,14 @@ export interface IAddShipmentResponse {
     shipmentId: string;
 }
 
+export class AddPartnerToShipmentRequest {
+    partnerId: string;
+
+    constructor(partnerId: string) {
+        this.partnerId = partnerId;
+    }
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -52,6 +60,10 @@ export class ShipmentsService {
 
     addShipment(req: AddShipmentRequest): Observable<IAddShipmentResponse> {
         return this.http.post<IAddShipmentResponse>('http://localhost:5253/api/v1/shipment', req);
+    }
+
+    addPartnerToShipment(shipmentId: string, req: AddPartnerToShipmentRequest): Observable<void> {
+        return this.http.patch<void>(`http://localhost:5253/api/v1/shipment/${shipmentId}/add-partner`, req);
     }
 
 }

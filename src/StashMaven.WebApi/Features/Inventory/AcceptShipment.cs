@@ -36,7 +36,7 @@ public class AcceptShipment(
             .ThenInclude(r => r.InventoryItem)
             .Include(s => s.Stockpile)
             .Include(s => s.Partner)
-            .Include(s => s.PartnerReference)
+            .Include(s => s.PartnerRefSnapshot)
             .FirstOrDefaultAsync(s => s.ShipmentId.Value == shipmentId);
 
         if (shipment == null)
@@ -44,7 +44,7 @@ public class AcceptShipment(
             return StashMavenResult.Error($"Shipment {shipmentId} not found");
         }
 
-        if (shipment.PartnerReference is null || shipment.Partner is null)
+        if (shipment.PartnerRefSnapshot is null || shipment.Partner is null)
         {
             return StashMavenResult.Error($"Shipment {shipmentId} has no partner");
         }

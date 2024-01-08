@@ -289,6 +289,27 @@ namespace StashMaven.WebApi.Data.Migrations
                     b.ToTable("Partner", "prt");
                 });
 
+            modelBuilder.Entity("StashMaven.WebApi.Data.PartnerRefSnapshot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LegalName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShipmentPartnerReference", "inv");
+                });
+
             modelBuilder.Entity("StashMaven.WebApi.Data.SequenceEntry", b =>
                 {
                     b.Property<int>("Id")
@@ -369,7 +390,7 @@ namespace StashMaven.WebApi.Data.Migrations
                     b.Property<int?>("PartnerId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("PartnerReferenceId")
+                    b.Property<int?>("PartnerRefSnapshotId")
                         .HasColumnType("integer");
 
                     b.Property<int?>("SourceReferenceId")
@@ -387,7 +408,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
                     b.HasIndex("PartnerId");
 
-                    b.HasIndex("PartnerReferenceId");
+                    b.HasIndex("PartnerRefSnapshotId");
 
                     b.HasIndex("SourceReferenceId");
 
@@ -421,27 +442,6 @@ namespace StashMaven.WebApi.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ShipmentKind", "inv");
-                });
-
-            modelBuilder.Entity("StashMaven.WebApi.Data.ShipmentPartnerReference", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LegalName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ShipmentPartnerReference");
                 });
 
             modelBuilder.Entity("StashMaven.WebApi.Data.ShipmentRecord", b =>
@@ -764,9 +764,9 @@ namespace StashMaven.WebApi.Data.Migrations
                         .WithMany("Shipments")
                         .HasForeignKey("PartnerId");
 
-                    b.HasOne("StashMaven.WebApi.Data.ShipmentPartnerReference", "PartnerReference")
+                    b.HasOne("StashMaven.WebApi.Data.PartnerRefSnapshot", "PartnerRefSnapshot")
                         .WithMany()
-                        .HasForeignKey("PartnerReferenceId");
+                        .HasForeignKey("PartnerRefSnapshotId");
 
                     b.HasOne("StashMaven.WebApi.Data.SourceReference", "SourceReference")
                         .WithMany("Shipments")
@@ -818,7 +818,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
                     b.Navigation("Partner");
 
-                    b.Navigation("PartnerReference");
+                    b.Navigation("PartnerRefSnapshot");
 
                     b.Navigation("SequenceNumber");
 

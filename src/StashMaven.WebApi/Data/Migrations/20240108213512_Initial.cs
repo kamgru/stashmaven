@@ -63,8 +63,8 @@ namespace StashMaven.WebApi.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PartnerId = table.Column<string>(type: "text", nullable: false),
-                    LegalName = table.Column<string>(type: "text", nullable: false),
-                    CustomIdentifier = table.Column<string>(type: "text", nullable: false),
+                    LegalName = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: false),
+                    CustomIdentifier = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -108,6 +108,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "ShipmentPartnerReference",
+                schema: "inv",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -344,7 +345,7 @@ namespace StashMaven.WebApi.Data.Migrations
                     KindId = table.Column<int>(type: "integer", nullable: false),
                     SourceReferenceId = table.Column<int>(type: "integer", nullable: true),
                     StockpileId = table.Column<int>(type: "integer", nullable: false),
-                    PartnerReferenceId = table.Column<int>(type: "integer", nullable: true),
+                    PartnerRefSnapshotId = table.Column<int>(type: "integer", nullable: true),
                     PartnerId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -364,8 +365,9 @@ namespace StashMaven.WebApi.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Shipment_ShipmentPartnerReference_PartnerReferenceId",
-                        column: x => x.PartnerReferenceId,
+                        name: "FK_Shipment_ShipmentPartnerReference_PartnerRefSnapshotId",
+                        column: x => x.PartnerRefSnapshotId,
+                        principalSchema: "inv",
                         principalTable: "ShipmentPartnerReference",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -468,10 +470,10 @@ namespace StashMaven.WebApi.Data.Migrations
                 column: "PartnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shipment_PartnerReferenceId",
+                name: "IX_Shipment_PartnerRefSnapshotId",
                 schema: "inv",
                 table: "Shipment",
-                column: "PartnerReferenceId");
+                column: "PartnerRefSnapshotId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shipment_SourceReferenceId",
@@ -578,7 +580,8 @@ namespace StashMaven.WebApi.Data.Migrations
                 schema: "inv");
 
             migrationBuilder.DropTable(
-                name: "ShipmentPartnerReference");
+                name: "ShipmentPartnerReference",
+                schema: "inv");
 
             migrationBuilder.DropTable(
                 name: "SourceReference",

@@ -101,7 +101,7 @@ export class ListPartnersComponent {
             .subscribe(
                 (response: ListPartnersResponse) => {
                     this.observer?.unobserve(this.observedElement!);
-                    this.partners = response.partners;
+                    this.partners = response.items;
                     this.totalCount = response.totalCount;
                     this.firstLoadDone = true;
                     this.observer?.observe(this.observedElement!);
@@ -111,7 +111,7 @@ export class ListPartnersComponent {
         this.listPartnersService.listPartners(this.request)
             .subscribe(
                 (response: ListPartnersResponse) => {
-                    this.partners = response.partners;
+                    this.partners = response.items;
                     this.totalCount = response.totalCount;
                     this.firstLoadDone = true;
 
@@ -133,7 +133,7 @@ export class ListPartnersComponent {
             .subscribe(
                 (response: ListPartnersResponse) => {
                     this.observer?.unobserve(this.observedElement!);
-                    this.partners = [...this.partners, ...response.partners]
+                    this.partners = [...this.partners, ...response.items]
                     this.totalCount = response.totalCount;
                     this.firstLoadDone = true;
 

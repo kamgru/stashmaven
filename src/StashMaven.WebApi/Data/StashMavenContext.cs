@@ -29,6 +29,7 @@ public class StashMavenContext : DbContext
         modelBuilder.ApplyConfiguration(new Shipment.TypeConfig());
         modelBuilder.ApplyConfiguration(new ShipmentRecord.TypeConfig());
         modelBuilder.ApplyConfiguration(new ShipmentKind.TypeConfig());
+        modelBuilder.ApplyConfiguration(new PartnerRefSnapshot.TypeConfig());
         modelBuilder.ApplyConfiguration(new SourceReference.TypeConfig());
         modelBuilder.ApplyConfiguration(new InventoryItem.TypeConfig());
         modelBuilder.ApplyConfiguration(new Stockpile.TypeConfig());
@@ -48,6 +49,7 @@ public class StashMavenContext : DbContext
     public DbSet<Brand> Brands => Set<Brand>();
 
     public DbSet<Shipment> Shipments => Set<Shipment>();
+    public DbSet<PartnerRefSnapshot> PartnerRefSnapshots => Set<PartnerRefSnapshot>();
     public DbSet<ShipmentRecord> ShipmentRecords => Set<ShipmentRecord>();
     public DbSet<ShipmentKind> ShipmentKinds => Set<ShipmentKind>();
     public DbSet<SourceReference> SourceReferences => Set<SourceReference>();

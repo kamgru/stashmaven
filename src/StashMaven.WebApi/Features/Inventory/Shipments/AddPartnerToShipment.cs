@@ -4,6 +4,8 @@ public partial class ShipmentController
 {
     [HttpPatch]
     [Route("{shipmentId}/add-partner")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddPartnerToShipmentAsync(
         string shipmentId,
         AddPartnerToShipmentHandler.AddPartnerToShipmentRequest request,
@@ -37,23 +39,29 @@ public class AddPartnerToShipmentHandler(
         Shipment? shipment = await context.Shipments
             .SingleOrDefaultAsync(s => s.ShipmentId.Value == shipmentId);
 
-        if (shipment == null)
+        if (shipment is null)
         {
             return StashMavenResult.Error($"Shipment {shipmentId} not found");
         }
 
         Partner? partner = await context.Partners
+            .Include(partner => partner.Address)
             .SingleOrDefaultAsync(p => p.PartnerId.Value == request.PartnerId);
 
-        if (partner == null)
+        if (partner is null)
         {
             return StashMavenResult.Error($"Partner {request.PartnerId} not found");
         }
 
-        shipment.PartnerReference = new ShipmentPartnerReference
+        if (partner.Address is null)
+        {
+            return StashMavenResult.Error($"Partner {request.PartnerId} has no address");
+        }
+
+        shipment.PartnerRefSnapshot = new PartnerRefSnapshot
         {
             LegalName = partner.LegalName,
-            Address = partner.Address?.ToString() ?? ""
+            Address = partner.Address.ToString() ?? ""
         };
 
         shipment.Partner = partner;

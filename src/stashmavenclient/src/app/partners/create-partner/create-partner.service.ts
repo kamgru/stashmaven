@@ -9,7 +9,7 @@ export class CreatePartnerRequest {
    constructor(
          public customIdentifier: string,
          public legalName: string,
-         public businessIdentifications: TaxIdentifier[],
+         public taxIdentifiers: TaxIdentifier[],
          public address: PartnerAddress,
     ) {
     }

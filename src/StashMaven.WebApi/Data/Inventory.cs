@@ -122,16 +122,16 @@ public class ShipmentKind
     }
 }
 
-public class ShipmentPartnerReference
+public class PartnerRefSnapshot
 {
     public int Id { get; set; }
     public required string LegalName { get; set; }
     public required string Address { get; set; }
 
-    public class TypeConfig : IEntityTypeConfiguration<ShipmentPartnerReference>
+    public class TypeConfig : IEntityTypeConfiguration<PartnerRefSnapshot>
     {
         public void Configure(
-            EntityTypeBuilder<ShipmentPartnerReference> builder)
+            EntityTypeBuilder<PartnerRefSnapshot> builder)
         {
             builder.ToTable("ShipmentPartnerReference", "inv");
         }
@@ -151,7 +151,7 @@ public class Shipment
     public ShipmentKind Kind { get; set; } = null!;
     public SourceReference? SourceReference { get; set; }
     public Stockpile Stockpile { get; set; } = null!;
-    public ShipmentPartnerReference? PartnerReference { get; set; }
+    public PartnerRefSnapshot? PartnerRefSnapshot { get; set; }
     public Partner? Partner { get; set; }
 
     public class TypeConfig : IEntityTypeConfiguration<Shipment>

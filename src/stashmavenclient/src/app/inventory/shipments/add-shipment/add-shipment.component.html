@@ -1,2 +1,6 @@
-<p>add-shipment works!</p>
 {{_shipment | json}}
+<hr/>
+
+<div *ngIf="uiState == 'select-partner'">
+    <app-select-shipment-partner (onPartnerSelected)="handlePartnerSelected($event)"></app-select-shipment-partner>
+</div>

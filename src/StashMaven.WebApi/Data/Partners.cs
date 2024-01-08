@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace StashMaven.WebApi.Data;
@@ -22,6 +23,29 @@ public class Address
         {
             builder.ToTable("Address", "prt");
         }
+    }
+
+    public override string ToString()
+    {
+        StringBuilder sb = new();
+        sb.Append(Street);
+        if (!string.IsNullOrWhiteSpace(StreetAdditional))
+        {
+            sb.Append(' ');
+            sb.Append(StreetAdditional);
+        }
+        sb.Append(", ");
+        sb.Append(PostalCode);
+        sb.Append(", ");
+        sb.Append(City);
+        if (!string.IsNullOrWhiteSpace(State))
+        {
+            sb.Append(", ");
+            sb.Append(State);
+        }
+        sb.Append(", ");
+        sb.Append(CountryCode);
+        return sb.ToString();
     }
 }
 

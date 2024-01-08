@@ -1,6 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {AddShipmentService} from "./add-shipment/add-shipment.service";
 import {IShipmentKind, IStockpile, ShipmentsService} from "./shipments.service";
 import {AddShipmentComponent} from "./add-shipment/add-shipment.component";
 import {Shipment} from "./shipment";

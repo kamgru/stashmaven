@@ -50,7 +50,7 @@ public class ListPartnersHandler(
 
     public class ListPartnerResponse
     {
-        public List<Partner> Partners { get; set; } = new();
+        public List<Partner> Items { get; set; } = [];
         public int TotalCount { get; set; }
     }
 
@@ -120,7 +120,7 @@ public class ListPartnersHandler(
 
         return new ListPartnerResponse
         {
-            Partners = partnersList,
+            Items = partnersList,
             TotalCount = totalCount
         };
     }
