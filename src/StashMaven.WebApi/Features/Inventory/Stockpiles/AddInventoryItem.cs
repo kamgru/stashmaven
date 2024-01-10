@@ -1,20 +1,17 @@
-using Microsoft.AspNetCore.Authorization;
+namespace StashMaven.WebApi.Features.Inventory.Stockpiles;
 
-namespace StashMaven.WebApi.Features.Inventory.InventoryItems;
-
-[Authorize]
-[ApiController]
-[Route("api/v1/[controller]")]
-public partial class InventoryItemController : ControllerBase
+public partial class StockpileController : ControllerBase
 {
     [HttpPost]
+    [Route("{stockpileId}/inventory-items")]
     public async Task<IActionResult> AddInventoryItemAsync(
+        string stockpileId,
         AddInventoryItemHandler.AddInventoryItemRequest request,
         [FromServices]
         AddInventoryItemHandler handler)
     {
         StashMavenResult<AddInventoryItemHandler.AddInventoryItemResponse> response =
-            await handler.AddInventoryItemAsync(request);
+            await handler.AddInventoryItemAsync(stockpileId, request);
 
         if (!response.IsSuccess || response.Data is null)
         {
@@ -32,12 +29,12 @@ public class AddInventoryItemHandler(
     public class AddInventoryItemRequest
     {
         public required string CatalogItemId { get; set; }
-        public required string StockpileId { get; set; }
     }
 
     public record AddInventoryItemResponse(string InventoryItemId);
 
     public async Task<StashMavenResult<AddInventoryItemResponse>> AddInventoryItemAsync(
+        string stockpileId,
         AddInventoryItemRequest request)
     {
         CatalogItem? catalogItem = await context.CatalogItems
@@ -49,11 +46,11 @@ public class AddInventoryItemHandler(
         }
 
         Stockpile? stockpile = await context.Stockpiles
-            .FirstOrDefaultAsync(s => s.StockpileId.Value == request.StockpileId);
+            .FirstOrDefaultAsync(s => s.StockpileId.Value == stockpileId);
 
         if (stockpile == null)
         {
-            return StashMavenResult<AddInventoryItemResponse>.Error($"Stockpile {request.StockpileId} not found");
+            return StashMavenResult<AddInventoryItemResponse>.Error($"Stockpile {stockpileId} not found");
         }
 
         InventoryItem? existingItem = await context.InventoryItems
@@ -63,7 +60,7 @@ public class AddInventoryItemHandler(
         if (existingItem != null)
         {
             return StashMavenResult<AddInventoryItemResponse>.Error(
-                $"Inventory item {request.CatalogItemId} already exists in stockpile {request.StockpileId}");
+                $"Inventory item {request.CatalogItemId} already exists in stockpile {stockpileId}");
         }
 
         InventoryItem inventoryItem = new()

@@ -9,7 +9,8 @@ import {AddPartnerToShipmentRequest, ShipmentsService} from "../shipments.servic
 
 enum UiState {
     SelectPartner = 'select-partner',
-    View = 'view'
+    View = 'view',
+    MainEdit = 'main-edit',
 }
 
 @Component({
@@ -35,6 +36,14 @@ export class AddShipmentComponent {
         this._shipment = value;
     }
 
+    public get shipment(): Shipment {
+        if (!this._shipment) {
+            throw new Error('Shipment is not set');
+        }
+        return this._shipment;
+    }
+
+
     handlePartnerSelected($event: IPartner) {
         if (!this._shipment) {
             throw new Error('Shipment is not set');
@@ -50,7 +59,11 @@ export class AddShipmentComponent {
                     $event.legalName,
                     address,
                 )
-                this.uiState = UiState.View;
+                this.uiState = UiState.MainEdit;
             });
+    }
+
+    addRecord() {
+
     }
 }

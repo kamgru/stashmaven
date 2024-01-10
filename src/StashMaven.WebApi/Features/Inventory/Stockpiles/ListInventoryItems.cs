@@ -1,16 +1,18 @@
-namespace StashMaven.WebApi.Features.Inventory.InventoryItems;
+namespace StashMaven.WebApi.Features.Inventory.Stockpiles;
 
-public partial class InventoryItemController
+public partial class StockpileController
 {
     [HttpGet]
-    public async Task<IActionResult> ListInventoryItemsInStockpileAsync(
+    [Route("{stockpileId}/inventory-items")]
+    public async Task<IActionResult> ListInventoryItems(
+        string stockpileId,
         [FromQuery]
-        ListInventoryItemsInStockpile.ListInventoryItemsInStockpileRequest request,
+        ListInventoryItemsHandler.ListInventoryItemsRequest request,
         [FromServices]
-        ListInventoryItemsInStockpile handler)
+        ListInventoryItemsHandler handler)
     {
-        StashMavenResult<ListInventoryItemsInStockpile.ListInventoryItemsInStockpileResponse> response =
-            await handler.ListInventoryItemsInStockpileAsync(request);
+        StashMavenResult<ListInventoryItemsHandler.ListInventoryItemsResponse> response =
+            await handler.ListInventoryItemsAsync(stockpileId, request);
 
         if (!response.IsSuccess)
         {
@@ -21,16 +23,16 @@ public partial class InventoryItemController
     }
 }
 
-public class ListInventoryItemsInStockpile(StashMavenContext context)
+[Injectable]
+public class ListInventoryItemsHandler(StashMavenContext context)
 {
     private const int MinPageSize = 5;
     private const int MaxPageSize = 100;
     private const int MinPage = 1;
     private const int MinSearchLength = 3;
 
-    public class ListInventoryItemsInStockpileRequest
+    public class ListInventoryItemsRequest
     {
-        public required string StockpileId { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }
         public string? Search { get; set; }
@@ -38,34 +40,37 @@ public class ListInventoryItemsInStockpile(StashMavenContext context)
         public bool IsAscending { get; set; }
     }
 
-    public class ListInventoryItem
+    public class InventoryItemListItem
     {
         public required string InventoryItemId { get; set; }
         public required string Sku { get; set; }
         public required string Name { get; set; }
         public decimal Quantity { get; set; }
+        public UnitOfMeasure UnitOfMeasure { get; set; }
+        public decimal LastPurchasePrice { get; set; }
     }
 
-    public class ListInventoryItemsInStockpileResponse
+    public class ListInventoryItemsResponse
     {
-        public List<ListInventoryItem> InventoryItems { get; set; } = [];
+        public List<InventoryItemListItem> Items { get; set; } = [];
         public int TotalCount { get; set; }
     }
 
-    public async Task<StashMavenResult<ListInventoryItemsInStockpileResponse>> ListInventoryItemsInStockpileAsync(
-        ListInventoryItemsInStockpileRequest request)
+    public async Task<StashMavenResult<ListInventoryItemsResponse>> ListInventoryItemsAsync(
+        string stockpileId,
+        ListInventoryItemsRequest request)
     {
         request.Page = Math.Max(request.Page, MinPage);
         request.PageSize = Math.Clamp(request.PageSize, MinPageSize, MaxPageSize);
 
         Stockpile? stockpile = await context.Stockpiles
             .Include(s => s.InventoryItems)
-            .SingleOrDefaultAsync(s => s.StockpileId.Value == request.StockpileId);
+            .SingleOrDefaultAsync(s => s.StockpileId.Value == stockpileId);
 
         if (stockpile == null)
         {
-            return StashMavenResult<ListInventoryItemsInStockpileResponse>.Error(
-                $"Stockpile {request.StockpileId} not found");
+            return StashMavenResult<ListInventoryItemsResponse>.Error(
+                $"Stockpile {stockpileId} not found");
         }
 
         IQueryable<InventoryItem> query = context.InventoryItems
@@ -89,22 +94,24 @@ public class ListInventoryItemsInStockpile(StashMavenContext context)
 
         int totalCount = await query.CountAsync();
 
-        List<ListInventoryItem> inventoryItems = await query
+        List<InventoryItemListItem> inventoryItems = await query
             .Skip(request.Page * request.PageSize)
             .Take(request.PageSize)
-            .Select(i => new ListInventoryItem
+            .Select(i => new InventoryItemListItem
             {
                 InventoryItemId = i.InventoryItemId.Value,
                 Sku = i.Sku,
                 Name = i.Name,
                 Quantity = i.Quantity,
+                UnitOfMeasure = i.UnitOfMeasure,
+                LastPurchasePrice = i.LastPurchasePrice,
             })
             .ToListAsync();
 
-        return StashMavenResult<ListInventoryItemsInStockpileResponse>.Success(
-            new ListInventoryItemsInStockpileResponse
+        return StashMavenResult<ListInventoryItemsResponse>.Success(
+            new ListInventoryItemsResponse
             {
-                InventoryItems = inventoryItems,
+                Items = inventoryItems,
                 TotalCount = totalCount,
             });
     }
