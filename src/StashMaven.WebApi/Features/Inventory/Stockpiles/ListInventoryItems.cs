@@ -95,7 +95,7 @@ public class ListInventoryItemsHandler(StashMavenContext context)
         int totalCount = await query.CountAsync();
 
         List<InventoryItemListItem> inventoryItems = await query
-            .Skip(request.Page * request.PageSize)
+            .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
             .Select(i => new InventoryItemListItem
             {

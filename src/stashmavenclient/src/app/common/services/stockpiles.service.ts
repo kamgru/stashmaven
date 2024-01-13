@@ -16,9 +16,19 @@ export class ListInventoryItemsRequest {
         this.sortBy = sortBy;
         this.isAscending = isAscending || true;
     }
+
+    toHttpParams() {
+        return {
+            page: this.page,
+            pageSize: this.pageSize,
+            search: this.search ?? '',
+            sortBy: this.sortBy ?? '',
+            isAscending: this.isAscending
+        };
+    }
 }
 
-export interface InventoryItemListItem {
+export interface IInventoryItem {
     inventoryItemId: string;
     name: string;
     sku: string;
@@ -28,8 +38,8 @@ export interface InventoryItemListItem {
     lastPurchasePrice: number;
 }
 
-export interface ListInventoryItemsResponse {
-    items: InventoryItemListItem[];
+export interface IListInventoryItemsResponse {
+    items: IInventoryItem[];
     totalCount: number;
 }
 
@@ -44,7 +54,7 @@ export class StockpilesService {
     ) {
     }
 
-    listInventoryItems(stockpileId: string, req: ListInventoryItemsRequest): Observable<ListInventoryItemsResponse> {
-        return this.http.get<ListInventoryItemsResponse>(`http://localhost:5253/api/v1/stockpile/${stockpileId}/inventory-items`);
+    listInventoryItems(stockpileId: string, req: ListInventoryItemsRequest): Observable<IListInventoryItemsResponse> {
+        return this.http.get<IListInventoryItemsResponse>(`http://localhost:5253/api/v1/stockpile/${stockpileId}/inventory-items`, {params: req.toHttpParams()});
     }
 }

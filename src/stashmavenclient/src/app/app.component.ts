@@ -5,11 +5,14 @@ import {MSAL_GUARD_CONFIG, MsalBroadcastService, MsalGuardConfiguration, MsalSer
 import {filter, Subject, takeUntil} from "rxjs";
 import {EventMessage, EventType, InteractionStatus} from "@azure/msal-browser";
 import {SideNavComponent} from "./side-nav/side-nav.component";
+import {
+    SelectInventoryItemComponent
+} from "./inventory/shipments/add-shipment/select-inventory-item/select-inventory-item.component";
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SideNavComponent],
+    imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SideNavComponent, SelectInventoryItemComponent],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
