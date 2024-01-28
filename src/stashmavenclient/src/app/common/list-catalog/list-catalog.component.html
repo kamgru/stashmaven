@@ -1,0 +1,53 @@
+<div>
+    <input #searchInput type="text" placeholder="Search" [value]="search_$()" (input)="search(searchInput.value)"/>
+</div>
+
+@if (contacts$ | async; as contacts) {
+<div>
+total items: {{ contacts.totalCount }}
+total pages: {{ totalPages_$() }}
+current page: {{ page_$() }}
+</div>
+<div>
+<select #pageSizeSelect (keydown)="$event.preventDefault()"
+(change)="$event.preventDefault(); changePageSize(+pageSizeSelect.value)">
+@for (pageSize of [5, 10, 20, 50]; track pageSize) {
+<option [value]="pageSize" [selected]="pageSize == pageSize_$()">{{ pageSize }}</option>
+}))
+</select>
+<
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th (click)="sortBy('name')">Name</th>
+<th (click)="sortBy('company')">Company</th>
+<th>Phone</th>
+<th>Email</th>
+</tr>
+</thead>
+<tbody>
+@for (contact of contacts.items; track contact.contactId; let i = $index) {
+<tr [class.idx]="i == currentIndex_$()" (click)="handleRowClick(i, contact)">
+    <td>{{ (page_$() - 1) * pageSize_$() + i + 1 }}</td>
+    <td>{{ contact.name }}</td>
+    <td>{{ contact.company }}</td>
+    <td>{{ contact.phone }}</td>
+    <td>{{ contact.email }}</td>
+</tr>
+}
+</tbody>
+<tfoot>
+<tr>
+<td>
+<button type="button" (click)="tryPrevPage()">Prev Page</button>
+</td>
+<td>
+<button type="button" (click)="tryNextPage()">Next Page</button>
+</td>
+
+</tr>
+</tfoot>
+</table>
+</div>
+}
