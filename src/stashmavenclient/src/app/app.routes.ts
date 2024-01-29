@@ -9,6 +9,7 @@ import {ListInventoryItemsComponent} from "./inventory/list-inventory-items/list
 import {TaxDefinitionsComponent} from "./common/tax-definitions/tax-definitions.component";
 import {CatalogItemsComponent} from "./catalog/catalog-items/catalog-items.component";
 import {ShipmentsComponent} from "./inventory/shipments/shipments.component";
+import {StockpileInventoryComponent} from "./inventory/stockpile-inventory/stockpile-inventory.component";
 
 export const routes: Routes = [
     {path: 'partners/edit/:partnerId', component: EditPartnerComponent, canActivate: [MsalGuard]},
@@ -20,5 +21,6 @@ export const routes: Routes = [
     {path: 'common/tax-definitions', component: TaxDefinitionsComponent, canActivate: [MsalGuard]},
     {path: 'inventory/items/list', component: ListInventoryItemsComponent, canActivate: [MsalGuard]},
     {path: 'inventory/shipments', component: ShipmentsComponent, canActivate: [MsalGuard]},
-    {path: 'auth', component: MsalRedirectComponent}
+    {path: 'auth', component: MsalRedirectComponent},
+    {path: 'inventory/stockpile', component: StockpileInventoryComponent, canActivate: [MsalGuard]}
 ];

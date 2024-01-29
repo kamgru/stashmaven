@@ -94,7 +94,7 @@ export class ListCatalogService {
     }
 
     public listCatalogItems(req: ListCatalogItemsRequest): Observable<IListCatalogItemsResponse> {
-        return this.http.get<IListCatalogItemsResponse>(`${environment.apiUrl}/api/v1/catalog`, {
+        return this.http.get<IListCatalogItemsResponse>(`${environment.apiUrl}/api/v1/catalogitem/list`, {
             params: {
                 page: req.page,
                 pageSize: req.pageSize,

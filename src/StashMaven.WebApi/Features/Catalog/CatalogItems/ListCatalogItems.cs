@@ -56,8 +56,6 @@ public class ListCatalogItemsHandler(
         request.PageSize = Math.Clamp(request.PageSize, MinPageSize, MaxPageSize);
         request.Page = Math.Max(request.Page, MinPage);
 
-        await context.TaxDefinitions.ToListAsync();
-
         IQueryable<CatalogItem> catalogItems = context.CatalogItems
             .Select(c => new CatalogItem
             {
@@ -85,7 +83,7 @@ public class ListCatalogItemsHandler(
                     ? catalogItems.OrderBy(p => p.Sku)
                     : catalogItems.OrderByDescending(p => p.Sku);
             }
-            else if (request.SortBy.Equals("legalName", StringComparison.OrdinalIgnoreCase))
+            else if (request.SortBy.Equals("name", StringComparison.OrdinalIgnoreCase))
             {
                 catalogItems = request.IsAscending
                     ? catalogItems.OrderBy(p => p.Name)

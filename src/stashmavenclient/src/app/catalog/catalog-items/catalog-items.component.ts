@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AddCatalogItemComponent} from "./add-catalog-item/add-catalog-item.component";
 import {ListCatalogItemsComponent} from "./list-catalog-items/list-catalog-items.component";
+import {ListCatalogComponent} from "../../common/list-catalog/list-catalog.component";
 
 enum UiState {
     Add = 'add',
@@ -12,7 +13,7 @@ enum UiState {
 @Component({
     selector: 'app-catalog-items',
     standalone: true,
-    imports: [CommonModule, AddCatalogItemComponent, ListCatalogItemsComponent],
+    imports: [CommonModule, AddCatalogItemComponent, ListCatalogItemsComponent, ListCatalogComponent],
     templateUrl: './catalog-items.component.html',
     styleUrls: ['./catalog-items.component.css']
 })
