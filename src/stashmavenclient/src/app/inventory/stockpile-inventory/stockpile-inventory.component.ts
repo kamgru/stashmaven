@@ -1,17 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ListCatalogComponent} from "../../common/list-catalog/list-catalog.component";
 import {AsyncPipe, NgIf} from "@angular/common";
-import {ListInventoryComponent} from "../../common/list-inventory/list-inventory.component";
+import {IStockpileListItem, ListInventoryComponent} from "../../common/list-inventory/list-inventory.component";
 import {StockpileInventoryService} from "./stockpile-inventory.service";
-import {forkJoin, map, mergeMap, Observable, of, switchMap} from "rxjs";
-import {merge} from "rxjs/internal/operators/merge";
-
-interface IStockpileListItem {
-    stockpileId: string;
-    name: string;
-    shortCode: string;
-    isDefault: boolean;
-}
+import {forkJoin, map} from "rxjs";
 
 @Component({
     selector: 'app-stockpile-inventory',
@@ -27,7 +19,7 @@ interface IStockpileListItem {
 })
 export class StockpileInventoryComponent implements OnInit {
 
-    public stockpiles$: Observable<IStockpileListItem[]> = of([]);
+    public stockpiles: IStockpileListItem[] = [];
 
     constructor(
         private stockpileInventoryService: StockpileInventoryService,
@@ -35,7 +27,7 @@ export class StockpileInventoryComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.stockpiles$ = forkJoin([
+        forkJoin([
             this.stockpileInventoryService.listStockpiles(),
             this.stockpileInventoryService.getDefaultStockpileId()
         ])
@@ -50,6 +42,10 @@ export class StockpileInventoryComponent implements OnInit {
                             };
                         });
                     }
-                ));
+                ))
+            .subscribe(x => {
+                this.stockpiles = x;
+                this.stockpiles.sort((a, b) => a.isDefault ? -1 : b.isDefault ? 1 : 0);
+            })
     }
 }

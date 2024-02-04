@@ -1,7 +1,14 @@
-import {Component, ElementRef, EventEmitter, HostListener, OnDestroy, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, Output, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {IInventoryItem, ListInventoryService} from "./list-inventory.service";
 import {AsyncPipe} from "@angular/common";
+
+export interface IStockpileListItem {
+    stockpileId: string;
+    name: string;
+    shortCode: string;
+    isDefault: boolean;
+}
 
 @Component({
     selector: 'app-list-inventory',
@@ -21,6 +28,9 @@ export class ListInventoryComponent implements OnDestroy {
 
     @Output()
     public OnInventoryItemSelected: EventEmitter<IInventoryItem> = new EventEmitter<IInventoryItem>();
+
+    @Input()
+    public stockpiles: IStockpileListItem[] = [];
 
     @HostListener('window:keydown', ['$event'])
     keyEvent(event: KeyboardEvent) {

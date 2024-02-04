@@ -1,14 +1,22 @@
 <div class="pt-2">
-    <div>
-        <input #searchInput
-               type="text"
-               placeholder="Search"
-               class="rounded border-gray-300 shadow-sm"
-               [value]="search_$()"
-               (input)="search(searchInput.value)"/>
-    </div>
-
     @if (inventoryItems$ | async; as inventoryItems) {
+        <div class="flex">
+            <div>
+                <input #searchInput
+                       type="text"
+                       placeholder="Search"
+                       class="rounded border-gray-300 shadow-sm"
+                       [value]="search_$()"
+                       (input)="search(searchInput.value)"/>
+            </div>
+            <div>
+                <select>
+                    @for(stockpile of stockpiles; track stockpile.stockpileId) {
+                        <option [value]="stockpile.stockpileId" [selected]="stockpile.id == stockpileId_$()">{{ stockpile.name }}</option>
+                    }
+                </select>
+            </div>
+        </div>
         <div>
             total items: {{ inventoryItems.totalCount }}
             total pages: {{ totalPages_$() }}
