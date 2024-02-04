@@ -1,1 +1,11 @@
-<p>stockpile-inventory works!</p>
+<div class="h-4/5 mr-2">
+    @if (stockpiles$ | async; as stockpiles) {
+
+        <select>
+            @for (stockpile of stockpiles; track stockpile.shortCode) {
+                <option value="{{stockpile.stockpileId}}">{{ stockpile.shortCode }} - {{ stockpile.name }}</option>
+            }
+        </select>
+    }
+    <app-list-inventory></app-list-inventory>
+</div>

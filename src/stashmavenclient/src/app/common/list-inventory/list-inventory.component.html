@@ -1,1 +1,63 @@
-<p>list-inventory works!</p>
+<div class="pt-2">
+    <div>
+        <input #searchInput
+               type="text"
+               placeholder="Search"
+               class="rounded border-gray-300 shadow-sm"
+               [value]="search_$()"
+               (input)="search(searchInput.value)"/>
+    </div>
+
+    @if (inventoryItems$ | async; as inventoryItems) {
+        <div>
+            total items: {{ inventoryItems.totalCount }}
+            total pages: {{ totalPages_$() }}
+            current page: {{ page_$() }}
+        </div>
+        <div>
+            <select #pageSizeSelect
+                    class="rounded border-gray-300 shadow-sm"
+                    (keydown)="$event.preventDefault()"
+                    (change)="$event.preventDefault(); changePageSize(+pageSizeSelect.value)">
+                @for (pageSize of [5, 10, 20, 50]; track pageSize) {
+                    <option [value]="pageSize" [selected]="pageSize == pageSize_$()">{{ pageSize }}</option>
+                }))
+            </select>
+
+            <table class="table-auto grid border-collapse overflow-scroll max-h-full">
+                <thead>
+                <tr class="grid grid-cols-inventory-items text-left bg-slate-900 text-gray-200 p-2 sticky top-0 max-h-[40px]">
+                    <th>#</th>
+                    <th (click)="sortBy('sku')">Sku</th>
+                    <th (click)="sortBy('name')">Name</th>
+                    <th>Unit</th>
+                </tr>
+                </thead>
+                <tbody>
+                    @for (inventoryItem of inventoryItems.items; track inventoryItem.inventoryItemId; let i = $index) {
+                        <tr [class.idx]="i == currentIndex_$()" (click)="handleRowClick(i, inventoryItem)"
+                            class="grid grid-cols-inventory-items text-base">
+                            <td>{{ (page_$() - 1) * pageSize_$() + i + 1 }}</td>
+                            <td>{{ inventoryItem.sku }}</td>
+                            <td>{{ inventoryItem.name }}</td>
+                            <td>{{ inventoryItem.unitOfMeasure }}</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td>
+                        <button type="button" (click)="tryPrevPage()">Prev Page</button>
+                    </td>
+                    <td>
+                        <button type="button" (click)="tryNextPage()">Next Page</button>
+                    </td>
+
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    } @else {
+        <div>Loading...</div>
+    }
+</div>

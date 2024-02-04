@@ -50,7 +50,7 @@
 /*    white-space: nowrap;*/
 /*}*/
 
-.current-idx {
+.idx {
     @apply text-gray-900 bg-slate-400;
 }
 

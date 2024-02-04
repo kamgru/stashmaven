@@ -43,6 +43,7 @@ export class ListCatalogService {
     public search_$ = signal('');
     public catalogItems$: Observable<IListCatalogItemsResponse>;
     public selectedCatalogItem$: Subject<ICatalogItem> = new Subject<ICatalogItem>();
+
     constructor(
         private http: HttpClient,
     ) { const search$ = this._search$.pipe(
