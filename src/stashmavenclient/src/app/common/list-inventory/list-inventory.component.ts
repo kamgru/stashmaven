@@ -62,11 +62,6 @@ export class ListInventoryComponent implements OnDestroy {
             .subscribe(x => {
                 this.OnInventoryItemSelected.emit(x);
             });
-
-        // this.listInventory.getDefaultStockpileId()
-        //     .subscribe(res => {
-        //         this.listInventory.changeStockpile(res.stockpileId);
-        //     })
     }
 
     public changePageSize = (value: number) => this.listInventory.changePageSize(value);
@@ -83,5 +78,9 @@ export class ListInventoryComponent implements OnDestroy {
     ngOnDestroy() {
         this._destroy$.next();
         this._destroy$.complete();
+    }
+
+    handleStockpileChanged(value: string) {
+        this.listInventory.changeStockpile(value);
     }
 }

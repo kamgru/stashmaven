@@ -10,9 +10,9 @@
                        (input)="search(searchInput.value)"/>
             </div>
             <div>
-                <select>
+                <select #stockpileSelect (change)="handleStockpileChanged(stockpileSelect.value)">
                     @for(stockpile of stockpiles; track stockpile.stockpileId) {
-                        <option [value]="stockpile.stockpileId" [selected]="stockpile.id == stockpileId_$()">{{ stockpile.name }}</option>
+                        <option [value]="stockpile.stockpileId">{{ stockpile.name }}</option>
                     }
                 </select>
             </div>
