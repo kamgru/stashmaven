@@ -2,13 +2,7 @@ import {Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, Out
 import {Subject, takeUntil} from "rxjs";
 import {IInventoryItem, ListInventoryService} from "./list-inventory.service";
 import {AsyncPipe} from "@angular/common";
-
-export interface IStockpileListItem {
-    stockpileId: string;
-    name: string;
-    shortCode: string;
-    isDefault: boolean;
-}
+import {IStockpileListItem} from "../IStockpileListItem";
 
 @Component({
     selector: 'app-list-inventory',

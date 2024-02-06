@@ -39,7 +39,7 @@ public class ListShipmentsHandler(StashMavenContext context)
 
     public class ListShipmentsResponse
     {
-        public List<ShipmentListItem> Shipments { get; set; } = [];
+        public List<ShipmentListItem> Items { get; set; } = [];
     }
 
     public async Task<ListShipmentsResponse> ListShipmentsAsync(
@@ -51,11 +51,11 @@ public class ListShipmentsHandler(StashMavenContext context)
             .Include(s => s.Kind)
             .Include(s => s.Partner)
             .OrderByDescending(s => s.CreatedOn)
-            .Skip(request.Page * request.PageSize)
+            .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
             .ToListAsync();
 
-        response.Shipments = shipments.Select(
+        response.Items = shipments.Select(
                 s => new ShipmentListItem
                 {
                     ShipmentId = s.ShipmentId.Value,

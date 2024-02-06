@@ -1,36 +1,34 @@
 import {Component, OnInit} from '@angular/core';
-import {ListCatalogComponent} from "../../common/list-catalog/list-catalog.component";
-import {AsyncPipe, NgIf} from "@angular/common";
+import {AsyncPipe} from "@angular/common";
 import {ListInventoryComponent} from "../../common/list-inventory/list-inventory.component";
-import {StockpileInventoryService} from "./stockpile-inventory.service";
+import {ListShipmentsComponent} from "../../common/list-shipments/list-shipments.component";
 import {forkJoin, map} from "rxjs";
+import {StockpileService} from "../../common/services/stockpile.service";
 import {IStockpileListItem} from "../../common/IStockpileListItem";
 
 @Component({
-    selector: 'app-stockpile-inventory',
+    selector: 'app-stockpile-shipments',
     standalone: true,
     imports: [
-        ListCatalogComponent,
-        NgIf,
+        AsyncPipe,
         ListInventoryComponent,
-        AsyncPipe
+        ListShipmentsComponent
     ],
-    templateUrl: './stockpile-inventory.component.html',
-    styleUrl: './stockpile-inventory.component.css'
+    templateUrl: './stockpile-shipments.component.html',
+    styleUrl: './stockpile-shipments.component.css'
 })
-export class StockpileInventoryComponent implements OnInit {
+export class StockpileShipmentsComponent implements OnInit {
 
     public stockpiles: IStockpileListItem[] = [];
 
     constructor(
-        private stockpileInventoryService: StockpileInventoryService,
-    ) {
+        private stockpileService: StockpileService) {
     }
 
     ngOnInit(): void {
         forkJoin([
-            this.stockpileInventoryService.listStockpiles(),
-            this.stockpileInventoryService.getDefaultStockpileId()
+            this.stockpileService.listStockpiles(),
+            this.stockpileService.getDefaultStockpileId()
         ])
             .pipe(
                 map(([stockpiles, defaultStockpile]) => {

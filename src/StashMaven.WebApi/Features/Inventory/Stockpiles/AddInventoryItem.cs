@@ -1,6 +1,6 @@
 namespace StashMaven.WebApi.Features.Inventory.Stockpiles;
 
-public partial class StockpileController : ControllerBase
+public partial class StockpileController
 {
     [HttpPost]
     [Route("{stockpileId}/inventory-items")]
