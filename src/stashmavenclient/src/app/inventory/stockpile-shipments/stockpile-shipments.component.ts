@@ -5,6 +5,8 @@ import {ListShipmentsComponent} from "../../common/list-shipments/list-shipments
 import {forkJoin, map} from "rxjs";
 import {StockpileService} from "../../common/services/stockpile.service";
 import {IStockpileListItem} from "../../common/IStockpileListItem";
+import {AddShipmentRequest, ShipmentService} from "../../common/services/shipment.service";
+import {DropdownComponent, IDropdownItem} from "../../common/components/dropdown/dropdown.component";
 
 @Component({
     selector: 'app-stockpile-shipments',
@@ -12,7 +14,8 @@ import {IStockpileListItem} from "../../common/IStockpileListItem";
     imports: [
         AsyncPipe,
         ListInventoryComponent,
-        ListShipmentsComponent
+        ListShipmentsComponent,
+        DropdownComponent
     ],
     templateUrl: './stockpile-shipments.component.html',
     styleUrl: './stockpile-shipments.component.css'
@@ -20,9 +23,21 @@ import {IStockpileListItem} from "../../common/IStockpileListItem";
 export class StockpileShipmentsComponent implements OnInit {
 
     public stockpiles: IStockpileListItem[] = [];
+    public shipmentKinds$ = this.shipmentService.listShipmentKinds()
+        .pipe(
+            map(x => {
+                return x.items.map(y => {
+                    return <IDropdownItem>{
+                        id: y.shipmentKindId,
+                        name: y.name
+                    };
+                });
+            })
+        );
 
     constructor(
-        private stockpileService: StockpileService) {
+        private stockpileService: StockpileService,
+        private shipmentService: ShipmentService) {
     }
 
     ngOnInit(): void {
@@ -46,5 +61,9 @@ export class StockpileShipmentsComponent implements OnInit {
                 this.stockpiles = x;
                 this.stockpiles.sort((a, b) => a.isDefault ? -1 : b.isDefault ? 1 : 0);
             })
+    }
+
+    handleItemSelected($event: string) {
+        const req = new AddShipmentRequest()
     }
 }

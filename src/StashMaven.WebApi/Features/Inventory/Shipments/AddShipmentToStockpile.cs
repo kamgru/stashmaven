@@ -3,6 +3,8 @@ namespace StashMaven.WebApi.Features.Inventory.Shipments;
 public partial class ShipmentController
 {
     [HttpPost]
+    [ProducesResponseType<AddShipmentHandler.AddShipmentResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddShipmentAsync(
         AddShipmentHandler.AddShipmentRequest request,
         [FromServices]

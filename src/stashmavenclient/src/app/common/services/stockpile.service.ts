@@ -27,4 +27,5 @@ export class StockpileService {
     public getDefaultStockpileId(): Observable<IGetDefaultStockpileIdResponse> {
         return this.http.get<IGetDefaultStockpileIdResponse>(`${environment.apiUrl}/api/v1/stockpile/default`);
     }
+
 }

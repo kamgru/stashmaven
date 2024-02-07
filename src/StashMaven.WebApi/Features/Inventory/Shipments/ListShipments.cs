@@ -50,6 +50,7 @@ public class ListShipmentsHandler(StashMavenContext context)
         List<Shipment> shipments = await context.Shipments
             .Include(s => s.Kind)
             .Include(s => s.Partner)
+            .Where(s => s.Stockpile.StockpileId.Value == request.StockpileId)
             .OrderByDescending(s => s.CreatedOn)
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
