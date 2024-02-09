@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ListPartnersComponent} from "./list-partners/list-partners.component";
 import {PartnerPreviewComponent} from "./partner-preview/partner-preview.component";
 import {RouterLink} from "@angular/router";
-import {Partner} from "./partner";
 import {SelectPartnerService} from "./select-partner.service";
+import {ListPartnersComponent} from "../common/list-partners/list-partners.component";
 
 @Component({
     selector: 'app-partners',
@@ -14,15 +13,4 @@ import {SelectPartnerService} from "./select-partner.service";
     styleUrls: ['./partners.component.css']
 })
 export class PartnersComponent {
-    selectedPartner?: Partner | null;
-
-    constructor(
-        private partnersService: SelectPartnerService
-    ) {
-    }
-
-    ngOnInit() {
-        this.partnersService.selectedPartner
-            .subscribe((partner: Partner | null) => this.selectedPartner = partner)
-    }
 }
