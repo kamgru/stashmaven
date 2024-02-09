@@ -1,3 +1,6 @@
-<div class="h-4/5 mr-2">
-    <app-list-inventory [stockpiles]="stockpiles"></app-list-inventory>
-</div>
+@if (stockpiles.length > 0) {
+
+    <div class="h-4/5 mr-2">
+        <app-list-inventory [stockpiles]="stockpiles"></app-list-inventory>
+    </div>
+}

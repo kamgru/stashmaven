@@ -1,19 +1,31 @@
-import {Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, Output, ViewChild} from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    OnDestroy,
+    Output,
+    ViewChild
+} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {IInventoryItem, ListInventoryService} from "./list-inventory.service";
 import {AsyncPipe} from "@angular/common";
 import {IStockpileListItem} from "../IStockpileListItem";
+import {FormsModule} from "@angular/forms";
 
 @Component({
     selector: 'app-list-inventory',
     standalone: true,
     imports: [
-        AsyncPipe
+        AsyncPipe,
+        FormsModule
     ],
     templateUrl: './list-inventory.component.html',
     styleUrl: './list-inventory.component.css'
 })
-export class ListInventoryComponent implements OnDestroy {
+export class ListInventoryComponent implements OnDestroy, AfterViewInit {
 
     private _destroy$ = new Subject<void>();
 
@@ -25,6 +37,9 @@ export class ListInventoryComponent implements OnDestroy {
 
     @Input()
     public stockpiles: IStockpileListItem[] = [];
+
+    public selectedStockpile?: IStockpileListItem;
+
 
     @HostListener('window:keydown', ['$event'])
     keyEvent(event: KeyboardEvent) {
@@ -56,6 +71,17 @@ export class ListInventoryComponent implements OnDestroy {
             .subscribe(x => {
                 this.OnInventoryItemSelected.emit(x);
             });
+
+    }
+
+    ngOnInit(): void {
+        this.selectedStockpile = this.listInventory.stockpileId_$ == '' || this.listInventory.stockpileId_$ == undefined
+            ? this.stockpiles.find(x => x.isDefault)
+            : this.stockpiles.find(x => x.stockpileId == this.listInventory.stockpileId_$);
+    }
+
+    ngAfterViewInit() {
+        this.listInventory.changeStockpile(this.selectedStockpile!.stockpileId);
     }
 
     public changePageSize = (value: number) => this.listInventory.changePageSize(value);

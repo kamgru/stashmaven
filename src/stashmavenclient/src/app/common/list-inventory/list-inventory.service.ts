@@ -50,7 +50,7 @@ export class ListInventoryService {
     private _stockpileId$ = new Subject<string>();
     private _count: number = 0;
     private _inventoryItems: IInventoryItem[] = [];
-    private _stockpileId_$ = signal('');
+    public stockpileId_$: string = '';
 
     public totalPages_$ = signal(10);
     public currentIndex_$ = signal(0);
@@ -63,12 +63,6 @@ export class ListInventoryService {
     constructor(
         private http: HttpClient,
     ) {
-        this.getDefaultStockpileId()
-            .subscribe(x => {
-                this._stockpileId_$.set(x.stockpileId);
-                this._stockpileId$.next(x.stockpileId)
-            });
-
         const stockpileId$ = this._stockpileId$.pipe(
             switchMap(res => {
                 this._request.page = 1;
@@ -84,7 +78,7 @@ export class ListInventoryService {
                 this._request.search = s;
                 this._request.page = 1;
                 this.page_$.set(1);
-                return this.listInventoryItems(this._stockpileId_$(), this._request);
+                return this.listInventoryItems(this.stockpileId_$, this._request);
             }));
 
         const page$ = this._page$.pipe(
@@ -92,7 +86,7 @@ export class ListInventoryService {
             switchMap(p => {
                 this._request.page = p;
                 this.page_$.set(p);
-                return this.listInventoryItems(this._stockpileId_$(), this._request);
+                return this.listInventoryItems(this.stockpileId_$, this._request);
             }));
 
         const sortBy$ = this._sortBy$.pipe(
@@ -101,7 +95,7 @@ export class ListInventoryService {
                 this._request.sortBy = s;
                 this._request.page = 1;
                 this.page_$.set(1);
-                return this.listInventoryItems(this._stockpileId_$(), this._request);
+                return this.listInventoryItems(this.stockpileId_$, this._request);
             }));
 
         const pageSize$ = this._pageSize$.pipe(
@@ -112,7 +106,7 @@ export class ListInventoryService {
                 this._request.page = 1;
                 this.pageSize_$.set(s);
                 this.page_$.set(1);
-                return this.listInventoryItems(this._stockpileId_$(), this._request);
+                return this.listInventoryItems(this.stockpileId_$, this._request);
             }));
 
         this.inventoryItems$ = merge(stockpileId$, page$, search$, sortBy$, pageSize$)
@@ -138,11 +132,8 @@ export class ListInventoryService {
         });
     }
 
-    private getDefaultStockpileId(): Observable<IGetDefaultStockpileIdResponse> {
-        return this.http.get<IGetDefaultStockpileIdResponse>(`${environment.apiUrl}/api/v1/stockpile/default`);
-    }
-
     changeStockpile(stockpileId: string) {
+        this.stockpileId_$ = stockpileId;
         this._stockpileId$.next(stockpileId);
     }
 
