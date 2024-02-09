@@ -25,6 +25,9 @@ export class ListShipmentsComponent implements OnDestroy {
     @Output()
     public OnShipmentSelected: EventEmitter<IShipment> = new EventEmitter<IShipment>();
 
+    @Output()
+    public OnStockpileChanged: EventEmitter<IStockpileListItem> = new EventEmitter<IStockpileListItem>();
+
     @HostListener('window:keydown', ['$event'])
     keyEvent(event: KeyboardEvent) {
         if (this.listShipments.tryHandleKey(event)) {

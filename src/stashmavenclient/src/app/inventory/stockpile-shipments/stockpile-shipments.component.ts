@@ -22,6 +22,8 @@ import {DropdownComponent, IDropdownItem} from "../../common/components/dropdown
 })
 export class StockpileShipmentsComponent implements OnInit {
 
+    private _selectedStockpile?: IStockpileListItem;
+
     public stockpiles: IStockpileListItem[] = [];
     public shipmentKinds$ = this.shipmentService.listShipmentKinds()
         .pipe(
@@ -60,10 +62,19 @@ export class StockpileShipmentsComponent implements OnInit {
             .subscribe(x => {
                 this.stockpiles = x;
                 this.stockpiles.sort((a, b) => a.isDefault ? -1 : b.isDefault ? 1 : 0);
+                this._selectedStockpile = this.stockpiles[0];
             })
     }
 
-    handleItemSelected($event: string) {
-        const req = new AddShipmentRequest()
+    handleShipmentKindSelected($event: string) {
+        console.log($event);
+        this.shipmentService.addShipment(new AddShipmentRequest(this._selectedStockpile!.stockpileId, $event, 'Pln'))
+            .subscribe(x => {
+                console.log(x);
+            })
+    }
+
+    handleStockpileChanged($event: IStockpileListItem) {
+        this._selectedStockpile = $event;
     }
 }
