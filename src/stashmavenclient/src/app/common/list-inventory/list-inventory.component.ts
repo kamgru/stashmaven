@@ -91,11 +91,7 @@ export class ListInventoryComponent implements OnDestroy {
     public tryPrevPage = () => this.listInventory.tryPrevPage();
     public sortBy = (value: string) => this.listInventory.sortBy(value);
     public search = (value: string) => this._search$.next(value);
-
-    handleRowClick(index: number, inventoryItem: IInventoryItem) {
-        // this.currentIndex_$.set(index);
-        this.listInventory.selectedInventoryItem$.next(inventoryItem);
-    }
+    public handleRowClick = (inventoryItem: IInventoryItem) => this.listInventory.select(inventoryItem);
 
     ngOnDestroy() {
         this._destroy$.next();

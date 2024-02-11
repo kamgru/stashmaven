@@ -47,7 +47,7 @@
                 </thead>
                 <tbody>
                     @for (inventoryItem of inventoryItems.items; track inventoryItem.inventoryItemId; let i = $index) {
-                        <tr [class.idx]="i == currentIndex_$()" (click)="handleRowClick(i, inventoryItem)"
+                        <tr [class.idx]="i == currentIndex_$()" (click)="handleRowClick(inventoryItem)"
                             class="grid grid-cols-inventory-items text-base">
                             <td>{{ (inventoryItems.currentPage - 1) * inventoryItems.pageSize + i + 1 }}</td>
                             <td>{{ inventoryItem.sku }}</td>

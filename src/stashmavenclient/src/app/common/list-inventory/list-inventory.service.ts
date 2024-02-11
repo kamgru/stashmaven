@@ -1,13 +1,8 @@
-import {computed, Injectable, signal} from '@angular/core';
+import {computed, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {
-    BehaviorSubject,
-    distinctUntilChanged, map, merge, Observable, of,
-    Subject,
-    switchMap,
-    tap
-} from "rxjs";
+import {BehaviorSubject, distinctUntilChanged, map, Observable, Subject, switchMap, tap} from "rxjs";
 import {environment} from "../../../environments/environment";
+import {Cursor} from "../Cursor";
 
 class ListInventoryItemsRequest {
     public stockpileId: string = '';
@@ -45,19 +40,12 @@ export interface IGetDefaultStockpileIdResponse {
     shortCode: string;
 }
 
-class Cursor {
-    public index: number = 0;
-    public direction: 'up' | 'down' = 'down';
-    public page: number = 1;
-
-}
-
 @Injectable({
     providedIn: 'root'
 })
 export class ListInventoryService {
 
-    public currentIndex_$ = computed(() => this._cursor.index);
+    public currentIndex_$ = computed(() => this._cursor.index());
     public selectedInventoryItem$: Subject<IInventoryItem> = new Subject<IInventoryItem>();
     public inventoryItems$: Observable<IListInventoryItemsResponse>;
 
@@ -65,37 +53,24 @@ export class ListInventoryService {
     private _response: IListInventoryItemsResponse = <IListInventoryItemsResponse>{};
     private _cursor = new Cursor();
 
-
     constructor(
         private http: HttpClient,
     ) {
         this.inventoryItems$ = this._request$.pipe(
-            distinctUntilChanged((x, y) => {
-                return JSON.stringify(x) === JSON.stringify(y);
-
-            }),
-            switchMap(request => {
-                return this.listInventoryItems(request)
-            }),
-            map(response => {
-                return {
-                    ...response,
-                    pageSize: this._request$.value.pageSize,
-                    search: this._request$.value.search,
-                    sortBy: this._request$.value.sortBy,
-                    isAscending: this._request$.value.isAscending,
-                    currentPage: this._request$.value.page,
-                    totalPages: Math.ceil(response.totalCount / this._request$.value.pageSize)
-                };
-            }),
-            tap(x => {
-                this._response = x;
-                if (this._cursor.direction === 'down') {
-                    this._cursor.index = 0;
-                }
-                else {
-                    this._cursor.index = this._response.items.length - 1;
-                }
+            distinctUntilChanged((x, y) => JSON.stringify(x) === JSON.stringify(y)),
+            switchMap(request => this.listInventoryItems(request)),
+            map(response => ({
+                ...response,
+                pageSize: this._request$.value.pageSize,
+                search: this._request$.value.search,
+                sortBy: this._request$.value.sortBy,
+                isAscending: this._request$.value.isAscending,
+                currentPage: this._request$.value.page,
+                totalPages: Math.ceil(response.totalCount / this._request$.value.pageSize)
+            })),
+            tap(response => {
+                this._response = response;
+                this._cursor.tryReset(response.items.length);
             })
         );
     }
@@ -147,24 +122,20 @@ export class ListInventoryService {
         this._request$.next({...this._request$.value, search: value, page: 1});
     }
 
+    select(item: IInventoryItem) {
+        const index = this._response.items.findIndex(x => x.inventoryItemId == item.inventoryItemId);
+        if (this._cursor.trySetIndex(index)) {
+            this.selectedInventoryItem$.next(item);
+        }
+    }
+
     tryHandleKey(event: KeyboardEvent): boolean {
         switch (event.key) {
             case 'ArrowDown': {
-                this._cursor.direction = 'down';
-
-                if (this._cursor.index < this._response.items.length - 1) {
-                    this._cursor.index++;
-                    return true;
-                }
-                return this.tryNextPage();
+                return this._cursor.tryMoveDown() || this.tryNextPage();
             }
             case 'ArrowUp': {
-                if (this.currentIndex_$() > 0) {
-                    return true;
-                } else if (this.tryPrevPage()) {
-                    return true;
-                }
-                return false;
+                return this._cursor.tryMoveUp() || this.tryPrevPage();
             }
             case 'PageDown': {
                 return this.tryNextPage();
