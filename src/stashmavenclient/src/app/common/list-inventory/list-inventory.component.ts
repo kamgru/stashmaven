@@ -40,7 +40,6 @@ export class ListInventoryComponent implements OnDestroy, AfterViewInit {
 
     public selectedStockpile?: IStockpileListItem;
 
-
     @HostListener('window:keydown', ['$event'])
     keyEvent(event: KeyboardEvent) {
         if (this.listInventory.tryHandleKey(event)) {
@@ -55,11 +54,7 @@ export class ListInventoryComponent implements OnDestroy, AfterViewInit {
         }
     }
 
-    public totalPages_$ = this.listInventory.totalPages_$;
     public currentIndex_$ = this.listInventory.currentIndex_$;
-    public pageSize_$ = this.listInventory.pageSize_$;
-    public page_$ = this.listInventory.page_$;
-    public search_$ = this.listInventory.search_$;
     public inventoryItems$ = this.listInventory.inventoryItems$;
 
     constructor(
@@ -75,9 +70,6 @@ export class ListInventoryComponent implements OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
-        this.selectedStockpile = this.listInventory.stockpileId_$ == '' || this.listInventory.stockpileId_$ == undefined
-            ? this.stockpiles.find(x => x.isDefault)
-            : this.stockpiles.find(x => x.stockpileId == this.listInventory.stockpileId_$);
     }
 
     ngAfterViewInit() {

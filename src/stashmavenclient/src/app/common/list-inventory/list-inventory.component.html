@@ -6,12 +6,13 @@
                        type="text"
                        placeholder="Search"
                        class="rounded border-gray-300 shadow-sm"
-                       [value]="search_$()"
+                       [value]="inventoryItems.search"
                        (input)="search(searchInput.value)"/>
             </div>
             <div>
-                <select #stockpileSelect (change)="handleStockpileChanged(stockpileSelect.value)" [(ngModel)]="selectedStockpile">
-                    @for(stockpile of stockpiles; track stockpile.stockpileId) {
+                <select #stockpileSelect (change)="handleStockpileChanged(stockpileSelect.value)"
+                        [(ngModel)]="selectedStockpile">
+                    @for (stockpile of stockpiles; track stockpile.stockpileId) {
                         <option [value]="stockpile.stockpileId">{{ stockpile.name }}</option>
                     }
                 </select>
@@ -19,8 +20,8 @@
         </div>
         <div>
             total items: {{ inventoryItems.totalCount }}
-            total pages: {{ totalPages_$() }}
-            current page: {{ page_$() }}
+            total pages: {{ inventoryItems.totalPages }}
+            current page: {{ inventoryItems.currentPage }}
         </div>
         <div>
             <select #pageSizeSelect
@@ -28,7 +29,7 @@
                     (keydown)="$event.preventDefault()"
                     (change)="$event.preventDefault(); changePageSize(+pageSizeSelect.value)">
                 @for (pageSize of [5, 10, 20, 50]; track pageSize) {
-                    <option [value]="pageSize" [selected]="pageSize == pageSize_$()">{{ pageSize }}</option>
+                    <option [value]="pageSize" [selected]="pageSize == inventoryItems.pageSize">{{ pageSize }}</option>
                 }))
             </select>
 
@@ -45,7 +46,7 @@
                     @for (inventoryItem of inventoryItems.items; track inventoryItem.inventoryItemId; let i = $index) {
                         <tr [class.idx]="i == currentIndex_$()" (click)="handleRowClick(i, inventoryItem)"
                             class="grid grid-cols-inventory-items text-base">
-                            <td>{{ (page_$() - 1) * pageSize_$() + i + 1 }}</td>
+                            <td>{{ (inventoryItems.currentPage - 1) * inventoryItems.pageSize + i + 1 }}</td>
                             <td>{{ inventoryItem.sku }}</td>
                             <td>{{ inventoryItem.name }}</td>
                             <td>{{ inventoryItem.unitOfMeasure }}</td>
