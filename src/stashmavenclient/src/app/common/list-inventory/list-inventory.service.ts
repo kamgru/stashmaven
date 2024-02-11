@@ -1,8 +1,7 @@
-import {Injectable, signal} from '@angular/core';
+import {computed, Injectable, signal} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {
     BehaviorSubject,
-    debounceTime,
     distinctUntilChanged, map, merge, Observable, of,
     Subject,
     switchMap,
@@ -37,6 +36,7 @@ export interface IListInventoryItemsResponse {
     sortBy: string;
     isAscending: boolean;
     pageSize: number;
+    stockpileId: string;
 }
 
 export interface IGetDefaultStockpileIdResponse {
@@ -45,48 +45,59 @@ export interface IGetDefaultStockpileIdResponse {
     shortCode: string;
 }
 
+class Cursor {
+    public index: number = 0;
+    public direction: 'up' | 'down' = 'down';
+    public page: number = 1;
+
+}
+
 @Injectable({
     providedIn: 'root'
 })
 export class ListInventoryService {
 
-    public totalPages_$ = signal(10);
-    public currentIndex_$ = signal(0);
-    public pageSize_$ = signal(10);
-    public page_$ = signal(1);
-    public search_$ = signal('');
+    public currentIndex_$ = computed(() => this._cursor.index);
     public selectedInventoryItem$: Subject<IInventoryItem> = new Subject<IInventoryItem>();
     public inventoryItems$: Observable<IListInventoryItemsResponse>;
 
     private _request$ = new BehaviorSubject(new ListInventoryItemsRequest());
+    private _response: IListInventoryItemsResponse = <IListInventoryItemsResponse>{};
+    private _cursor = new Cursor();
+
 
     constructor(
         private http: HttpClient,
     ) {
-        const req$ = this._request$.pipe(
-            distinctUntilChanged(),
+        this.inventoryItems$ = this._request$.pipe(
+            distinctUntilChanged((x, y) => {
+                return JSON.stringify(x) === JSON.stringify(y);
+
+            }),
             switchMap(request => {
                 return this.listInventoryItems(request)
             }),
-        );
-
-        this.inventoryItems$ = merge(req$).pipe(
-            tap(response => {
-                this.totalPages_$.set(Math.ceil(response.totalCount / this._request$.value.pageSize));
-                this.page_$.set(this._request$.value.page);
-            }),
             map(response => {
-                    return {
-                        ...response,
-                        pageSize: this._request$.value.pageSize,
-                        search: this._request$.value.search,
-                        sortBy: this._request$.value.sortBy,
-                        isAscending: this._request$.value.isAscending,
-                        currentPage: this._request$.value.page,
-                        totalPages: Math.ceil(response.totalCount / this._request$.value.pageSize)
-                    };
+                return {
+                    ...response,
+                    pageSize: this._request$.value.pageSize,
+                    search: this._request$.value.search,
+                    sortBy: this._request$.value.sortBy,
+                    isAscending: this._request$.value.isAscending,
+                    currentPage: this._request$.value.page,
+                    totalPages: Math.ceil(response.totalCount / this._request$.value.pageSize)
+                };
+            }),
+            tap(x => {
+                this._response = x;
+                if (this._cursor.direction === 'down') {
+                    this._cursor.index = 0;
                 }
-            ));
+                else {
+                    this._cursor.index = this._response.items.length - 1;
+                }
+            })
+        );
     }
 
     private listInventoryItems(request: ListInventoryItemsRequest): Observable<IListInventoryItemsResponse> {
@@ -103,27 +114,29 @@ export class ListInventoryService {
     }
 
     changeStockpile(stockpileId: string) {
+        this._request$.next({...this._request$.value, stockpileId, page: 1});
     }
 
     changePageSize(value: number) {
         value = Math.max(1, value);
         value = Math.min(100, value);
-        this.pageSize_$.set(value);
         this._request$.next({...this._request$.value, pageSize: value, page: 1});
     }
 
     tryNextPage(): boolean {
-        if (this.page_$() < this.totalPages_$()) {
-            this._request$.next({...this._request$.value, page: this.page_$() + 1})
+        if (this._response.currentPage < this._response.totalPages) {
+            this._request$.next({...this._request$.value, page: this._response.currentPage + 1})
+            return true;
         }
-        return true;
+        return false;
     }
 
     tryPrevPage(): boolean {
-        if (this.page_$() > 1) {
-            this._request$.next({...this._request$.value, page: this.page_$() - 1})
+        if (this._response.currentPage > 1) {
+            this._request$.next({...this._request$.value, page: this._response.currentPage - 1})
+            return true;
         }
-        return true;
+        return false;
     }
 
     sortBy(value: string) {
@@ -131,25 +144,33 @@ export class ListInventoryService {
     }
 
     search(value: string) {
-        this.search_$.set(value);
         this._request$.next({...this._request$.value, search: value, page: 1});
     }
 
     tryHandleKey(event: KeyboardEvent): boolean {
         switch (event.key) {
             case 'ArrowDown': {
-                return true;
+                this._cursor.direction = 'down';
+
+                if (this._cursor.index < this._response.items.length - 1) {
+                    this._cursor.index++;
+                    return true;
+                }
+                return this.tryNextPage();
             }
             case 'ArrowUp': {
-                return true;
+                if (this.currentIndex_$() > 0) {
+                    return true;
+                } else if (this.tryPrevPage()) {
+                    return true;
+                }
+                return false;
             }
             case 'PageDown': {
-                this.tryNextPage();
-                return true;
+                return this.tryNextPage();
             }
             case 'PageUp': {
-                this.tryPrevPage();
-                return true;
+                return this.tryPrevPage();
             }
             case 'Enter': {
                 return true;

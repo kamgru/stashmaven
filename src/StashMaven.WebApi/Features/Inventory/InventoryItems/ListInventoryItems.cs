@@ -56,6 +56,7 @@ public class ListInventoryItemsHandler(StashMavenContext context)
     {
         public List<InventoryItemListItem> Items { get; set; } = [];
         public int TotalCount { get; set; }
+        public required string StockpileId { get; set; }
     }
 
     public async Task<StashMavenResult<ListInventoryItemsResponse>> ListInventoryItemsAsync(
@@ -133,6 +134,7 @@ public class ListInventoryItemsHandler(StashMavenContext context)
             {
                 Items = inventoryItems,
                 TotalCount = totalCount,
+                StockpileId = stockpile.StockpileId.Value
             });
     }
 }

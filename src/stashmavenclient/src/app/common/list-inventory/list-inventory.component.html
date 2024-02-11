@@ -11,9 +11,12 @@
             </div>
             <div>
                 <select #stockpileSelect (change)="handleStockpileChanged(stockpileSelect.value)"
-                        [(ngModel)]="selectedStockpile">
+                >
                     @for (stockpile of stockpiles; track stockpile.stockpileId) {
-                        <option [value]="stockpile.stockpileId">{{ stockpile.name }}</option>
+                        <option [value]="stockpile.stockpileId"
+                                [selected]="stockpile == selectedStockpile">
+                            {{ stockpile.name }}
+                        </option>
                     }
                 </select>
             </div>

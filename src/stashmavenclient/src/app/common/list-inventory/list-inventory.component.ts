@@ -1,19 +1,19 @@
 import {
-    AfterViewInit,
     Component,
     ElementRef,
     EventEmitter,
     HostListener,
-    Input,
+    Input, OnChanges,
     OnDestroy,
     Output,
     ViewChild
 } from '@angular/core';
-import {Subject, takeUntil} from "rxjs";
-import {IInventoryItem, ListInventoryService} from "./list-inventory.service";
+import {debounceTime, distinctUntilChanged, Observable, Subject, switchMap, takeUntil, tap} from "rxjs";
+import {IInventoryItem, IListInventoryItemsResponse, ListInventoryService} from "./list-inventory.service";
 import {AsyncPipe} from "@angular/common";
 import {IStockpileListItem} from "../IStockpileListItem";
 import {FormsModule} from "@angular/forms";
+import {ChangeDetectionStrategy} from "@angular/compiler";
 
 @Component({
     selector: 'app-list-inventory',
@@ -23,9 +23,9 @@ import {FormsModule} from "@angular/forms";
         FormsModule
     ],
     templateUrl: './list-inventory.component.html',
-    styleUrl: './list-inventory.component.css'
+    styleUrl: './list-inventory.component.css',
 })
-export class ListInventoryComponent implements OnDestroy, AfterViewInit {
+export class ListInventoryComponent implements OnDestroy {
 
     private _destroy$ = new Subject<void>();
 
@@ -55,7 +55,9 @@ export class ListInventoryComponent implements OnDestroy, AfterViewInit {
     }
 
     public currentIndex_$ = this.listInventory.currentIndex_$;
-    public inventoryItems$ = this.listInventory.inventoryItems$;
+    public inventoryItems$: Observable<IListInventoryItemsResponse>;
+
+    private _search$ = new Subject<string>();
 
     constructor(
         private listInventory: ListInventoryService,
@@ -67,23 +69,31 @@ export class ListInventoryComponent implements OnDestroy, AfterViewInit {
                 this.OnInventoryItemSelected.emit(x);
             });
 
-    }
 
-    ngOnInit(): void {
-    }
+        this.inventoryItems$ = this.listInventory.inventoryItems$
+            .pipe(
+                tap(x => {
+                    this.selectedStockpile = this.stockpiles.find(y => y.stockpileId === x.stockpileId);
+                })
+            );
 
-    ngAfterViewInit() {
-        this.listInventory.changeStockpile(this.selectedStockpile!.stockpileId);
+        this._search$.pipe(
+            distinctUntilChanged(),
+            debounceTime(500),
+        )
+            .subscribe(x => {
+                this.listInventory.search(x);
+            })
     }
 
     public changePageSize = (value: number) => this.listInventory.changePageSize(value);
     public tryNextPage = () => this.listInventory.tryNextPage();
     public tryPrevPage = () => this.listInventory.tryPrevPage();
     public sortBy = (value: string) => this.listInventory.sortBy(value);
-    public search = (value: string) => this.listInventory.search(value);
+    public search = (value: string) => this._search$.next(value);
 
     handleRowClick(index: number, inventoryItem: IInventoryItem) {
-        this.currentIndex_$.set(index);
+        // this.currentIndex_$.set(index);
         this.listInventory.selectedInventoryItem$.next(inventoryItem);
     }
 
