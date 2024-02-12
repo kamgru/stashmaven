@@ -1,7 +1,7 @@
 import {Component, ElementRef, EventEmitter, HostListener, Output, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Subject, takeUntil} from "rxjs";
-import {ICatalogItem, ListCatalogService} from "./list-catalog.service";
+import {debounceTime, distinctUntilChanged, Observable, Subject, takeUntil} from "rxjs";
+import {ICatalogItem, IListCatalogItemsResponse, ListCatalogService} from "./list-catalog.service";
 
 @Component({
     selector: 'app-list-catalog',
@@ -18,7 +18,7 @@ export class ListCatalogComponent {
     private _searchInput?: ElementRef<HTMLInputElement>;
 
     @Output()
-    public OnCatalogItemSelected: EventEmitter<ICatalogItem> = new EventEmitter<ICatalogItem>();
+    public OnItemSelected = new EventEmitter<ICatalogItem>();
 
     @HostListener('window:keydown', ['$event'])
     keyEvent(event: KeyboardEvent) {
@@ -34,34 +34,36 @@ export class ListCatalogComponent {
         }
     }
 
-    public totalPages_$ = this.listCatalog.totalPages_$;
     public currentIndex_$ = this.listCatalog.currentIndex_$;
-    public pageSize_$ = this.listCatalog.pageSize_$;
-    public page_$ = this.listCatalog.page_$;
-    public search_$ = this.listCatalog.search_$;
-    public catalogItems$ = this.listCatalog.catalogItems$;
+    public catalogItems$ = this.listCatalog.items$;
+
+    private _search$ = new Subject<string>();
 
     constructor(
         private listCatalog: ListCatalogService,
     ) {
-        this.listCatalog.selectedCatalogItem$
+        this.listCatalog.selectedItem$
             .pipe(
                 takeUntil(this._destroy$))
-            .subscribe(x => {
-                this.OnCatalogItemSelected.emit(x);
+            .subscribe(item => {
+                if (item) {
+                    this.OnItemSelected.emit(item);
+                }
             });
+
+        this._search$
+            .pipe(
+                distinctUntilChanged(),
+                debounceTime(500))
+            .subscribe(x => this.listCatalog.search(x))
     }
 
     public changePageSize = (value: number) => this.listCatalog.changePageSize(value);
     public tryNextPage = () => this.listCatalog.tryNextPage();
     public tryPrevPage = () => this.listCatalog.tryPrevPage();
     public sortBy = (value: string) => this.listCatalog.sortBy(value);
-    public search = (value: string) => this.listCatalog.search(value);
-
-    handleRowClick(index: number, catalogItem: ICatalogItem) {
-        this.currentIndex_$.set(index);
-        this.listCatalog.selectedCatalogItem$.next(catalogItem);
-    }
+    public search = (value: string) => this._search$.next(value);
+    public handleRowClick = (item: ICatalogItem) => this.listCatalog.select(item);
 
     ngOnDestroy() {
         this._destroy$.next();

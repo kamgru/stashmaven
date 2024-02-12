@@ -3,17 +3,55 @@ import {
     ElementRef,
     EventEmitter,
     HostListener,
-    Input, OnChanges,
-    OnDestroy,
+    Input, OnDestroy,
     Output,
     ViewChild
 } from '@angular/core';
-import {debounceTime, distinctUntilChanged, Observable, Subject, switchMap, takeUntil, tap} from "rxjs";
+import {debounceTime, distinctUntilChanged, Observable, Subject, takeUntil, tap} from "rxjs";
 import {IInventoryItem, IListInventoryItemsResponse, ListInventoryService} from "./list-inventory.service";
 import {AsyncPipe} from "@angular/common";
 import {IStockpileListItem} from "../IStockpileListItem";
 import {FormsModule} from "@angular/forms";
-import {ChangeDetectionStrategy} from "@angular/compiler";
+import {IListRequest, IListResponse, ListServiceBase} from "../ListServiceBase";
+
+
+export class ListItemsComponentBase<TItem, TListRequest extends IListRequest, TListResponse extends IListResponse<any>> {
+
+    private _destroy$ = new Subject<void>();
+
+    @ViewChild('searchInput')
+    private _searchInput?: ElementRef<HTMLInputElement>;
+
+    @Output()
+    public OnItemSelected = new EventEmitter<TItem>();
+
+    @HostListener('window:keydown', ['$event'])
+    keyEvent(event: KeyboardEvent) {
+        if (this.listService.tryHandleKey(event)) {
+            return;
+        }
+
+        if (event.ctrlKey && event.key == '/') {
+            this._searchInput?.nativeElement.focus();
+            event.preventDefault();
+        } else if (event.key == 'Escape') {
+            this._searchInput?.nativeElement.blur();
+        }
+    }
+
+    constructor(
+        private listService: ListServiceBase<TItem, TListRequest, TListResponse>
+    ) {
+        this.listService.selectedItem$
+            .pipe(
+                takeUntil(this._destroy$))
+            .subscribe(item => {
+                if (item) {
+                    this.OnItemSelected.emit(item);
+                }
+            });
+    }
+}
 
 @Component({
     selector: 'app-list-inventory',
@@ -33,7 +71,7 @@ export class ListInventoryComponent implements OnDestroy {
     private _searchInput?: ElementRef<HTMLInputElement>;
 
     @Output()
-    public OnInventoryItemSelected: EventEmitter<IInventoryItem> = new EventEmitter<IInventoryItem>();
+    public OnItemSelected: EventEmitter<IInventoryItem> = new EventEmitter<IInventoryItem>();
 
     @Input()
     public stockpiles: IStockpileListItem[] = [];
@@ -62,15 +100,17 @@ export class ListInventoryComponent implements OnDestroy {
     constructor(
         private listInventory: ListInventoryService,
     ) {
-        this.listInventory.selectedInventoryItem$
+        this.listInventory.selectedItem$
             .pipe(
                 takeUntil(this._destroy$))
-            .subscribe(x => {
-                this.OnInventoryItemSelected.emit(x);
+            .subscribe(item => {
+                if (item) {
+                    this.OnItemSelected.emit(item);
+                }
             });
 
 
-        this.inventoryItems$ = this.listInventory.inventoryItems$
+        this.inventoryItems$ = this.listInventory.items$
             .pipe(
                 tap(x => {
                     this.selectedStockpile = this.stockpiles.find(y => y.stockpileId === x.stockpileId);

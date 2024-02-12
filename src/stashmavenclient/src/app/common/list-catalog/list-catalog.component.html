@@ -1,18 +1,19 @@
 <div class="pt-2">
-    <div>
-        <input #searchInput
-               type="text"
-               placeholder="Search"
-               class="rounded border-gray-300 shadow-sm"
-               [value]="search_$()"
-               (input)="search(searchInput.value)"/>
-    </div>
-
     @if (catalogItems$ | async; as catalogItems) {
+        <div class="flex">
+            <div>
+                <input #searchInput
+                       type="text"
+                       placeholder="Search"
+                       class="rounded border-gray-300 shadow-sm"
+                       [value]="catalogItems.search"
+                       (input)="search(searchInput.value)"/>
+            </div>
+        </div>
         <div>
             total items: {{ catalogItems.totalCount }}
-            total pages: {{ totalPages_$() }}
-            current page: {{ page_$() }}
+            total pages: {{ catalogItems.totalPages }}
+            current page: {{ catalogItems.currentPage }}
         </div>
         <div>
             <select #pageSizeSelect
@@ -20,7 +21,7 @@
                     (keydown)="$event.preventDefault()"
                     (change)="$event.preventDefault(); changePageSize(+pageSizeSelect.value)">
                 @for (pageSize of [5, 10, 20, 50]; track pageSize) {
-                    <option [value]="pageSize" [selected]="pageSize == pageSize_$()">{{ pageSize }}</option>
+                    <option [value]="pageSize" [selected]="pageSize == catalogItems.pageSize">{{ pageSize }}</option>
                 }))
             </select>
 
@@ -31,18 +32,16 @@
                     <th (click)="sortBy('sku')">Sku</th>
                     <th (click)="sortBy('name')">Name</th>
                     <th>Unit</th>
-                    <th>Tax</th>
                 </tr>
                 </thead>
                 <tbody>
                     @for (catalogItem of catalogItems.items; track catalogItem.catalogItemId; let i = $index) {
-                        <tr [class.idx]="i == currentIndex_$()" (click)="handleRowClick(i, catalogItem)"
-                        class="grid grid-cols-catalog-items text-base">
-                            <td>{{ (page_$() - 1) * pageSize_$() + i + 1 }}</td>
+                        <tr [class.idx]="i == currentIndex_$()" (click)="handleRowClick(catalogItem)"
+                            class="grid grid-cols-inventory-items text-base">
+                            <td>{{ (catalogItems.currentPage - 1) * catalogItems.pageSize + i + 1 }}</td>
                             <td>{{ catalogItem.sku }}</td>
                             <td>{{ catalogItem.name }}</td>
                             <td>{{ catalogItem.unitOfMeasure }}</td>
-                            <td>{{ catalogItem.tax }}</td>
                         </tr>
                     }
                 </tbody>

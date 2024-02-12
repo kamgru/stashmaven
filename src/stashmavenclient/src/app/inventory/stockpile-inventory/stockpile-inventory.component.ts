@@ -5,6 +5,7 @@ import {ListInventoryComponent} from "../../common/list-inventory/list-inventory
 import {StockpileInventoryService} from "./stockpile-inventory.service";
 import {forkJoin, map} from "rxjs";
 import {IStockpileListItem} from "../../common/IStockpileListItem";
+import {IInventoryItem} from "../../common/list-inventory/list-inventory.service";
 
 @Component({
     selector: 'app-stockpile-inventory',
@@ -48,5 +49,9 @@ export class StockpileInventoryComponent implements OnInit {
                 this.stockpiles = x;
                 this.stockpiles.sort((a, b) => a.isDefault ? -1 : b.isDefault ? 1 : 0);
             })
+    }
+
+    handleItemSelected($event: IInventoryItem) {
+       console.log($event);
     }
 }
