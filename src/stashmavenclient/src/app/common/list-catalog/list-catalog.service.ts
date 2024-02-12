@@ -4,7 +4,7 @@ import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {IListRequest, IListResponse, ListServiceBase} from "../ListServiceBase";
 
-class ListCatalogItemsRequest implements IListRequest {
+export class ListCatalogItemsRequest implements IListRequest {
     public page: number = 1;
     public pageSize: number = 10;
     public search: string = '';

@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {IListRequest, IListResponse, ListServiceBase} from "../ListServiceBase";
 
-class ListInventoryItemsRequest implements IListRequest {
+export class ListInventoryItemsRequest implements IListRequest {
     public stockpileId: string = '';
     public page: number = 1;
     public pageSize: number = 10;

@@ -1,7 +1,6 @@
 import {BehaviorSubject, distinctUntilChanged, map, Observable, Subject, switchMap, tap} from "rxjs";
 import {Cursor} from "./Cursor";
 import {computed} from "@angular/core";
-import {IInventoryItem} from "./list-inventory/list-inventory.service";
 
 export interface IListResponse<T> {
     items: T[];
