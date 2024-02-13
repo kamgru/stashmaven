@@ -1,54 +1,9 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace StashMaven.WebApi.Data;
-
-public class Address
-{
-    public int Id { get; set; }
-    public int PartnerId { get; set; }
-    public required string Street { get; set; }
-    public string? StreetAdditional { get; set; }
-    public required string City { get; set; }
-    public string? State { get; set; }
-    public required string PostalCode { get; set; }
-    public required string CountryCode { get; set; }
-    public DateTime CreatedOn { get; set; }
-    public DateTime UpdatedOn { get; set; }
-    public Partner Partner { get; set; } = null!;
-}
-
-public enum TaxIdentifierType
-{
-    Nip = 0,
-    Regon = 1,
-    Krs = 2
-}
-public class TaxIdentifier
-{
-    public int Id { get; set; }
-    public int PartnerId { get; set; }
-    public required TaxIdentifierType Type { get; set; }
-    public required string Value { get; set; }
-    public bool IsPrimary { get; set; }
-    public DateTime CreatedOn { get; set; }
-    public DateTime UpdatedOn { get; set; }
-    public Partner Partner { get; set; } = null!;
-}
-
-public class Partner
-{
-    public int Id { get; set; }
-    public Guid PartnerId { get; set; }
-    public required string LegalName { get; set; }
-    public required string CustomIdentifier { get; set; }
-    public Address? Address { get; set; }
-    public List<TaxIdentifier> TaxIdentifiers { get; set; } = new();
-    public DateTime CreatedOn { get; set; }
-    public DateTime UpdatedOn { get; set; }
-}
 
 public class StashMavenContext : DbContext
 {
+    public const string PostgresUniqueViolation = "23505";
+
     public StashMavenContext(
         DbContextOptions<StashMavenContext> options)
         : base(options)
@@ -60,17 +15,45 @@ public class StashMavenContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Partner>()
-            .ToTable("Partner", "smvn");
+        modelBuilder.ApplyConfiguration(new Partner.TypeConfig());
+        modelBuilder.ApplyConfiguration(new Address.TypeConfig());
+        modelBuilder.ApplyConfiguration(new TaxIdentifier.TypeConfig());
 
-        modelBuilder.Entity<Address>()
-            .ToTable("Address", "smvn");
+        modelBuilder.ApplyConfiguration(new CatalogItem.TypeConfig());
+        modelBuilder.ApplyConfiguration(new Brand.TypeConfig());
 
-        modelBuilder.Entity<TaxIdentifier>()
-            .ToTable("TaxIdentifier", "smvn");
+        modelBuilder.ApplyConfiguration(new TaxDefinition.TypeConfig());
+        modelBuilder.ApplyConfiguration(new CompanyOption.TypeConfig());
+        modelBuilder.ApplyConfiguration(new StashMavenOption.TypeConfig());
+
+        modelBuilder.ApplyConfiguration(new Shipment.TypeConfig());
+        modelBuilder.ApplyConfiguration(new ShipmentRecord.TypeConfig());
+        modelBuilder.ApplyConfiguration(new ShipmentKind.TypeConfig());
+        modelBuilder.ApplyConfiguration(new PartnerRefSnapshot.TypeConfig());
+        modelBuilder.ApplyConfiguration(new SourceReference.TypeConfig());
+        modelBuilder.ApplyConfiguration(new InventoryItem.TypeConfig());
+        modelBuilder.ApplyConfiguration(new Stockpile.TypeConfig());
+        modelBuilder.ApplyConfiguration(new SequenceGenerator.TypeConfig());
+        modelBuilder.ApplyConfiguration(new SequenceEntry.TypeConfig());
     }
 
     public DbSet<Partner> Partners => Set<Partner>();
     public DbSet<Address> Addresses => Set<Address>();
     public DbSet<TaxIdentifier> TaxIdentifiers => Set<TaxIdentifier>();
+
+    public DbSet<TaxDefinition> TaxDefinitions => Set<TaxDefinition>();
+    public DbSet<CompanyOption> CompanyOptions => Set<CompanyOption>();
+    public DbSet<StashMavenOption> StashMavenOptions => Set<StashMavenOption>();
+
+    public DbSet<CatalogItem> CatalogItems => Set<CatalogItem>();
+    public DbSet<Brand> Brands => Set<Brand>();
+
+    public DbSet<Shipment> Shipments => Set<Shipment>();
+    public DbSet<PartnerRefSnapshot> PartnerRefSnapshots => Set<PartnerRefSnapshot>();
+    public DbSet<ShipmentRecord> ShipmentRecords => Set<ShipmentRecord>();
+    public DbSet<ShipmentKind> ShipmentKinds => Set<ShipmentKind>();
+    public DbSet<SourceReference> SourceReferences => Set<SourceReference>();
+    public DbSet<InventoryItem> InventoryItems => Set<InventoryItem>();
+    public DbSet<Stockpile> Stockpiles => Set<Stockpile>();
+    public DbSet<SequenceGenerator> SequenceGenerators => Set<SequenceGenerator>();
 }

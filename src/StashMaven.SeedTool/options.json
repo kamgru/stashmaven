@@ -1,0 +1,22 @@
+{
+  "company": [
+    {
+      "key": "legalName",
+      "value": "Kamil Grudzień"
+    },
+    {
+      "key": "nip",
+      "value": "PL9591625391"
+    },
+    {
+      "key": "address",
+      "value": "ul. Stefana Banacha 35/43, 31-235 Kraków"
+    }
+  ],
+  "stashMaven": [
+    {
+      "key": "defaultStockpileShortCode",
+      "value": "M1"
+    }
+  ]
+}

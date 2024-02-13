@@ -1,0 +1,11 @@
+<form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
+    <div class="flex flex-col">
+        <label for="brand-name">Name</label>
+        <input type="text" class="form-control" id="brand-name" formControlName="name">
+    </div>
+    <div class="flex flex-col">
+        <label for="brand-short-code">Short Code</label>
+        <input type="text" class="form-control" id="brand-short-code" formControlName="shortCode">
+    </div>
+    <button type="submit" [disabled]="!brandForm.valid">Submit</button>
+</form>

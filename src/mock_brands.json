@@ -1,0 +1,602 @@
+[
+  {
+    "shortCode": "NN",
+    "name": "MegaGoods"
+  },
+  {
+    "shortCode": "DV",
+    "name": "TransSolutions"
+  },
+  {
+    "shortCode": "SS",
+    "name": "NetSolutions"
+  },
+  {
+    "shortCode": "VM",
+    "name": "PrimeStudios"
+  },
+  {
+    "shortCode": "OU",
+    "name": "GlobalIndustries"
+  },
+  {
+    "shortCode": "NB",
+    "name": "TechSystems"
+  },
+  {
+    "shortCode": "WJ",
+    "name": "LuxLogistics"
+  },
+  {
+    "shortCode": "QW",
+    "name": "MaxHealth"
+  },
+  {
+    "shortCode": "GQ",
+    "name": "PrimeLogistics"
+  },
+  {
+    "shortCode": "ZS",
+    "name": "PrimeSolutions"
+  },
+  {
+    "shortCode": "KE",
+    "name": "TopIndustries"
+  },
+  {
+    "shortCode": "WF",
+    "name": "InfoGoods"
+  },
+  {
+    "shortCode": "NX",
+    "name": "BioMotors"
+  },
+  {
+    "shortCode": "CI",
+    "name": "InfoLogistics"
+  },
+  {
+    "shortCode": "TO",
+    "name": "LuxFarms"
+  },
+  {
+    "shortCode": "MY",
+    "name": "BioLabs"
+  },
+  {
+    "shortCode": "JP",
+    "name": "PowerGoods"
+  },
+  {
+    "shortCode": "CK",
+    "name": "UltraWear"
+  },
+  {
+    "shortCode": "DI",
+    "name": "PrimeElectronics"
+  },
+  {
+    "shortCode": "JH",
+    "name": "TechIndustries"
+  },
+  {
+    "shortCode": "GX",
+    "name": "TechLabs"
+  },
+  {
+    "shortCode": "ER",
+    "name": "BioFoods"
+  },
+  {
+    "shortCode": "TC",
+    "name": "GlobalWear"
+  },
+  {
+    "shortCode": "QG",
+    "name": "AceTech"
+  },
+  {
+    "shortCode": "OC",
+    "name": "AutoHealth"
+  },
+  {
+    "shortCode": "QJ",
+    "name": "TopCorp"
+  },
+  {
+    "shortCode": "SW",
+    "name": "BioHealth"
+  },
+  {
+    "shortCode": "RY",
+    "name": "TopGoods"
+  },
+  {
+    "shortCode": "CP",
+    "name": "EcoDrinks"
+  },
+  {
+    "shortCode": "XG",
+    "name": "LuxWear"
+  },
+  {
+    "shortCode": "AR",
+    "name": "UltraCorp"
+  },
+  {
+    "shortCode": "YJ",
+    "name": "PowerDrinks"
+  },
+  {
+    "shortCode": "BS",
+    "name": "AutoSystems"
+  },
+  {
+    "shortCode": "YH",
+    "name": "UltraFoods"
+  },
+  {
+    "shortCode": "ZB",
+    "name": "MegaDynamics"
+  },
+  {
+    "shortCode": "BU",
+    "name": "TechDrinks"
+  },
+  {
+    "shortCode": "YQ",
+    "name": "AceInnovations"
+  },
+  {
+    "shortCode": "UC",
+    "name": "TransStudios"
+  },
+  {
+    "shortCode": "VY",
+    "name": "ProFarms"
+  },
+  {
+    "shortCode": "OQ",
+    "name": "AutoElectronics"
+  },
+  {
+    "shortCode": "LY",
+    "name": "AceLabs"
+  },
+  {
+    "shortCode": "YM",
+    "name": "ProSolutions"
+  },
+  {
+    "shortCode": "PD",
+    "name": "NetSolutions"
+  },
+  {
+    "shortCode": "BZ",
+    "name": "TransLabs"
+  },
+  {
+    "shortCode": "CN",
+    "name": "PowerFarms"
+  },
+  {
+    "shortCode": "ES",
+    "name": "PrimeInnovations"
+  },
+  {
+    "shortCode": "HL",
+    "name": "MaxFarms"
+  },
+  {
+    "shortCode": "CD",
+    "name": "MegaTech"
+  },
+  {
+    "shortCode": "SR",
+    "name": "LuxCorp"
+  },
+  {
+    "shortCode": "AE",
+    "name": "MegaCorp"
+  },
+  {
+    "shortCode": "KG",
+    "name": "ProInnovations"
+  },
+  {
+    "shortCode": "XZ",
+    "name": "TransMotors"
+  },
+  {
+    "shortCode": "YX",
+    "name": "GlobalDrinks"
+  },
+  {
+    "shortCode": "OJ",
+    "name": "MaxDesign"
+  },
+  {
+    "shortCode": "LR",
+    "name": "PrimeSystems"
+  },
+  {
+    "shortCode": "GR",
+    "name": "MaxMotors"
+  },
+  {
+    "shortCode": "PV",
+    "name": "PrimeElectronics"
+  },
+  {
+    "shortCode": "WZ",
+    "name": "TransElectronics"
+  },
+  {
+    "shortCode": "KU",
+    "name": "TechDesign"
+  },
+  {
+    "shortCode": "QL",
+    "name": "TransSystems"
+  },
+  {
+    "shortCode": "OE",
+    "name": "ProDynamics"
+  },
+  {
+    "shortCode": "ML",
+    "name": "SmartCorp"
+  },
+  {
+    "shortCode": "AV",
+    "name": "BioGoods"
+  },
+  {
+    "shortCode": "XV",
+    "name": "BioTech"
+  },
+  {
+    "shortCode": "IS",
+    "name": "MaxWear"
+  },
+  {
+    "shortCode": "IT",
+    "name": "EcoIndustries"
+  },
+  {
+    "shortCode": "AY",
+    "name": "GlobalIndustries"
+  },
+  {
+    "shortCode": "GP",
+    "name": "NetDesign"
+  },
+  {
+    "shortCode": "RM",
+    "name": "PrimeWear"
+  },
+  {
+    "shortCode": "RX",
+    "name": "InfoHealth"
+  },
+  {
+    "shortCode": "SN",
+    "name": "UltraTech"
+  },
+  {
+    "shortCode": "FO",
+    "name": "NetCorp"
+  },
+  {
+    "shortCode": "GA",
+    "name": "SuperWear"
+  },
+  {
+    "shortCode": "RG",
+    "name": "AutoElectronics"
+  },
+  {
+    "shortCode": "II",
+    "name": "TechSolutions"
+  },
+  {
+    "shortCode": "JZ",
+    "name": "MegaCorp"
+  },
+  {
+    "shortCode": "JC",
+    "name": "EliteFarms"
+  },
+  {
+    "shortCode": "CH",
+    "name": "ProLabs"
+  },
+  {
+    "shortCode": "TY",
+    "name": "PrimeDesign"
+  },
+  {
+    "shortCode": "FX",
+    "name": "SuperTech"
+  },
+  {
+    "shortCode": "IZ",
+    "name": "PrimeIndustries"
+  },
+  {
+    "shortCode": "EQ",
+    "name": "TechDynamics"
+  },
+  {
+    "shortCode": "MP",
+    "name": "PowerSolutions"
+  },
+  {
+    "shortCode": "OV",
+    "name": "AceFoods"
+  },
+  {
+    "shortCode": "RO",
+    "name": "AceDesign"
+  },
+  {
+    "shortCode": "QZ",
+    "name": "BioMotors"
+  },
+  {
+    "shortCode": "IH",
+    "name": "PrimeInnovations"
+  },
+  {
+    "shortCode": "SQ",
+    "name": "AceFoods"
+  },
+  {
+    "shortCode": "PB",
+    "name": "PrimeStudios"
+  },
+  {
+    "shortCode": "YR",
+    "name": "PrimeCorp"
+  },
+  {
+    "shortCode": "XE",
+    "name": "MaxInnovations"
+  },
+  {
+    "shortCode": "MD",
+    "name": "MegaStudios"
+  },
+  {
+    "shortCode": "JA",
+    "name": "LuxHealth"
+  },
+  {
+    "shortCode": "ZE",
+    "name": "LuxInnovations"
+  },
+  {
+    "shortCode": "PG",
+    "name": "ProFarms"
+  },
+  {
+    "shortCode": "QE",
+    "name": "AutoLabs"
+  },
+  {
+    "shortCode": "UH",
+    "name": "EcoDynamics"
+  },
+  {
+    "shortCode": "JK",
+    "name": "InfoSystems"
+  },
+  {
+    "shortCode": "ZK",
+    "name": "ProMotors"
+  },
+  {
+    "shortCode": "YV",
+    "name": "EcoDrinks"
+  },
+  {
+    "shortCode": "TB",
+    "name": "EcoHealth"
+  },
+  {
+    "shortCode": "BF",
+    "name": "SmartSolutions"
+  },
+  {
+    "shortCode": "EO",
+    "name": "BioFarms"
+  },
+  {
+    "shortCode": "CZ",
+    "name": "BioGoods"
+  },
+  {
+    "shortCode": "XI",
+    "name": "AutoIndustries"
+  },
+  {
+    "shortCode": "NZ",
+    "name": "InfoDesign"
+  },
+  {
+    "shortCode": "ZI",
+    "name": "TechTech"
+  },
+  {
+    "shortCode": "BJ",
+    "name": "LuxMotors"
+  },
+  {
+    "shortCode": "HC",
+    "name": "NetTech"
+  },
+  {
+    "shortCode": "UG",
+    "name": "BioDesign"
+  },
+  {
+    "shortCode": "SH",
+    "name": "MegaSystems"
+  },
+  {
+    "shortCode": "BV",
+    "name": "TopElectronics"
+  },
+  {
+    "shortCode": "KY",
+    "name": "MegaWear"
+  },
+  {
+    "shortCode": "CJ",
+    "name": "EcoSystems"
+  },
+  {
+    "shortCode": "UB",
+    "name": "MaxWear"
+  },
+  {
+    "shortCode": "ID",
+    "name": "UltraElectronics"
+  },
+  {
+    "shortCode": "FS",
+    "name": "GlobalEnergy"
+  },
+  {
+    "shortCode": "AH",
+    "name": "TechHealth"
+  },
+  {
+    "shortCode": "NM",
+    "name": "MaxElectronics"
+  },
+  {
+    "shortCode": "AM",
+    "name": "ProFoods"
+  },
+  {
+    "shortCode": "AD",
+    "name": "SmartSolutions"
+  },
+  {
+    "shortCode": "KF",
+    "name": "InfoIndustries"
+  },
+  {
+    "shortCode": "ZH",
+    "name": "AutoInnovations"
+  },
+  {
+    "shortCode": "WT",
+    "name": "ProStudios"
+  },
+  {
+    "shortCode": "IY",
+    "name": "BioFarms"
+  },
+  {
+    "shortCode": "XO",
+    "name": "InfoMotors"
+  },
+  {
+    "shortCode": "FY",
+    "name": "NetIndustries"
+  },
+  {
+    "shortCode": "DH",
+    "name": "BioFarms"
+  },
+  {
+    "shortCode": "HE",
+    "name": "TransDynamics"
+  },
+  {
+    "shortCode": "YE",
+    "name": "LuxDynamics"
+  },
+  {
+    "shortCode": "LB",
+    "name": "PrimeEnergy"
+  },
+  {
+    "shortCode": "DZ",
+    "name": "SuperEnergy"
+  },
+  {
+    "shortCode": "MS",
+    "name": "UltraFarms"
+  },
+  {
+    "shortCode": "GJ",
+    "name": "TopLogistics"
+  },
+  {
+    "shortCode": "HU",
+    "name": "SuperIndustries"
+  },
+  {
+    "shortCode": "FK",
+    "name": "MegaWear"
+  },
+  {
+    "shortCode": "WR",
+    "name": "TopSystems"
+  },
+  {
+    "shortCode": "VO",
+    "name": "NetDrinks"
+  },
+  {
+    "shortCode": "VK",
+    "name": "PowerWear"
+  },
+  {
+    "shortCode": "RR",
+    "name": "TransLogistics"
+  },
+  {
+    "shortCode": "ZX",
+    "name": "MaxCorp"
+  },
+  {
+    "shortCode": "RF",
+    "name": "UltraCorp"
+  },
+  {
+    "shortCode": "CL",
+    "name": "PrimeDrinks"
+  },
+  {
+    "shortCode": "JI",
+    "name": "PrimeFoods"
+  },
+  {
+    "shortCode": "HO",
+    "name": "PrimeInnovations"
+  },
+  {
+    "shortCode": "AU",
+    "name": "NetDynamics"
+  },
+  {
+    "shortCode": "QC",
+    "name": "AutoSolutions"
+  },
+  {
+    "shortCode": "TZ",
+    "name": "ProFoods"
+  },
+  {
+    "shortCode": "UF",
+    "name": "SmartLogistics"
+  },
+  {
+    "shortCode": "FU",
+    "name": "TechSolutions"
+  }
+]

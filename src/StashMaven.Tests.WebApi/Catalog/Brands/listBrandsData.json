@@ -1,0 +1,127 @@
+[
+  {
+    "BrandId": "b8bafb12-3767-4146-b233-802a4b3a39b1",
+    "Name": "Globalpoint",
+    "ShortCode": "OTK"
+  },
+  {
+    "BrandId": "da051576-2187-4033-8df2-820bb95a0f7b",
+    "Name": "Cyberpoint",
+    "ShortCode": "ANU"
+  },
+  {
+    "BrandId": "167863cc-5fe4-4d27-bb75-59627d922cb7",
+    "Name": "Techpoint",
+    "ShortCode": "RNY"
+  },
+  {
+    "BrandId": "ed02d33e-3834-4d85-88de-9bc3922bb94a",
+    "Name": "Biogen",
+    "ShortCode": "CNL"
+  },
+  {
+    "BrandId": "311fedcf-d27a-446d-943f-1350f76170fa",
+    "Name": "Aquasoft",
+    "ShortCode": "NTX"
+  },
+  {
+    "BrandId": "826f4d12-1be1-486a-a98a-ab7d62ead4e1",
+    "Name": "Aquatech",
+    "ShortCode": "FCP"
+  },
+  {
+    "BrandId": "3d913a7e-96aa-40ef-a346-b64525a1b267",
+    "Name": "Aquaware",
+    "ShortCode": "VGB"
+  },
+  {
+    "BrandId": "b3bba1cb-c232-486f-b002-23367898e62d",
+    "Name": "Urbanware",
+    "ShortCode": "MXT"
+  },
+  {
+    "BrandId": "1e6460bd-aff7-4389-b661-0f02aeb7f125",
+    "Name": "Neozone",
+    "ShortCode": "NFV"
+  },
+  {
+    "BrandId": "9d488aa5-f115-43be-bc33-a2b170095f60",
+    "Name": "Techgen",
+    "ShortCode": "TWC"
+  },
+  {
+    "BrandId": "279e4ee7-bdb4-4cfb-90d7-d5725d42b007",
+    "Name": "Techtech",
+    "ShortCode": "USB"
+  },
+  {
+    "BrandId": "c5f9abea-9f3a-47b5-b4db-df7e9ddf4b94",
+    "Name": "Smartpoint",
+    "ShortCode": "WVT"
+  },
+  {
+    "BrandId": "b0034b28-cc12-4a67-933f-52c69f3c031f",
+    "Name": "Solarware",
+    "ShortCode": "YAS"
+  },
+  {
+    "BrandId": "8b460558-c9c1-4fa9-abdb-8f589020a59f",
+    "Name": "Urbansoft",
+    "ShortCode": "ZYC"
+  },
+  {
+    "BrandId": "8943c8a8-aa44-44ac-a5f7-d8f2b9a560b7",
+    "Name": "Neopoint",
+    "ShortCode": "LMS"
+  },
+  {
+    "BrandId": "9e6c1227-b441-44c7-9122-bd90c7f8fb23",
+    "Name": "Zensoft",
+    "ShortCode": "UQL"
+  },
+  {
+    "BrandId": "4827eb2b-6519-418d-b03c-febb0c90ad8c",
+    "Name": "Solarlux",
+    "ShortCode": "NYV"
+  },
+  {
+    "BrandId": "4e36c63e-a42b-4280-b7aa-e5449c1ef64d",
+    "Name": "Zenwave",
+    "ShortCode": "OSD"
+  },
+  {
+    "BrandId": "fe52c13b-d674-481c-a68a-8e8d602cb9a8",
+    "Name": "Neoline",
+    "ShortCode": "MNI"
+  },
+  {
+    "BrandId": "54ca1a22-d2e1-4ac8-94cd-fe960b262040",
+    "Name": "Solarline",
+    "ShortCode": "GRD"
+  },
+  {
+    "BrandId": "d5135ac0-934b-4632-bf09-434745150231",
+    "Name": "Aquanet",
+    "ShortCode": "JJE"
+  },
+  {
+    "BrandId": "8310bd22-4c66-45a2-a686-2ba125fef2d6",
+    "Name": "Cybertech",
+    "ShortCode": "HMY"
+  },
+  {
+    "BrandId": "828a1c5d-976d-4280-a58b-039853399528",
+    "Name": "Technet",
+    "ShortCode": "ZOW"
+  },
+  {
+    "BrandId": "ae94e14f-f040-4765-8cfa-1a8737e288c1",
+    "Name": "Biozone",
+    "ShortCode": "DRN"
+  },
+  {
+    "BrandId": "17e8ac0e-3a05-41a6-8420-d6098bbc4640",
+    "Name": "Zentech",
+    "ShortCode": "MTO"
+  }
+]

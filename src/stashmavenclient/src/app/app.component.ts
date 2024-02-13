@@ -1,14 +1,15 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RouterOutlet} from '@angular/router';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {MSAL_GUARD_CONFIG, MsalBroadcastService, MsalGuardConfiguration, MsalService} from "@azure/msal-angular";
 import {filter, Subject, takeUntil} from "rxjs";
 import {EventMessage, EventType, InteractionStatus} from "@azure/msal-browser";
+import {SideNavComponent} from "./side-nav/side-nav.component";
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [CommonModule, RouterOutlet],
+    imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SideNavComponent],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })

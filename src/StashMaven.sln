@@ -2,11 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StashMaven.WebApi", "StashMaven.WebApi\StashMaven.WebApi.csproj", "{DEEE0297-BDB9-4C71-AD80-2DFBD254803B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StashMaven.LedgerWriter", "StashMaven.LedgerWriter\StashMaven.LedgerWriter.csproj", "{32744D20-E0B0-46A1-A2C5-95BFCEEA5ADD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StashMaven.Tests.WebApi", "StashMaven.Tests.WebApi\StashMaven.Tests.WebApi.csproj", "{E082FEA7-13BE-4E74-90CF-B83FE40AB3A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StashMaven.Common", "StashMaven.Common\StashMaven.Common.csproj", "{300AACF5-04CC-492C-84B8-2044333079B3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StashMaven.Seeder", "StashMaven.Seeder\StashMaven.Seeder.csproj", "{3714AB91-108D-4D0C-B51A-27FE45E745FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StashMaven.SeedTool", "StashMaven.SeedTool\StashMaven.SeedTool.csproj", "{FF7545C5-D187-4626-95A8-303947086E7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,17 +16,13 @@ Global
 		{DEEE0297-BDB9-4C71-AD80-2DFBD254803B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEEE0297-BDB9-4C71-AD80-2DFBD254803B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEEE0297-BDB9-4C71-AD80-2DFBD254803B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32744D20-E0B0-46A1-A2C5-95BFCEEA5ADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32744D20-E0B0-46A1-A2C5-95BFCEEA5ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32744D20-E0B0-46A1-A2C5-95BFCEEA5ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32744D20-E0B0-46A1-A2C5-95BFCEEA5ADD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{300AACF5-04CC-492C-84B8-2044333079B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{300AACF5-04CC-492C-84B8-2044333079B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{300AACF5-04CC-492C-84B8-2044333079B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{300AACF5-04CC-492C-84B8-2044333079B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3714AB91-108D-4D0C-B51A-27FE45E745FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3714AB91-108D-4D0C-B51A-27FE45E745FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3714AB91-108D-4D0C-B51A-27FE45E745FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3714AB91-108D-4D0C-B51A-27FE45E745FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E082FEA7-13BE-4E74-90CF-B83FE40AB3A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E082FEA7-13BE-4E74-90CF-B83FE40AB3A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E082FEA7-13BE-4E74-90CF-B83FE40AB3A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E082FEA7-13BE-4E74-90CF-B83FE40AB3A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF7545C5-D187-4626-95A8-303947086E7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF7545C5-D187-4626-95A8-303947086E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF7545C5-D187-4626-95A8-303947086E7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF7545C5-D187-4626-95A8-303947086E7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

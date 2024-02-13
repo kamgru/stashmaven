@@ -1,0 +1,15 @@
+<form class="form-container" [formGroup]="addTaxDefinitionForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-control">
+        <label for="tax-name">Name</label>
+        <input type="text" id="tax-name" formControlName="name">
+    </div>
+
+    <div class="form-control">
+        <label for="tax-rate">Rate</label>
+        <input type="number" id="tax-rate" formControlName="rate"
+               class="text-right [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+    </div>
+
+    <button type="submit" [disabled]="!addTaxDefinitionForm.valid">Submit</button>
+</form>

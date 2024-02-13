@@ -1,0 +1,17 @@
+<div>
+    <div *ngIf="!canDelete.value">
+        {{ canDelete.reason }}
+    </div>
+    <button type="button" (click)="onDelete()" *ngIf="canDelete.value">Delete</button>
+</div>
+<form class="form-container max-w-[300px]" [formGroup]="editTaxDefinitionForm" (ngSubmit)="onSubmit()">
+    <div class="form-control">
+        <label for="tax-name">Name</label>
+        <input type="text" formControlName="name" id="tax-name">
+    </div>
+
+    <div class="flex justify-between">
+        <button type="submit" [disabled]="!editTaxDefinitionForm.valid">Submit</button>
+        <button type="button" (click)="notifyOnCancel()">Cancel</button>
+    </div>
+</form>

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Vat23",
+    "rate": 0.23
+  },
+  {
+    "name": "Vat8",
+    "rate": 0.08
+  },
+  {
+    "name": "Vat7",
+    "rate": 0.07
+  },
+  {
+    "name": "Vat5",
+    "rate": 0.05
+  },
+  {
+    "name": "Vat3",
+    "rate": 0.03
+  },
+  {
+    "name": "Vat0",
+    "rate": 0
+  }
+]
