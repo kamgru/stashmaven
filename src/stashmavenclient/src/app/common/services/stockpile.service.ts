@@ -16,12 +16,7 @@ export class StockpileService {
     }
 
     public listStockpiles(): Observable<IListStockpilesResponse> {
-        return this.http.get<IListStockpilesResponse>(`${environment.apiUrl}/api/v1/stockpile/list`, {
-            params: {
-                page: '1',
-                pageSize: '25',
-            }
-        });
+        return this.http.get<IListStockpilesResponse>(`${environment.apiUrl}/api/v1/stockpile/list`);
     }
 
     public getDefaultStockpileId(): Observable<IGetDefaultStockpileIdResponse> {

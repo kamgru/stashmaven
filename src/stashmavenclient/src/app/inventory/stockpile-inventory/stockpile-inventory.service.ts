@@ -12,7 +12,6 @@ export interface IStockpile {
 
 export interface IListStockpilesResponse {
     items: IStockpile[];
-    totalCount: number;
 }
 
 @Injectable({

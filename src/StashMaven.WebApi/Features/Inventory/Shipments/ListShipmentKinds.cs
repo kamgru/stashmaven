@@ -1,3 +1,5 @@
+using StashMaven.WebApi.Data.Services;
+
 namespace StashMaven.WebApi.Features.Inventory.Shipments;
 
 public partial class ShipmentController
@@ -17,7 +19,7 @@ public partial class ShipmentController
 }
 
 [Injectable]
-public class ListShipmentKinds(StashMavenContext context)
+public class ListShipmentKinds(CacheReader cacheReader)
 {
     public class ShipmentKindItem
     {
@@ -29,12 +31,12 @@ public class ListShipmentKinds(StashMavenContext context)
 
     public class ListShipmentKindsResponse
     {
-        public List<ShipmentKindItem> Items { get; set; } = [];
+        public IReadOnlyList<ShipmentKindItem> Items { get; set; } = [];
     }
 
     public async Task<StashMavenResult<ListShipmentKindsResponse>> ListShipmentKindsAsync()
     {
-        List<ShipmentKind> shipmentKinds = await context.ShipmentKinds.ToListAsync();
+        IReadOnlyList<ShipmentKind> shipmentKinds = await cacheReader.GetKindsAsync();
         List<ShipmentKindItem> items = shipmentKinds.Select(x => new ShipmentKindItem
             {
                 ShipmentKindId = x.ShipmentKindId.Value,

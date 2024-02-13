@@ -1,3 +1,5 @@
+using StashMaven.WebApi.Data.Services;
+
 namespace StashMaven.WebApi.Features.Inventory.Stockpiles;
 
 public partial class StockpileController
@@ -20,7 +22,7 @@ public partial class StockpileController
 }
 
 [Injectable]
-public class GetDefaultStockpileHandler(StashMavenContext context)
+public class GetDefaultStockpileHandler(CacheReader cacheReader)
 {
     public class GetDefaultStockpileResponse
     {
@@ -31,16 +33,7 @@ public class GetDefaultStockpileHandler(StashMavenContext context)
 
     public async Task<StashMavenResult<GetDefaultStockpileResponse>> GetDefaultStockpileAsync()
     {
-        StashMavenOption? defaultStockpileOption = await context.StashMavenOptions
-            .FirstOrDefaultAsync(x => x.Key == StashMavenOption.Keys.DefaultStockpileShortCode);
-
-        if (defaultStockpileOption == null)
-        {
-            return StashMavenResult<GetDefaultStockpileResponse>.Error("Default stockpile not set");
-        }
-
-        Stockpile? stockpile = await context.Stockpiles
-            .FirstOrDefaultAsync(x => x.ShortCode == defaultStockpileOption.Value);
+        Stockpile? stockpile = await cacheReader.GetDefaultStockpileAsync();
 
         if (stockpile == null)
         {

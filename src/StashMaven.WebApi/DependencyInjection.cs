@@ -15,7 +15,8 @@ public static class ServiceCollectionExtensions
             string writeModelConnectionString = configuration.GetConnectionString("WriteModel")
                                                 ?? throw new InvalidOperationException(
                                                     "WriteModel connection string is missing.");
-            opt.UseNpgsql(writeModelConnectionString);
+            opt.UseNpgsql(writeModelConnectionString)
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
     }
 

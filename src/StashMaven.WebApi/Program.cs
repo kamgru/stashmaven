@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using StashMaven.WebApi;
+using StashMaven.WebApi.Data.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddControllers()
 builder.Services.AddSwagger(builder.Configuration);
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddFeatures();
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<CacheReader>();
 builder.Services.AddWebApiAuthentication(builder.Configuration);
 
 builder.Services.AddCors(opt =>

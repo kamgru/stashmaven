@@ -1,3 +1,5 @@
+using StashMaven.WebApi.Data.Services;
+
 namespace StashMaven.WebApi.Features.Inventory.InventoryItems;
 
 public partial class InventoryItemsController
@@ -25,7 +27,7 @@ public partial class InventoryItemsController
 }
 
 [Injectable]
-public class ListInventoryItemsHandler(StashMavenContext context)
+public class ListInventoryItemsHandler(StashMavenContext context, CacheReader cacheReader)
 {
     private const int MinPageSize = 5;
     private const int MaxPageSize = 100;
@@ -69,17 +71,7 @@ public class ListInventoryItemsHandler(StashMavenContext context)
 
         if (string.IsNullOrWhiteSpace(request.StockpileId))
         {
-            StashMavenOption? defaultStockpileOption = await context.StashMavenOptions
-                .FirstOrDefaultAsync(x => x.Key == StashMavenOption.Keys.DefaultStockpileShortCode);
-
-            if (defaultStockpileOption == null)
-            {
-                return StashMavenResult<ListInventoryItemsResponse>.Error(
-                    $"Default stockpile not set. Either provide {nameof(request.StockpileId)} or set default stockpile");
-            }
-
-            stockpile = await context.Stockpiles
-                .FirstOrDefaultAsync(x => x.ShortCode == defaultStockpileOption.Value);
+            stockpile = await cacheReader.GetDefaultStockpileAsync();
         }
         else
         {
