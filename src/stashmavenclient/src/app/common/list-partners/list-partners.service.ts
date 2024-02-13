@@ -2,7 +2,7 @@ import {Injectable, signal} from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {IListRequest, IListResponse, ListServiceBase} from "../ListServiceBase";
+import {IListRequest, IListResponse, ListServiceBase} from "../components/list-items";
 
 export class ListPartnersRequest implements IListRequest{
     public page: number = 1;

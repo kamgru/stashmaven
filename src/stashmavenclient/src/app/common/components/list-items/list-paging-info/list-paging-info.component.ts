@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {IListResponse} from "../../ListServiceBase";
+import {IListResponse} from "../ListServiceBase";
 
 @Component({
     selector: 'app-list-paging-info',

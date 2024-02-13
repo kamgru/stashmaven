@@ -9,8 +9,8 @@ import {
 import {AsyncPipe} from "@angular/common";
 import {IStockpileListItem} from "../IStockpileListItem";
 import {FormsModule} from "@angular/forms";
-import {ListItemsComponentBase} from "../components/list-items-component-base.component";
-import {ListSearchInputComponent} from "../components/list-search-input/list-search-input.component";
+import {ListItemsBaseComponent} from "../components/list-items/list-items-base/list-items-base.component";
+import {ListSearchInputComponent} from "../components/list-items/list-search-input/list-search-input.component";
 
 @Component({
     selector: 'app-list-inventory',
@@ -24,7 +24,7 @@ import {ListSearchInputComponent} from "../components/list-search-input/list-sea
     styleUrl: './list-inventory.component.css',
 })
 export class ListInventoryComponent
-    extends ListItemsComponentBase<IInventoryItem, ListInventoryItemsRequest, IListInventoryItemsResponse, ListInventoryService>
+    extends ListItemsBaseComponent<IInventoryItem, ListInventoryItemsRequest, IListInventoryItemsResponse, ListInventoryService>
     implements OnDestroy {
 
     @Input()
@@ -38,7 +38,7 @@ export class ListInventoryComponent
         super();
         this.bootstrap(listInventory);
 
-        this.items$ = this.listInventory.items$
+        this.listResponse$ = this.listInventory.items$
             .pipe(
                 tap(x => this.selectedStockpile = this.stockpiles.find(y => y.stockpileId === x.stockpileId))
             );

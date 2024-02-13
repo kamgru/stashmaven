@@ -1,38 +1,48 @@
 import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    HostListener,
+    Component, EventEmitter,
+    HostListener, Input,
     OnDestroy,
-    Output, Signal,
-    ViewChild,
-    WritableSignal
+    Output, Signal, TemplateRef,
+    ViewChild
 } from "@angular/core";
 import {IListRequest, IListResponse, ListServiceBase} from "../ListServiceBase";
-import {debounceTime, distinctUntilChanged, Observable, Subject, takeUntil} from "rxjs";
-import {ListSearchInputComponent} from "./list-search-input/list-search-input.component";
+import {Observable, Subject, takeUntil} from "rxjs";
+import {ListSearchInputComponent} from "../list-search-input/list-search-input.component";
+import {AsyncPipe, NgTemplateOutlet} from "@angular/common";
+import {ListPageSizeSelectComponent} from "../list-page-size-select/list-page-size-select.component";
+import {ListPagingInfoComponent} from "../list-paging-info/list-paging-info.component";
+import {ListItemsLayoutComponent} from "../list-items-layout/list-items-layout.component";
 
 @Component({
-    selector: 'app-list-base',
+    selector: 'app-list-items-base',
     template: '',
+    imports: [
+        NgTemplateOutlet,
+        AsyncPipe,
+        ListPageSizeSelectComponent,
+        ListPagingInfoComponent,
+        ListSearchInputComponent
+    ],
     standalone: true
 })
-export class ListItemsComponentBase<TItem, TListRequest extends IListRequest,
+export class ListItemsBaseComponent<TItem, TListRequest extends IListRequest,
     TListResponse extends IListResponse<any>, TService extends ListServiceBase<TItem, TListRequest, TListResponse>>
     implements OnDestroy {
 
     protected _destroy$ = new Subject<void>();
-    protected _search$ = new Subject<string>();
     protected listService!: TService;
 
-    @ViewChild(ListSearchInputComponent)
-    private _searchInput?: ListSearchInputComponent;
+    @ViewChild(ListItemsLayoutComponent)
+    private _layout?: ListItemsLayoutComponent;
+
+    @Input()
+    public itemsTemplate: TemplateRef<any> | null = null;
 
     @Output()
     public OnItemSelected = new EventEmitter<TItem>();
 
     public currentIndex_$!: Signal<number>;
-    public items$!: Observable<TListResponse>;
+    public listResponse$!: Observable<TListResponse>;
 
     @HostListener('window:keydown', ['$event'])
     protected keyEvent(event: KeyboardEvent) {
@@ -41,10 +51,10 @@ export class ListItemsComponentBase<TItem, TListRequest extends IListRequest,
         }
 
         if (event.ctrlKey && event.key == '/') {
-            this._searchInput?.focus();
+            this._layout?.searchInput?.focus();
             event.preventDefault();
         } else if (event.key == 'Escape') {
-            this._searchInput?.blur();
+            this._layout?.searchInput?.blur();
         }
     }
 
@@ -52,7 +62,7 @@ export class ListItemsComponentBase<TItem, TListRequest extends IListRequest,
         this.listService = service;
 
         this.currentIndex_$ = this.listService.currentIndex_$;
-        this.items$ = this.listService.items$;
+        this.listResponse$ = this.listService.items$;
 
         this.listService.selectedItem$
             .pipe(

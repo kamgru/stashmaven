@@ -1,13 +1,12 @@
 <div class="pt-2">
-    @if (items$ | async; as items) {
-        <div class="flex">
-            <app-list-search-input [search]="items.search" (OnSearch)="search($event)"></app-list-search-input>
-        </div>
-        <app-list-paging-info [items]="items"></app-list-paging-info>
-        <div>
-            <app-list-page-size-select [pageSize]="items.pageSize" (OnPageSizeChanged)="changePageSize($event)"></app-list-page-size-select>
-
-            <table class="table-auto grid border-collapse overflow-scroll max-h-full">
+    @if (listResponse$ | async; as listResponse) {
+        <app-list-items-layout [listResponse]="listResponse"
+                               [itemTemplate]="itemsTemplate"
+                               (OnSearch)="search($event)"
+                               (OnPageSizeChanged)="changePageSize($event)"
+                               (OnPrevPage)="tryPrevPage()"
+                               (OnNextPage)="tryNextPage()">
+            <ng-template #itemsTemplate>
                 <thead>
                 <tr class="grid grid-cols-catalog-items text-left bg-slate-900 text-gray-200 p-2 sticky top-0 max-h-[40px]">
                     <th>#</th>
@@ -17,29 +16,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                    @for (catalogItem of items.items; track catalogItem.catalogItemId; let i = $index) {
+                    @for (catalogItem of listResponse.items; track catalogItem.catalogItemId; let i = $index) {
                         <tr [class.idx]="i == currentIndex_$()" (click)="handleRowClick(catalogItem)"
                             class="grid grid-cols-inventory-items text-base">
-                            <td>{{ (items.currentPage - 1) * items.pageSize + i + 1 }}</td>
+                            <td>{{ (listResponse.currentPage - 1) * listResponse.pageSize + i + 1 }}</td>
                             <td>{{ catalogItem.sku }}</td>
                             <td>{{ catalogItem.name }}</td>
                             <td>{{ catalogItem.unitOfMeasure }}</td>
                         </tr>
                     }
                 </tbody>
-                <tfoot>
-                <tr>
-                    <td>
-                        <button type="button" (click)="tryPrevPage()">Prev Page</button>
-                    </td>
-                    <td>
-                        <button type="button" (click)="tryNextPage()">Next Page</button>
-                    </td>
-
-                </tr>
-                </tfoot>
-            </table>
-        </div>
+            </ng-template>
+        </app-list-items-layout>
     } @else {
         <div>Loading...</div>
     }

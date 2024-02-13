@@ -1,5 +1,5 @@
 <div class="pt-2">
-    @if (items$ | async; as items) {
+    @if (listResponse$ | async; as items) {
         <div class="flex">
             <app-list-search-input [search]="items.search" (OnSearch)="search($event)"></app-list-search-input>
             <div>

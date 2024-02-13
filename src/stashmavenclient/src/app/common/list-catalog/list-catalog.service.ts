@@ -2,9 +2,11 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {environment} from "../../../environments/environment";
-import {IListRequest, IListResponse, ListServiceBase} from "../ListServiceBase";
+import * as li from "../components/list-items";
 
-export class ListCatalogItemsRequest implements IListRequest {
+export * from "./list-catalog.service";
+
+export class ListCatalogItemsRequest implements li.IListRequest {
     public page: number = 1;
     public pageSize: number = 10;
     public search: string = '';
@@ -12,7 +14,7 @@ export class ListCatalogItemsRequest implements IListRequest {
     public isAscending: boolean = true;
 }
 
-export interface IListCatalogItemsResponse extends IListResponse<ICatalogItem> {
+export interface IListCatalogItemsResponse extends li.IListResponse<ICatalogItem> {
 }
 
 export interface ICatalogItem {
@@ -26,7 +28,7 @@ export interface ICatalogItem {
 @Injectable({
     providedIn: 'root'
 })
-export class ListCatalogService extends ListServiceBase<ICatalogItem, ListCatalogItemsRequest, IListCatalogItemsResponse> {
+export class ListCatalogService extends li.ListServiceBase<ICatalogItem, ListCatalogItemsRequest, IListCatalogItemsResponse> {
 
     constructor(
         private http: HttpClient,
