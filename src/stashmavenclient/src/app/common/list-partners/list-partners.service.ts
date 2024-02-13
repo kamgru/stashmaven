@@ -2,9 +2,11 @@ import {Injectable, signal} from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {IListRequest, IListResponse, ListServiceBase} from "../components/list-items";
+import * as li from "../components/list-items";
 
-export class ListPartnersRequest implements IListRequest{
+export * from "./list-partners.service";
+
+export class ListPartnersRequest implements li.IListRequest{
     public page: number = 1;
     public pageSize: number = 10;
     public search: string = '';
@@ -12,7 +14,7 @@ export class ListPartnersRequest implements IListRequest{
     public isAscending: boolean = true;
 }
 
-export interface IListPartnersResponse extends IListResponse<IPartner>{
+export interface IListPartnersResponse extends li.IListResponse<IPartner>{
     items: IPartner[];
     totalCount: number;
 }
@@ -31,7 +33,7 @@ export interface IPartner {
 @Injectable({
     providedIn: 'root'
 })
-export class ListPartnersService extends ListServiceBase<IPartner, ListPartnersRequest, IListPartnersResponse>{
+export class ListPartnersService extends li.ListServiceBase<IPartner, ListPartnersRequest, IListPartnersResponse>{
 
     constructor(
         private http: HttpClient,

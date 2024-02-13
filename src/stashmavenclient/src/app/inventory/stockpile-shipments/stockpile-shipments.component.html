@@ -1,6 +1,8 @@
 <div>
     @if (shipmentKinds$ | async; as shipmentKinds) {
-        <app-dropdown [items]="shipmentKinds" (OnItemSelected)="handleShipmentKindSelected($event)"></app-dropdown>
+        <app-dropdown [items]="shipmentKinds" (OnItemSelected)="handleShipmentKindSelected($event)">
+            Add Shipment
+        </app-dropdown>
     }
 </div>
 <div class="h-4/5 mr-2">

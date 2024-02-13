@@ -1,25 +1,24 @@
 import {Component, OnDestroy} from '@angular/core';
-import {IListPartnersResponse, IPartner, ListPartnersRequest, ListPartnersService} from "./list-partners.service";
+import * as pa from "./list-partners.service";
 import {AsyncPipe} from "@angular/common";
-import {ListItemsBaseComponent} from "../components/list-items";
-import {ListItemsLayoutComponent} from "../components/list-items";
+import * as li from "../components/list-items";
 
 @Component({
     selector: 'app-list-partners',
     standalone: true,
     imports: [
         AsyncPipe,
-        ListItemsLayoutComponent
+        li.ListItemsLayoutComponent
     ],
     templateUrl: './list-partners.component.html',
     styleUrl: './list-partners.component.css'
 })
 export class ListPartnersComponent
-    extends ListItemsBaseComponent<IPartner, ListPartnersRequest, IListPartnersResponse, ListPartnersService>
+    extends li.ListItemsBaseComponent<pa.IPartner, pa.ListPartnersRequest, pa.IListPartnersResponse, pa.ListPartnersService>
     implements OnDestroy {
 
     constructor(
-        listPartners: ListPartnersService,
+        listPartners: pa.ListPartnersService,
     ) {
         super();
         this.bootstrap(listPartners);

@@ -2,9 +2,11 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
-import {IListRequest, IListResponse, ListServiceBase} from "../components/list-items/ListServiceBase";
+import * as li from "../components/list-items";
 
-export class ListInventoryItemsRequest implements IListRequest {
+export * from "./list-inventory.service";
+
+export class ListInventoryItemsRequest implements li.IListRequest {
     public stockpileId: string = '';
     public page: number = 1;
     public pageSize: number = 10;
@@ -22,7 +24,7 @@ export interface IInventoryItem {
     lastPurchasePrice: number;
 }
 
-export interface IListInventoryItemsResponse extends IListResponse<IInventoryItem> {
+export interface IListInventoryItemsResponse extends li.IListResponse<IInventoryItem> {
     stockpileId: string;
 }
 
@@ -35,7 +37,7 @@ export interface IGetDefaultStockpileIdResponse {
 @Injectable({
     providedIn: 'root'
 })
-export class ListInventoryService extends ListServiceBase<IInventoryItem, ListInventoryItemsRequest, IListInventoryItemsResponse> {
+export class ListInventoryService extends li.ListServiceBase<IInventoryItem, ListInventoryItemsRequest, IListInventoryItemsResponse> {
 
     constructor(
         private http: HttpClient,

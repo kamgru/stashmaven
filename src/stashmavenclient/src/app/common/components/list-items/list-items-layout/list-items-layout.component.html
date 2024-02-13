@@ -1,5 +1,7 @@
 <div class="flex">
     <app-list-search-input [search]="listResponse.search" (OnSearch)="OnSearch.emit($event)"></app-list-search-input>
+    <ng-container *ngTemplateOutlet="toolbarTemplate">
+    </ng-container>
 </div>
 <app-list-paging-info [items]="listResponse"></app-list-paging-info>
 <div>

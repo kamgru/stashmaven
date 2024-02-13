@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {AsyncPipe} from "@angular/common";
-import {ListInventoryComponent} from "../../common/list-inventory/list-inventory.component";
 import {ListShipmentsComponent} from "../../common/list-shipments/list-shipments.component";
 import {forkJoin, map} from "rxjs";
 import {StockpileService} from "../../common/services/stockpile.service";
@@ -13,7 +12,6 @@ import {DropdownComponent, IDropdownItem} from "../../common/components/dropdown
     standalone: true,
     imports: [
         AsyncPipe,
-        ListInventoryComponent,
         ListShipmentsComponent,
         DropdownComponent
     ],

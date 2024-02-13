@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
+import {NgTemplateOutlet} from "@angular/common";
 
 export interface IDropdownItem {
     id: string;
@@ -8,7 +9,9 @@ export interface IDropdownItem {
 @Component({
     selector: 'app-dropdown',
     standalone: true,
-    imports: [],
+    imports: [
+        NgTemplateOutlet
+    ],
     templateUrl: './dropdown.component.html',
     styleUrl: './dropdown.component.css'
 })
@@ -18,6 +21,9 @@ export class DropdownComponent {
 
     @Input()
     public items: IDropdownItem[] = [];
+
+    @Input()
+    public title: TemplateRef<any> | null = null;
 
     @Output()
     public OnItemSelected = new EventEmitter<string>();

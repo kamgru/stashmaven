@@ -1,76 +1,59 @@
-import {Component, EventEmitter, HostListener, Input, OnDestroy, Output} from '@angular/core';
-import {Subject, takeUntil} from "rxjs";
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {IShipment, ListShipmentsService} from "./list-shipments.service";
-
-import {IStockpileListItem} from "../IStockpileListItem";
-import {IInventoryItem} from "../list-inventory/list-inventory.service";
 import {AsyncPipe} from "@angular/common";
+import * as li from "../components/list-items";
+import * as ls from "./list-shipments.service";
+import {IStockpileListItem} from "../IStockpileListItem";
+import {ISelectOption, SelectComponent} from "../components/select/select.component";
+import {tap} from "rxjs";
+import {ListItemsLayoutComponent} from "../components/list-items";
 
 @Component({
     selector: 'app-list-shipments',
     standalone: true,
     imports: [
-        AsyncPipe
+        AsyncPipe,
+        ListItemsLayoutComponent,
+        SelectComponent
     ],
     templateUrl: './list-shipments.component.html',
     styleUrl: './list-shipments.component.css'
 })
-export class ListShipmentsComponent implements OnDestroy {
-
-    private _destroy$ = new Subject<void>();
+export class ListShipmentsComponent
+    extends li.ListItemsBaseComponent<IShipment, ls.ListShipmentsRequest, ls.IListShipmentsResponse, ListShipmentsService>
+    implements OnInit, OnDestroy {
 
     @Input()
     public stockpiles: IStockpileListItem[] = [];
 
     @Output()
-    public OnShipmentSelected: EventEmitter<IShipment> = new EventEmitter<IShipment>();
+    public OnStockpileChanged = new EventEmitter<IStockpileListItem>();
 
-    @Output()
-    public OnStockpileChanged: EventEmitter<IStockpileListItem> = new EventEmitter<IStockpileListItem>();
-
-    @HostListener('window:keydown', ['$event'])
-    keyEvent(event: KeyboardEvent) {
-        if (this.listShipments.tryHandleKey(event)) {
-            return;
-        }
-    }
-
-    public totalPages_$ = this.listShipments.totalPages_$;
-    public currentIndex_$ = this.listShipments.currentIndex_$;
-    public pageSize_$ = this.listShipments.pageSize_$;
-    public page_$ = this.listShipments.page_$;
-    public shipments$ = this.listShipments.shipments$;
+    public selectOptions: ISelectOption[] = [];
+    public selectedOption: ISelectOption | null = null;
 
     constructor(
-        private listShipments: ListShipmentsService,
+        private listShipments: ls.ListShipmentsService,
     ) {
-        this.listShipments.selectedShipment$
+        super();
+        this.bootstrap(listShipments);
+
+        this.listResponse$ = this.listShipments.items$
             .pipe(
-                takeUntil(this._destroy$))
-            .subscribe(x => {
-                this.OnShipmentSelected.emit(x);
-            });
+                tap(x => {
+                    const selectedStockpile = this.stockpiles.find(y => y.stockpileId === x.stockpileId);
+                    this.selectedOption = {value: x.stockpileId, label: selectedStockpile?.name ?? ''};
+                })
+            );
     }
 
-    public changePageSize = (value: number) => this.listShipments.changePageSize(value);
-    public tryNextPage = () => this.listShipments.tryNextPage();
-    public tryPrevPage = () => this.listShipments.tryPrevPage();
-
-    handleRowClick(index: number, shipment: IShipment) {
-        this.currentIndex_$.set(index);
-        this.listShipments.selectedShipment$.next(shipment);
+    ngOnInit() {
+        this.selectOptions = this.stockpiles.map(x => ({value: x.stockpileId, label: x.name}));
     }
 
-    ngOnDestroy() {
-        this._destroy$.next();
-        this._destroy$.complete();
-    }
-
-    handleStockpileChanged(value: string) {
-        this.listShipments.changeStockpile(value);
-    }
-
-    sortBy(sku: string) {
-
+    handleStockpileChanged(value: ISelectOption) {
+        const stockpile = this.stockpiles.find(x => x.stockpileId === value.value);
+        this.listShipments.changeStockpile(stockpile?.stockpileId ?? '');
+        this.OnStockpileChanged.emit(stockpile);
     }
 }

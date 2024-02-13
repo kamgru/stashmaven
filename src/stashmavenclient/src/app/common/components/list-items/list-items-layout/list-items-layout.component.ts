@@ -28,6 +28,9 @@ export class ListItemsLayoutComponent {
     @Input({required: true})
     public itemTemplate: TemplateRef<any> | null = null;
 
+    @Input()
+    public toolbarTemplate: TemplateRef<any> | null = null;
+
     @Output()
     public OnSearch = new EventEmitter<string>();
 

@@ -1,0 +1,7 @@
+<select class="rounded border-gray-300 shadow-sm"
+        (keydown)="$event.preventDefault()"
+        (change)="$event.preventDefault(); handleChange($event)">
+    @for (option of options; track option) {
+        <option [value]="option.value" [selected]="option.value == selectedOption?.value">{{ option.label }}</option>
+    }))
+</select>
