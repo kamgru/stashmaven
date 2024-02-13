@@ -1,8 +1,0 @@
-<div class="super-grid grid" [style.grid-template-columns]="columnsRepeat">
-    <ng-container *ngFor="let column of columns; index as i">
-        <div *ngIf="column.visible" [attr.data-col]="i">{{ column.name }}</div>
-    </ng-container>
-    <ng-container *ngFor="let item of data; index as i">
-       <ng-container *ngTemplateOutlet="body; context: { $implicit: item, index: i }"></ng-container>"
-    </ng-container>
-</div>
