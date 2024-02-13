@@ -1,0 +1,8 @@
+<div>
+    <input #searchInput
+           type="text"
+           placeholder="Search"
+           class="rounded border-gray-300 shadow-sm"
+           [value]="search"
+           (input)="handleInput(searchInput.value)"/>
+</div>

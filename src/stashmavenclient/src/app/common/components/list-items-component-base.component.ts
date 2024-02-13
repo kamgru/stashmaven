@@ -10,6 +10,7 @@ import {
 } from "@angular/core";
 import {IListRequest, IListResponse, ListServiceBase} from "../ListServiceBase";
 import {debounceTime, distinctUntilChanged, Observable, Subject, takeUntil} from "rxjs";
+import {ListSearchInputComponent} from "./list-search-input/list-search-input.component";
 
 @Component({
     selector: 'app-list-base',
@@ -24,8 +25,8 @@ export class ListItemsComponentBase<TItem, TListRequest extends IListRequest,
     protected _search$ = new Subject<string>();
     protected listService!: TService;
 
-    @ViewChild('searchInput')
-    private _searchInput?: ElementRef<HTMLInputElement>;
+    @ViewChild(ListSearchInputComponent)
+    private _searchInput?: ListSearchInputComponent;
 
     @Output()
     public OnItemSelected = new EventEmitter<TItem>();
@@ -40,10 +41,10 @@ export class ListItemsComponentBase<TItem, TListRequest extends IListRequest,
         }
 
         if (event.ctrlKey && event.key == '/') {
-            this._searchInput?.nativeElement.focus();
+            this._searchInput?.focus();
             event.preventDefault();
         } else if (event.key == 'Escape') {
-            this._searchInput?.nativeElement.blur();
+            this._searchInput?.blur();
         }
     }
 
@@ -61,19 +62,13 @@ export class ListItemsComponentBase<TItem, TListRequest extends IListRequest,
                     this.OnItemSelected.emit(item);
                 }
             });
-
-        this._search$
-            .pipe(
-                distinctUntilChanged(),
-                debounceTime(500))
-            .subscribe(x => this.listService.search(x))
     }
 
     public changePageSize = (value: number) => this.listService.changePageSize(value);
     public tryNextPage = () => this.listService.tryNextPage();
     public tryPrevPage = () => this.listService.tryPrevPage();
     public sortBy = (value: string) => this.listService.sortBy(value);
-    public search = (value: string) => this._search$.next(value);
+    public search = (value: string) => this.listService.search(value);
     public handleRowClick = (item: TItem) => this.listService.select(item);
 
     ngOnDestroy() {

@@ -1,25 +1,11 @@
 <div class="pt-2">
     @if (items$ | async; as items) {
         <div class="flex">
-            <div>
-                <input #searchInput
-                       type="text"
-                       placeholder="Search"
-                       class="rounded border-gray-300 shadow-sm"
-                       [value]="items.search"
-                       (input)="search(searchInput.value)"/>
-            </div>
+            <app-list-search-input [search]="items.search" (OnSearch)="search($event)"></app-list-search-input>
         </div>
         <app-list-paging-info [items]="items"></app-list-paging-info>
         <div>
-            <select #pageSizeSelect
-                    class="rounded border-gray-300 shadow-sm"
-                    (keydown)="$event.preventDefault()"
-                    (change)="$event.preventDefault(); changePageSize(+pageSizeSelect.value)">
-                @for (pageSize of [5, 10, 20, 50]; track pageSize) {
-                    <option [value]="pageSize" [selected]="pageSize == items.pageSize">{{ pageSize }}</option>
-                }))
-            </select>
+            <app-list-page-size-select [pageSize]="items.pageSize" (OnPageSizeChanged)="changePageSize($event)"></app-list-page-size-select>
 
             <table class="table-auto grid border-collapse overflow-scroll max-h-full">
                 <thead>

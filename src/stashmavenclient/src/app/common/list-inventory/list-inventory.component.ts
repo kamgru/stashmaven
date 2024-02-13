@@ -10,13 +10,15 @@ import {AsyncPipe} from "@angular/common";
 import {IStockpileListItem} from "../IStockpileListItem";
 import {FormsModule} from "@angular/forms";
 import {ListItemsComponentBase} from "../components/list-items-component-base.component";
+import {ListSearchInputComponent} from "../components/list-search-input/list-search-input.component";
 
 @Component({
     selector: 'app-list-inventory',
     standalone: true,
     imports: [
         AsyncPipe,
-        FormsModule
+        FormsModule,
+        ListSearchInputComponent
     ],
     templateUrl: './list-inventory.component.html',
     styleUrl: './list-inventory.component.css',
