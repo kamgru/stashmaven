@@ -1,8 +1,18 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
-import {IListShipmentKindsResponse} from "../../inventory/shipments/shipments.service";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
+
+export interface IListShipmentKindsResponse {
+   items: IShipmentKind[];
+}
+
+export interface IShipmentKind {
+    shipmentKindId: string;
+    name: string;
+    shortCode: string;
+    direction: string;
+}
 
 export class AddShipmentRequest {
     constructor(

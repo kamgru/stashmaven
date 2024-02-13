@@ -4,11 +4,8 @@ import {CreatePartnerComponent} from "./partners/create-partner/create-partner.c
 import {EditPartnerComponent} from "./partners/edit-partner/edit-partner.component";
 import {MsalGuard, MsalRedirectComponent} from "@azure/msal-angular";
 import {AddBrandComponent} from "./catalog/add-brand/add-brand.component";
-import {ListBrandsComponent} from "./catalog/list-brands/list-brands.component";
-import {ListInventoryItemsComponent} from "./inventory/list-inventory-items/list-inventory-items.component";
 import {TaxDefinitionsComponent} from "./common/tax-definitions/tax-definitions.component";
 import {CatalogItemsComponent} from "./catalog/catalog-items/catalog-items.component";
-import {ShipmentsComponent} from "./inventory/shipments/shipments.component";
 import {StockpileInventoryComponent} from "./inventory/stockpile-inventory/stockpile-inventory.component";
 import {StockpileShipmentsComponent} from "./inventory/stockpile-shipments/stockpile-shipments.component";
 
@@ -18,9 +15,7 @@ export const routes: Routes = [
     {path: 'partners', component: PartnersComponent, canActivate: [MsalGuard]},
     {path: 'catalog/catalog-items', component: CatalogItemsComponent, canActivate: [MsalGuard]},
     {path: 'catalog/brands/add', component: AddBrandComponent, canActivate: [MsalGuard]},
-    {path: 'catalog/brands/list', component: ListBrandsComponent, canActivate: [MsalGuard]},
     {path: 'common/tax-definitions', component: TaxDefinitionsComponent, canActivate: [MsalGuard]},
-    {path: 'inventory/items/list', component: ListInventoryItemsComponent, canActivate: [MsalGuard]},
     {path: 'auth', component: MsalRedirectComponent},
     {path: 'inventory/stockpile', component: StockpileInventoryComponent, canActivate: [MsalGuard]},
     {path: 'inventory/shipments', component: StockpileShipmentsComponent, canActivate: [MsalGuard]}

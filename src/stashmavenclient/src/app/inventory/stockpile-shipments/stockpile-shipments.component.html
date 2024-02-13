@@ -6,5 +6,7 @@
     }
 </div>
 <div class="h-4/5 mr-2">
-    <app-list-shipments [stockpiles]="stockpiles" (OnStockpileChanged)="handleStockpileChanged($event)"></app-list-shipments>
+    @if (stockpiles.length > 0) {
+        <app-list-shipments [stockpiles]="stockpiles" (OnStockpileChanged)="handleStockpileChanged($event)"></app-list-shipments>
+    }
 </div>
