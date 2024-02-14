@@ -1,1 +1,10 @@
 <p>edit-shipment works!</p>
+{{ shipment | json }}
+<hr/>
+@if (uiState == 'view'){
+    partner: {{ shipment?.partner | json }}
+    <button (click)="uiState = 'edit-partner'">edit-partner</button>
+}
+@if (uiState == 'edit-partner'){
+    <app-list-partners (OnItemSelected)="handlePartnerSelected($event)"></app-list-partners>
+}

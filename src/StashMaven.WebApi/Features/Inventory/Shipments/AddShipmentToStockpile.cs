@@ -39,6 +39,7 @@ public class AddShipmentHandler(
         AddShipmentRequest request)
     {
         ShipmentKind? shipmentKind = await context.ShipmentKinds
+            .AsTracking()
             .FirstOrDefaultAsync(x => x.ShipmentKindId.Value == request.ShipmentKindId);
 
         if (shipmentKind == null)
@@ -47,6 +48,7 @@ public class AddShipmentHandler(
         }
 
         Stockpile? stockpile = await context.Stockpiles
+            .AsTracking()
             .FirstOrDefaultAsync(s => s.StockpileId.Value == request.StockpileId);
 
         if (stockpile == null)

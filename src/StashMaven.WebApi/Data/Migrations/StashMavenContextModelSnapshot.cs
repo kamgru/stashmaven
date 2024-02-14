@@ -609,7 +609,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             modelBuilder.Entity("StashMaven.WebApi.Data.Brand", b =>
                 {
-                    b.OwnsOne("StashMaven.WebApi.Data.BrandId", "BrandId", b1 =>
+                    b.OwnsOne("StashMaven.WebApi.Data.Brand.BrandId#StashMaven.WebApi.Data.BrandId", "BrandId", b1 =>
                         {
                             b1.Property<int>("BrandId")
                                 .HasColumnType("integer");
@@ -637,7 +637,7 @@ namespace StashMaven.WebApi.Data.Migrations
                         .WithMany("CatalogItems")
                         .HasForeignKey("BrandId");
 
-                    b.OwnsOne("StashMaven.WebApi.Data.CatalogItemId", "CatalogItemId", b1 =>
+                    b.OwnsOne("StashMaven.WebApi.Data.CatalogItem.CatalogItemId#StashMaven.WebApi.Data.CatalogItemId", "CatalogItemId", b1 =>
                         {
                             b1.Property<int>("CatalogItemId")
                                 .HasColumnType("integer");
@@ -669,7 +669,7 @@ namespace StashMaven.WebApi.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("StashMaven.WebApi.Data.InventoryItemId", "InventoryItemId", b1 =>
+                    b.OwnsOne("StashMaven.WebApi.Data.InventoryItem.InventoryItemId#StashMaven.WebApi.Data.InventoryItemId", "InventoryItemId", b1 =>
                         {
                             b1.Property<int>("InventoryItemId")
                                 .HasColumnType("integer");
@@ -695,7 +695,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             modelBuilder.Entity("StashMaven.WebApi.Data.Partner", b =>
                 {
-                    b.OwnsOne("StashMaven.WebApi.Data.PartnerId", "PartnerId", b1 =>
+                    b.OwnsOne("StashMaven.WebApi.Data.Partner.PartnerId#StashMaven.WebApi.Data.PartnerId", "PartnerId", b1 =>
                         {
                             b1.Property<int>("PartnerId")
                                 .HasColumnType("integer");
@@ -730,7 +730,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             modelBuilder.Entity("StashMaven.WebApi.Data.SequenceGenerator", b =>
                 {
-                    b.OwnsOne("StashMaven.WebApi.Data.SequenceGeneratorId", "SequenceGeneratorId", b1 =>
+                    b.OwnsOne("StashMaven.WebApi.Data.SequenceGenerator.SequenceGeneratorId#StashMaven.WebApi.Data.SequenceGeneratorId", "SequenceGeneratorId", b1 =>
                         {
                             b1.Property<int>("SequenceGeneratorId")
                                 .HasColumnType("integer");
@@ -778,7 +778,7 @@ namespace StashMaven.WebApi.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("StashMaven.WebApi.Data.ShipmentId", "ShipmentId", b1 =>
+                    b.OwnsOne("StashMaven.WebApi.Data.Shipment.SequenceNumber#StashMaven.WebApi.Data.ShipmentSequenceNumber", "SequenceNumber", b1 =>
                         {
                             b1.Property<int>("ShipmentId")
                                 .HasColumnType("integer");
@@ -786,7 +786,7 @@ namespace StashMaven.WebApi.Data.Migrations
                             b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("ShipmentId");
+                                .HasColumnName("SequenceNumber");
 
                             b1.HasKey("ShipmentId");
 
@@ -796,7 +796,7 @@ namespace StashMaven.WebApi.Data.Migrations
                                 .HasForeignKey("ShipmentId");
                         });
 
-                    b.OwnsOne("StashMaven.WebApi.Data.ShipmentSequenceNumber", "SequenceNumber", b1 =>
+                    b.OwnsOne("StashMaven.WebApi.Data.Shipment.ShipmentId#StashMaven.WebApi.Data.ShipmentId", "ShipmentId", b1 =>
                         {
                             b1.Property<int>("ShipmentId")
                                 .HasColumnType("integer");
@@ -804,7 +804,7 @@ namespace StashMaven.WebApi.Data.Migrations
                             b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("SequenceNumber");
+                                .HasColumnName("ShipmentId");
 
                             b1.HasKey("ShipmentId");
 
@@ -832,7 +832,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             modelBuilder.Entity("StashMaven.WebApi.Data.ShipmentKind", b =>
                 {
-                    b.OwnsOne("StashMaven.WebApi.Data.SequenceGeneratorId", "SequenceGeneratorId", b1 =>
+                    b.OwnsOne("StashMaven.WebApi.Data.ShipmentKind.SequenceGeneratorId#StashMaven.WebApi.Data.SequenceGeneratorId", "SequenceGeneratorId", b1 =>
                         {
                             b1.Property<int>("ShipmentKindId")
                                 .HasColumnType("integer");
@@ -850,7 +850,7 @@ namespace StashMaven.WebApi.Data.Migrations
                                 .HasForeignKey("ShipmentKindId");
                         });
 
-                    b.OwnsOne("StashMaven.WebApi.Data.ShipmentKindId", "ShipmentKindId", b1 =>
+                    b.OwnsOne("StashMaven.WebApi.Data.ShipmentKind.ShipmentKindId#StashMaven.WebApi.Data.ShipmentKindId", "ShipmentKindId", b1 =>
                         {
                             b1.Property<int>("ShipmentKindId")
                                 .HasColumnType("integer");
@@ -896,7 +896,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             modelBuilder.Entity("StashMaven.WebApi.Data.Stockpile", b =>
                 {
-                    b.OwnsOne("StashMaven.WebApi.Data.StockpileId", "StockpileId", b1 =>
+                    b.OwnsOne("StashMaven.WebApi.Data.Stockpile.StockpileId#StashMaven.WebApi.Data.StockpileId", "StockpileId", b1 =>
                         {
                             b1.Property<int>("StockpileId")
                                 .HasColumnType("integer");
@@ -920,7 +920,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             modelBuilder.Entity("StashMaven.WebApi.Data.TaxDefinition", b =>
                 {
-                    b.OwnsOne("StashMaven.WebApi.Data.TaxDefinitionId", "TaxDefinitionId", b1 =>
+                    b.OwnsOne("StashMaven.WebApi.Data.TaxDefinition.TaxDefinitionId#StashMaven.WebApi.Data.TaxDefinitionId", "TaxDefinitionId", b1 =>
                         {
                             b1.Property<int>("TaxDefinitionId")
                                 .HasColumnType("integer");

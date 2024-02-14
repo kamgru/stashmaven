@@ -3,7 +3,7 @@ namespace StashMaven.WebApi.Features.Inventory.Shipments;
 public partial class ShipmentController
 {
     [HttpGet]
-    [Route("shipment/{shipmentId}")]
+    [Route("{shipmentId}")]
     [ProducesResponseType<GetShipmentByIdHandler.GetShipmentByIdResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetShipmentByIdAsync(

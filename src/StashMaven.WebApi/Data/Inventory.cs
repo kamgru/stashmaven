@@ -102,7 +102,7 @@ public class ShipmentKind
     public required string Name { get; set; }
     public required string ShortCode { get; set; }
     public ShipmentDirection Direction { get; set; }
-    public List<Shipment> Shipments { get; set; } = [];
+    public ICollection<Shipment> Shipments { get; set; } = [];
 
     public class TypeConfig : IEntityTypeConfiguration<ShipmentKind>
     {

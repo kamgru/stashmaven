@@ -27,6 +27,29 @@ export interface IAddShipmentResponse {
     shipmentId: string;
 }
 
+export interface IShipmentEditDetails {
+    partner: IShipmentPartnerEditDetails;
+    records: IShipmentRecordEditDetails[];
+    currency: string;
+    direction: string;
+}
+
+export interface IShipmentRecordEditDetails {
+    inventoryItemId: string;
+    quantity: number;
+    unitPrice: number;
+    sku: string;
+    name: string;
+    taxRate: number;
+}
+
+export interface IShipmentPartnerEditDetails {
+    partnerId: string;
+    legalName: string;
+    customIdentifier: string;
+    address: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -43,5 +66,9 @@ export class ShipmentService {
 
     addShipment(req: AddShipmentRequest): Observable<IAddShipmentResponse> {
         return this.http.post<IAddShipmentResponse>(`${environment.apiUrl}/api/v1/shipment`, req);
+    }
+
+    getShipment(shipmentId: string): Observable<IShipmentEditDetails> {
+        return this.http.get<IShipmentEditDetails>(`${environment.apiUrl}/api/v1/shipment/${shipmentId}`);
     }
 }

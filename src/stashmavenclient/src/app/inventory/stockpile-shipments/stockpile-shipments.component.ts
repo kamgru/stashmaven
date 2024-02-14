@@ -6,6 +6,7 @@ import {StockpileService} from "../../common/services/stockpile.service";
 import {IStockpileListItem} from "../../common/IStockpileListItem";
 import {AddShipmentRequest, ShipmentService} from "../../common/services/shipment.service";
 import {DropdownComponent, IDropdownItem} from "../../common/components/dropdown/dropdown.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: 'app-stockpile-shipments',
@@ -36,6 +37,8 @@ export class StockpileShipmentsComponent implements OnInit {
         );
 
     constructor(
+        private router: Router,
+        private route: ActivatedRoute,
         private stockpileService: StockpileService,
         private shipmentService: ShipmentService) {
     }
@@ -65,10 +68,9 @@ export class StockpileShipmentsComponent implements OnInit {
     }
 
     handleShipmentKindSelected($event: string) {
-        console.log($event);
         this.shipmentService.addShipment(new AddShipmentRequest(this._selectedStockpile!.stockpileId, $event, 'Pln'))
             .subscribe(x => {
-                console.log(x);
+                this.router.navigate(['./', x.shipmentId], {relativeTo: this.route});
             })
     }
 

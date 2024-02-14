@@ -25,6 +25,11 @@ export class Cursor {
     }
 
     public tryReset(items: number): boolean {
+        if (this.index() > items) {
+            this.moveToTop(items);
+            return true;
+        }
+
         if (!(this.isAtBottom() || this.isAtTop())) {
             return false;
         }
