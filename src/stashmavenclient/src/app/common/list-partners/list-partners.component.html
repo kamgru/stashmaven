@@ -18,7 +18,9 @@
                 </thead>
                 <tbody>
                     @for (partner of listResponse.items; track partner.partnerId; let i = $index) {
-                        <tr [class.idx]="i == currentIndex_$()" (click)="handleRowClick(partner)"
+                        <tr [class.idx]="i == currentIndex_$()"
+                            (click)="handleRowClick(partner)"
+                            (dblclick)="handleRowDblClick(partner)"
                             class="grid grid-cols-catalog-items text-base">
                             <td>{{ (listResponse.currentPage - 1) * listResponse.pageSize + i + 1 }}</td>
                             <td>{{ partner.customIdentifier }}</td>

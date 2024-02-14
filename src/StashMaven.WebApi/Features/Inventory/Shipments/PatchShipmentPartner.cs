@@ -3,16 +3,16 @@ namespace StashMaven.WebApi.Features.Inventory.Shipments;
 public partial class ShipmentController
 {
     [HttpPatch]
-    [Route("{shipmentId}/add-partner")]
+    [Route("{shipmentId}/partner")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddPartnerToShipmentAsync(
+    public async Task<IActionResult> PatchShipmentPartnerAsync(
         string shipmentId,
-        AddPartnerToShipmentHandler.AddPartnerToShipmentRequest request,
+        PatchShipmentPartnerHandler.PatchShipmentPartnerRequest request,
         [FromServices]
-        AddPartnerToShipmentHandler handler)
+        PatchShipmentPartnerHandler handler)
     {
-        StashMavenResult response = await handler.AddPartnerToShipmentAsync(shipmentId, request);
+        StashMavenResult response = await handler.PatchShipmentPartnerAsync(shipmentId, request);
 
         if (!response.IsSuccess)
         {
@@ -24,19 +24,21 @@ public partial class ShipmentController
 }
 
 [Injectable]
-public class AddPartnerToShipmentHandler(
+public class PatchShipmentPartnerHandler(
     StashMavenContext context)
 {
-    public class AddPartnerToShipmentRequest
+    public class PatchShipmentPartnerRequest
     {
         public required string PartnerId { get; set; }
     }
 
-    public async Task<StashMavenResult> AddPartnerToShipmentAsync(
+    public async Task<StashMavenResult> PatchShipmentPartnerAsync(
         string shipmentId,
-        AddPartnerToShipmentRequest request)
+        PatchShipmentPartnerRequest request)
     {
         Shipment? shipment = await context.Shipments
+            .Include(x => x.PartnerRefSnapshot)
+            .AsTracking()
             .SingleOrDefaultAsync(s => s.ShipmentId.Value == shipmentId);
 
         if (shipment is null)
@@ -45,6 +47,7 @@ public class AddPartnerToShipmentHandler(
         }
 
         Partner? partner = await context.Partners
+            .AsTracking()
             .Include(partner => partner.Address)
             .SingleOrDefaultAsync(p => p.PartnerId.Value == request.PartnerId);
 
@@ -57,12 +60,20 @@ public class AddPartnerToShipmentHandler(
         {
             return StashMavenResult.Error($"Partner {request.PartnerId} has no address");
         }
-
-        shipment.PartnerRefSnapshot = new PartnerRefSnapshot
+        
+        if (shipment.PartnerRefSnapshot is not null)
         {
-            LegalName = partner.LegalName,
-            Address = partner.Address.ToString() ?? ""
-        };
+            shipment.PartnerRefSnapshot.LegalName = partner.LegalName;
+            shipment.PartnerRefSnapshot.Address = partner.Address.ToString();
+        }
+        else
+        {
+            shipment.PartnerRefSnapshot = new PartnerRefSnapshot
+            {
+                LegalName = partner.LegalName,
+                Address = partner.Address.ToString()
+            };
+        }
 
         shipment.Partner = partner;
 

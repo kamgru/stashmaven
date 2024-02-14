@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef} from '@angular/core';
 import {IShipment, ListShipmentsService} from "./list-shipments.service";
-import {AsyncPipe} from "@angular/common";
+import {AsyncPipe, NgTemplateOutlet} from "@angular/common";
 import * as li from "../components/list-items";
 import * as ls from "./list-shipments.service";
 import {IStockpileListItem} from "../IStockpileListItem";
@@ -14,7 +14,8 @@ import {ListItemsLayoutComponent} from "../components/list-items";
     imports: [
         AsyncPipe,
         ListItemsLayoutComponent,
-        SelectComponent
+        SelectComponent,
+        NgTemplateOutlet
     ],
     templateUrl: './list-shipments.component.html',
     styleUrl: './list-shipments.component.css'
@@ -31,6 +32,9 @@ export class ListShipmentsComponent
 
     public selectOptions: ISelectOption[] = [];
     public selectedOption: ISelectOption | null = null;
+
+    @Input()
+    public controlsTemplate: TemplateRef<any> | null = null;
 
     constructor(
         private listShipments: ls.ListShipmentsService,
@@ -56,4 +60,6 @@ export class ListShipmentsComponent
         this.listShipments.changeStockpile(stockpile?.stockpileId ?? '');
         this.OnStockpileChanged.emit(stockpile);
     }
+
+
 }

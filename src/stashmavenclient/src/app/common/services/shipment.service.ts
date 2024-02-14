@@ -30,8 +30,15 @@ export interface IAddShipmentResponse {
 export interface IShipmentEditDetails {
     partner: IShipmentPartnerEditDetails;
     records: IShipmentRecordEditDetails[];
+    kind: IShipmentKindEditDetails;
     currency: string;
+}
+
+export interface IShipmentKindEditDetails {
+    name: string;
+    shortCode: string;
     direction: string;
+
 }
 
 export interface IShipmentRecordEditDetails {
@@ -70,5 +77,9 @@ export class ShipmentService {
 
     getShipment(shipmentId: string): Observable<IShipmentEditDetails> {
         return this.http.get<IShipmentEditDetails>(`${environment.apiUrl}/api/v1/shipment/${shipmentId}`);
+    }
+
+    deleteShipment(shipmentId: string): Observable<void> {
+        return this.http.delete<void>(`${environment.apiUrl}/api/v1/shipment/${shipmentId}`);
     }
 }

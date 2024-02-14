@@ -3,7 +3,7 @@ namespace StashMaven.WebApi.Features.Inventory.Shipments;
 public partial class ShipmentController
 {
     [HttpPatch]
-    [Route("{shipmentId}/add-record")]
+    [Route("{shipmentId}/record")]
     public async Task<IActionResult> AddRecordToShipmentAsync(
         string shipmentId,
         AddRecordToShipment.AddRecordToShipmentRequest request,
@@ -37,6 +37,7 @@ public class AddRecordToShipment(
         AddRecordToShipmentRequest request)
     {
         Shipment? shipment = await context.Shipments
+            .AsTracking()
             .Include(shipment => shipment.Records)
             .SingleOrDefaultAsync(s => s.ShipmentId.Value == shipmentId);
 
@@ -52,8 +53,6 @@ public class AddRecordToShipment(
         {
             return StashMavenResult.Error($"Inventory item {request.InventoryItemId} not found");
         }
-
-
 
         shipment.Records.Add(new ShipmentRecord
         {

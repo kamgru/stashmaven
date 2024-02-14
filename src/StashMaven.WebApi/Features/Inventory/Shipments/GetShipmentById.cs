@@ -49,8 +49,15 @@ public class GetShipmentByIdHandler(
     {
         public ShipmentPartner? Partner { get; set; }
         public Currency Currency { get; set; }
-        public ShipmentDirection ShipmentDirection { get; set; }
+        public required ShipmentKindInfo Kind { get; set; }
         public List<ShipmentRecord> Records { get; set; } = [];
+    }
+
+    public class ShipmentKindInfo
+    {
+        public required string Name { get; set; }
+        public required string Direction { get; set; }
+        public required string ShortCode { get; set; }
     }
 
     public class ShipmentPartner
@@ -89,7 +96,12 @@ public class GetShipmentByIdHandler(
                     Address = shipment.PartnerRefSnapshot.Address,
                 },
             Currency = shipment.Currency,
-            ShipmentDirection = shipment.Kind.Direction,
+            Kind = new ShipmentKindInfo
+            {
+                Direction = shipment.Kind.Direction.ToString(),
+                Name = shipment.Kind.Name,
+                ShortCode = shipment.Kind.ShortCode,
+            },
             Records = shipment.Records.Select(r => new ShipmentRecord
                 {
                     InventoryItemId = r.InventoryItem.InventoryItemId.Value,

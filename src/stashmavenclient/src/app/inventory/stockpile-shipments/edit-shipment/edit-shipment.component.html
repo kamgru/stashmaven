@@ -1,10 +1,49 @@
-<p>edit-shipment works!</p>
-{{ shipment | json }}
+<div class="my-2 py-2">
+    {{ shipment?.kind?.shortCode }} - {{ shipment?.kind?.name }}
+</div>
 <hr/>
-@if (uiState == 'view'){
-    partner: {{ shipment?.partner | json }}
-    <button (click)="uiState = 'edit-partner'">edit-partner</button>
-}
-@if (uiState == 'edit-partner'){
-    <app-list-partners (OnItemSelected)="handlePartnerSelected($event)"></app-list-partners>
-}
+<div class="my-2 py-2">
+    @if (uiState == 'view') {
+        <app-partner-details [partner]="shipment?.partner"
+                             (OnPartnerEdit)="uiState = 'edit-partner'">
+        </app-partner-details>
+        <hr/>
+        <button class="btn" (click)="uiState = 'add-item'">Add Item</button>
+        <table class="table table-auto">
+            <thead>
+            <tr>
+                <th>
+                    Sku
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Quantity
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+                @for (item of shipment?.records; track item.inventoryItemId) {
+                    <tr>
+                        <td>
+                            {{ item?.sku }}
+                        </td>
+                        <td>
+                            {{ item?.name }}
+                        </td>
+                        <td>
+                            {{ item?.quantity }}
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    @if (uiState == 'edit-partner') {
+        <app-list-partners (OnItemConfirmed)="handlePartnerConfirmed($event); uiState = 'view'"></app-list-partners>
+    }
+    @if (uiState == 'add-item') {
+        <app-list-inventory (OnItemConfirmed)="handleInventoryItemConfirmed($event)"></app-list-inventory>
+    }
+</div>

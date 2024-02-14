@@ -41,6 +41,9 @@ export class ListItemsBaseComponent<TItem, TListRequest extends IListRequest,
     @Output()
     public OnItemSelected = new EventEmitter<TItem>();
 
+    @Output()
+    public OnItemConfirmed = new EventEmitter<TItem>();
+
     public currentIndex_$!: Signal<number>;
     public listResponse$!: Observable<TListResponse>;
 
@@ -72,6 +75,13 @@ export class ListItemsBaseComponent<TItem, TListRequest extends IListRequest,
                     this.OnItemSelected.emit(item);
                 }
             });
+
+        this.listService.confirmedItem$
+            .pipe(
+                takeUntil(this._destroy$))
+            .subscribe(item => {
+                this.OnItemConfirmed.emit(item);
+            });
     }
 
     public changePageSize = (value: number) => this.listService.changePageSize(value);
@@ -80,6 +90,8 @@ export class ListItemsBaseComponent<TItem, TListRequest extends IListRequest,
     public sortBy = (value: string) => this.listService.sortBy(value);
     public search = (value: string) => this.listService.search(value);
     public handleRowClick = (item: TItem) => this.listService.select(item);
+    public handleRowDblClick = (item: TItem) => this.listService.confirm(item);
+    public reload = () => this.listService.reload();
 
     ngOnDestroy() {
         this._destroy$.next();

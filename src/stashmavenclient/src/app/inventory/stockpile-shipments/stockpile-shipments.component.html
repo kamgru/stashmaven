@@ -7,6 +7,14 @@
 </div>
 <div class="h-4/5 mr-2">
     @if (stockpiles.length > 0) {
-        <app-list-shipments [stockpiles]="stockpiles" (OnStockpileChanged)="handleStockpileChanged($event)"></app-list-shipments>
+        <app-list-shipments [stockpiles]="stockpiles"
+                            [controlsTemplate]="controlsTemplate"
+                            (OnStockpileChanged)="handleStockpileChanged($event)"
+                            (OnItemSelected)="handleShipmentSelected($event)"
+                            (OnItemConfirmed)="handlerShipmentConfirmed($event)">
+           <ng-template #controlsTemplate>
+               <button class="btn btn-primary" (click)="deleteShipment($event)">Edit</button>
+           </ng-template>
+        </app-list-shipments>
     }
 </div>

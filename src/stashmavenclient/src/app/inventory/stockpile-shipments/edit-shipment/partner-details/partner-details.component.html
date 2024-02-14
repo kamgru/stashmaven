@@ -1,0 +1,17 @@
+<div>Shipment partner</div>
+@if (partner) {
+
+    <div>
+        {{ partner.customIdentifier }}
+    </div>
+    <div>
+        {{ partner.legalName }}
+    </div>
+    <div>
+        {{ partner.address }}
+    </div>
+    <button class="btn" (click)="OnPartnerEdit.emit()">Change</button>
+}
+@else {
+    <button class="btn" (click)="OnPartnerEdit.emit()">Add</button>
+}

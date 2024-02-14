@@ -29,13 +29,19 @@ export abstract class ListServiceBase<TItem, TListRequest extends IListRequest, 
     public currentIndex_$ = computed(() => this._cursor.index());
     public items$!: Observable<TListResponse>;
     public selectedItem$ = new Subject<TItem | null>()
+    public confirmedItem$ = new Subject<TItem>();
 
     protected abstract listItems(request: TListRequest): Observable<TListResponse>;
 
     protected bootstrap() {
 
         this.items$ = this._request$.pipe(
-            distinctUntilChanged((x, y) => JSON.stringify(x) === JSON.stringify(y)),
+            distinctUntilChanged((prev, curr) => {
+                if ((<any>curr).force) {
+                    return false;
+                }
+                return JSON.stringify(prev) === JSON.stringify(curr);
+            }),
             switchMap(request => this.listItems(request)),
             map(response => ({
                 ...response,
@@ -51,6 +57,10 @@ export abstract class ListServiceBase<TItem, TListRequest extends IListRequest, 
                 this._cursor.tryReset(response.items.length);
             })
         );
+    }
+
+    reload() {
+        this._request$.next({...this._request$.value, force: true});
     }
 
     changePageSize(value: number) {
@@ -98,6 +108,7 @@ export abstract class ListServiceBase<TItem, TListRequest extends IListRequest, 
                 return this.tryPrevPage();
             }
             case 'Enter': {
+                this.confirmedItem$.next(this._response.items[this._cursor.index()]);
                 return true;
             }
         }
@@ -109,5 +120,9 @@ export abstract class ListServiceBase<TItem, TListRequest extends IListRequest, 
         if (this._cursor.trySetIndex(index)) {
             this.selectedItem$.next(item);
         }
+    }
+
+    confirm(item: TItem) {
+        this.confirmedItem$.next(item);
     }
 }

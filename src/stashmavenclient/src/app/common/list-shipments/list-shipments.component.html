@@ -12,6 +12,7 @@
                             [selectedOption]="selectedOption"
                             (OnSelect)="handleStockpileChanged($event)">
                 </app-select>
+                <ng-container *ngTemplateOutlet="controlsTemplate"></ng-container>
             </ng-template>
             <ng-template #itemsTemplate>
                 <thead>
@@ -25,7 +26,9 @@
                 </thead>
                 <tbody>
                     @for (shipment of listResponse.items; track shipment.shipmentId; let i = $index) {
-                        <tr [class.idx]="i == currentIndex_$()" (click)="handleRowClick(shipment)"
+                        <tr [class.idx]="i == currentIndex_$()"
+                            (click)="handleRowClick(shipment)"
+                            (dblclick)="handleRowDblClick(shipment)"
                             class="grid grid-cols-inventory-items text-base">
                             <td>{{ (listResponse.currentPage - 1) * listResponse.pageSize + i + 1 }}</td>
                             <td>{{ shipment.sequenceNumber }}</td>
