@@ -48,7 +48,6 @@ export class ListShipmentsComponent
     }
 
     ngOnInit() {
-        console.log(this.stockpiles)
         this.selectOptions = this.stockpiles.map(x => ({value: x.stockpileId, label: x.name}));
     }
 

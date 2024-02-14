@@ -8,12 +8,14 @@ import {TaxDefinitionsComponent} from "./common/tax-definitions/tax-definitions.
 import {CatalogItemsComponent} from "./catalog/catalog-items/catalog-items.component";
 import {StockpileInventoryComponent} from "./inventory/stockpile-inventory/stockpile-inventory.component";
 import {StockpileShipmentsComponent} from "./inventory/stockpile-shipments/stockpile-shipments.component";
+import {BrandsComponent} from "./catalog/brands/brands.component";
 
 export const routes: Routes = [
     {path: 'partners/edit/:partnerId', component: EditPartnerComponent, canActivate: [MsalGuard]},
     {path: 'partners/create', component: CreatePartnerComponent, canActivate: [MsalGuard]},
     {path: 'partners', component: PartnersComponent, canActivate: [MsalGuard]},
     {path: 'catalog/catalog-items', component: CatalogItemsComponent, canActivate: [MsalGuard]},
+    {path: 'catalog/brands', component: BrandsComponent, canActivate: [MsalGuard]},
     {path: 'catalog/brands/add', component: AddBrandComponent, canActivate: [MsalGuard]},
     {path: 'common/tax-definitions', component: TaxDefinitionsComponent, canActivate: [MsalGuard]},
     {path: 'auth', component: MsalRedirectComponent},
