@@ -1,0 +1,19 @@
+<form [formGroup]="itemForm" (ngSubmit)="handleSubmit()">
+    <div>
+        <label for="sku">Sku</label>
+        <input type="text" id="sku" formControlName="sku">
+    </div>
+    <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" formControlName="name">
+    </div>
+    <div>
+        <label for="price">Price</label>
+        <input type="text" id="price" formControlName="unitPrice">
+    </div>
+    <div>
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" formControlName="quantity">
+    </div>
+    <button type="submit">Submit</button>
+</form>

@@ -39,6 +39,7 @@ public class AddRecordToShipment(
         Shipment? shipment = await context.Shipments
             .AsTracking()
             .Include(shipment => shipment.Records)
+            .Include(shipment => shipment.Kind)
             .SingleOrDefaultAsync(s => s.ShipmentId.Value == shipmentId);
 
         if (shipment == null)

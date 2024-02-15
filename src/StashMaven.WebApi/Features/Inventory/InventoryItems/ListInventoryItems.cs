@@ -2,7 +2,7 @@ using StashMaven.WebApi.Data.Services;
 
 namespace StashMaven.WebApi.Features.Inventory.InventoryItems;
 
-public partial class InventoryItemsController
+public partial class InventoryItemController
 {
     [HttpGet]
     [Route("list")]

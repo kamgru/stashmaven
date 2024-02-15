@@ -48,7 +48,7 @@ export class ListInventoryService extends li.ListServiceBase<IInventoryItem, Lis
     }
 
     override listItems(request: ListInventoryItemsRequest): Observable<IListInventoryItemsResponse> {
-        return this.http.get<IListInventoryItemsResponse>(`${environment.apiUrl}/api/v1/inventoryitems/list`, {
+        return this.http.get<IListInventoryItemsResponse>(`${environment.apiUrl}/api/v1/inventoryitem/list`, {
             params: {
                 stockpileId: request.stockpileId,
                 page: request.page.toString(),

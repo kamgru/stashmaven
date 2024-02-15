@@ -19,16 +19,20 @@
                     <th>#</th>
                     <th (click)="sortBy('sku')">Sku</th>
                     <th (click)="sortBy('name')">Name</th>
+                    <th>Quantity</th>
                     <th>Unit</th>
                 </tr>
                 </thead>
                 <tbody>
                     @for (inventoryItem of listResponse.items; track inventoryItem.inventoryItemId; let i = $index) {
-                        <tr [class.idx]="i == currentIndex_$()" (click)="handleRowClick(inventoryItem)"
+                        <tr [class.idx]="i == currentIndex_$()"
+                            (click)="handleRowClick(inventoryItem)"
+                            (dblclick)="handleRowDblClick(inventoryItem)"
                             class="grid grid-cols-inventory-items text-base">
                             <td>{{ (listResponse.currentPage - 1) * listResponse.pageSize + i + 1 }}</td>
                             <td>{{ inventoryItem.sku }}</td>
                             <td>{{ inventoryItem.name }}</td>
+                            <td>{{ inventoryItem.quantity}}</td>
                             <td>{{ inventoryItem.unitOfMeasure }}</td>
                         </tr>
                     }

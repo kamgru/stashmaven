@@ -6,4 +6,4 @@ namespace StashMaven.WebApi.Features.Inventory.InventoryItems;
 [Route("api/v1/[controller]")]
 [Authorize]
 [Produces("application/json")]
-public partial class InventoryItemsController : ControllerBase;
+public partial class InventoryItemController : ControllerBase;

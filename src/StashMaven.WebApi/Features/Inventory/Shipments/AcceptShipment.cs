@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace StashMaven.WebApi.Features.Inventory;
+namespace StashMaven.WebApi.Features.Inventory.Shipments;
 
-public partial class InventoryController
+public partial class ShipmentController
 {
-    [HttpPatch]
-    [Route("shipment/{shipmentId}/accept")]
+    [HttpPost]
+    [Route("{shipmentId}/accept")]
     public async Task<IActionResult> AcceptShipmentAsync(
         string shipmentId,
         [FromServices]

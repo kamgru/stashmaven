@@ -8,7 +8,7 @@
                              (OnPartnerEdit)="uiState = 'edit-partner'">
         </app-partner-details>
         <hr/>
-        <button class="btn" (click)="uiState = 'add-item'">Add Item</button>
+        <button class="btn" (click)="uiState = 'select-item'">Add Item</button>
         <table class="table table-auto">
             <thead>
             <tr>
@@ -20,6 +20,15 @@
                 </th>
                 <th>
                     Quantity
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Tax
+                </th>
+                <th>
+                    Total
                 </th>
             </tr>
             </thead>
@@ -35,6 +44,15 @@
                         <td>
                             {{ item?.quantity }}
                         </td>
+                        <td>
+                            {{ item?.unitPrice }}
+                        </td>
+                        <td>
+                            {{ item?.taxRate }}
+                        </td>
+                        <td>
+                            {{ item!.quantity * item!.unitPrice }}
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -43,7 +61,10 @@
     @if (uiState == 'edit-partner') {
         <app-list-partners (OnItemConfirmed)="handlePartnerConfirmed($event); uiState = 'view'"></app-list-partners>
     }
-    @if (uiState == 'add-item') {
+    @if (uiState == 'select-item') {
         <app-list-inventory (OnItemConfirmed)="handleInventoryItemConfirmed($event)"></app-list-inventory>
+    }
+    @if (uiState == 'add-record'){
+        <app-add-record [inventoryItem]="inventoryItem" (OnRecordAdded)="handleRecordAdded($event)"></app-add-record>
     }
 </div>
