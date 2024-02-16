@@ -49,6 +49,7 @@ public class AddInventoryItemHandler(
         }
 
         Stockpile? stockpile = await context.Stockpiles
+            .AsTracking()
             .FirstOrDefaultAsync(s => s.StockpileId.Value == request.StockpileId);
 
         if (stockpile == null)

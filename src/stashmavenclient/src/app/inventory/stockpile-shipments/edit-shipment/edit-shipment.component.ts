@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {
     IShipmentEditDetails,
     IShipmentPartnerEditDetails,
@@ -37,6 +37,7 @@ export class EditShipmentComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
+        private router: Router,
         private shipmentService: ShipmentService,
         private editShipmentService: EditShipmentService
     ) {
@@ -98,5 +99,16 @@ export class EditShipmentComponent implements OnInit {
                 this.uiState = 'view';
             });
 
+    }
+
+    handleAccept() {
+        if (!this._shipmentId) {
+            throw new Error('shipmentId is not set');
+        }
+
+        this.editShipmentService.acceptShipment(this._shipmentId)
+            .subscribe(_ => {
+                this.router.navigate(['/shipments']);
+            });
     }
 }

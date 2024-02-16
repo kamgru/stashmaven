@@ -61,6 +61,7 @@ public class UpsertOptionHandler(StashMavenContext context)
         UpsertOptionRequest request)
     {
         StashMavenOption? option = await context.StashMavenOptions
+            .AsTracking()
             .FirstOrDefaultAsync(x => x.Key == request.Key);
 
         if (option == null)
@@ -82,6 +83,7 @@ public class UpsertOptionHandler(StashMavenContext context)
         UpsertOptionRequest request)
     {
         CompanyOption? option = await context.CompanyOptions
+            .AsTracking()
             .FirstOrDefaultAsync(x => x.Key == request.Key);
 
         if (option == null)

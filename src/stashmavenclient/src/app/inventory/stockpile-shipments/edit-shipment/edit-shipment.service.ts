@@ -51,4 +51,8 @@ export class EditShipmentService {
     public getInventoryItem(inventoryItemId: string): Observable<IInventoryItemDetails> {
         return this.http.get<IInventoryItemDetails>(`${environment.apiUrl}/api/v1/inventoryitem/${inventoryItemId}`);
     }
+
+    public acceptShipment(shipmentId: string) {
+        return this.http.post(`${environment.apiUrl}/api/v1/shipment/${shipmentId}/accept`, {});
+    }
 }

@@ -57,6 +57,7 @@
                 }
             </tbody>
         </table>
+        <button class="btn" (click)="handleAccept()">Accept</button>
     }
     @if (uiState == 'edit-partner') {
         <app-list-partners (OnItemConfirmed)="handlePartnerConfirmed($event); uiState = 'view'"></app-list-partners>
