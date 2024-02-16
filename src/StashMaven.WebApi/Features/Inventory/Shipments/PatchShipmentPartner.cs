@@ -6,13 +6,13 @@ public partial class ShipmentController
     [Route("{shipmentId}/partner")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PatchShipmentPartnerAsync(
+    public async Task<IActionResult> ChangeShipmentPartnerAsync(
         string shipmentId,
-        PatchShipmentPartnerHandler.PatchShipmentPartnerRequest request,
+        ChangeShipmentPartnerHandler.ChangeShipmentPartnerRequest request,
         [FromServices]
-        PatchShipmentPartnerHandler handler)
+        ChangeShipmentPartnerHandler handler)
     {
-        StashMavenResult response = await handler.PatchShipmentPartnerAsync(shipmentId, request);
+        StashMavenResult response = await handler.ChangeShipmentPartnerAsync(shipmentId, request);
 
         if (!response.IsSuccess)
         {
@@ -24,17 +24,17 @@ public partial class ShipmentController
 }
 
 [Injectable]
-public class PatchShipmentPartnerHandler(
+public class ChangeShipmentPartnerHandler(
     StashMavenContext context)
 {
-    public class PatchShipmentPartnerRequest
+    public class ChangeShipmentPartnerRequest
     {
         public required string PartnerId { get; set; }
     }
 
-    public async Task<StashMavenResult> PatchShipmentPartnerAsync(
+    public async Task<StashMavenResult> ChangeShipmentPartnerAsync(
         string shipmentId,
-        PatchShipmentPartnerRequest request)
+        ChangeShipmentPartnerRequest request)
     {
         Shipment? shipment = await context.Shipments
             .Include(x => x.PartnerRefSnapshot)

@@ -37,8 +37,8 @@ public class CatalogItemTaxReference
 
 public class CatalogItem
 {
-    private const int MaxSkuLength = 50;
-    private const int MaxNameLength = 256;
+    public const int SkuMaxLength = 10;
+    public const int NameMaxLength = 256;
 
     public int Id { get; set; }
     public required CatalogItemId CatalogItemId { get; set; }
@@ -61,11 +61,11 @@ public class CatalogItem
                 .Property(e => e.Value)
                 .HasColumnName("CatalogItemId");
             builder.Property(e => e.Sku)
-                .HasMaxLength(MaxSkuLength);
+                .HasMaxLength(SkuMaxLength);
             builder.HasIndex(e => e.Sku)
                 .IsUnique();
             builder.Property(e => e.Name)
-                .HasMaxLength(MaxNameLength);
+                .HasMaxLength(NameMaxLength);
             builder.ComplexProperty(e => e.BuyTax);
             builder.ComplexProperty(e => e.SellTax);
         }

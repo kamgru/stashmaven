@@ -10,7 +10,7 @@ public partial class ShipmentController
     public async Task<IActionResult> AcceptShipmentAsync(
         string shipmentId,
         [FromServices]
-        AcceptShipment handler)
+        AcceptShipmentHandler handler)
     {
         StashMavenResult response = await handler.AcceptShipmentAsync(shipmentId);
 
@@ -24,13 +24,14 @@ public partial class ShipmentController
 }
 
 [Injectable]
-public class AcceptShipment(
+public class AcceptShipmentHandler(
     StashMavenContext context)
 {
     public async Task<StashMavenResult> AcceptShipmentAsync(
         string shipmentId)
     {
         Shipment? shipment = await context.Shipments
+            .AsTracking()
             .Include(s => s.Kind)
             .Include(s => s.Records)
             .ThenInclude(r => r.InventoryItem)
@@ -64,6 +65,7 @@ public class AcceptShipment(
         }
 
         SequenceGenerator? sequenceGenerator = await context.SequenceGenerators
+            .AsTracking()
             .Include(x => x.Entries)
             .FirstOrDefaultAsync(x => x.SequenceGeneratorId.Value == shipment.Kind.SequenceGeneratorId.Value);
 

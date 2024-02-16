@@ -96,6 +96,8 @@ public class ShipmentRecord
 
 public class ShipmentKind
 {
+    public const int ShortCodeMaxLength = 8;
+
     public int Id { get; set; }
     public required ShipmentKindId ShipmentKindId { get; set; }
     public required SequenceGeneratorId SequenceGeneratorId { get; set; }
@@ -118,6 +120,8 @@ public class ShipmentKind
             builder.OwnsOne(e => e.SequenceGeneratorId)
                 .Property(e => e.Value)
                 .HasColumnName("SequenceGeneratorId");
+            builder.Property(e => e.ShortCode)
+                .HasMaxLength(ShortCodeMaxLength);
         }
     }
 }
@@ -136,8 +140,8 @@ public class PartnerRefSnapshot
             builder.ToTable("ShipmentPartnerReference", "inv");
         }
     }
-
 }
+
 public class Shipment
 {
     public int Id { get; set; }
@@ -187,7 +191,7 @@ public class SequenceEntry
             EntityTypeBuilder<SequenceEntry> builder)
         {
             builder.ToTable("SequenceEntry", "inv");
-            builder.HasIndex(e => new {e.Group, e.Delimiter})
+            builder.HasIndex(e => new { e.Group, e.Delimiter })
                 .IsUnique();
             builder.Property(e => e.Version)
                 .IsRowVersion();

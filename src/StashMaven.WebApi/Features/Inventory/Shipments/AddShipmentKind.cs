@@ -6,12 +6,14 @@ public partial class ShipmentController
 {
     [HttpPost]
     [Route("shipment-kind")]
+    [ProducesResponseType<AddShipmentKindHandler.AddShipmentKindResponse>(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddShipmentKindAsync(
-        AddShipmentKind.AddShipmentKindRequest request,
+        AddShipmentKindHandler.AddShipmentKindRequest request,
         [FromServices]
-        AddShipmentKind handler)
+        AddShipmentKindHandler handler)
     {
-        StashMavenResult<AddShipmentKind.AddShipmentKindResponse> response =
+        StashMavenResult<AddShipmentKindHandler.AddShipmentKindResponse> response =
             await handler.AddShipmentKindAsync(request);
 
         if (!response.IsSuccess || response.Data is null)
@@ -24,7 +26,7 @@ public partial class ShipmentController
 }
 
 [Injectable]
-public class AddShipmentKind(StashMavenContext context)
+public class AddShipmentKindHandler(StashMavenContext context)
 {
     public class AddShipmentKindRequest
     {

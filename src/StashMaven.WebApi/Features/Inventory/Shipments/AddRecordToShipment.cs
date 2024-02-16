@@ -6,9 +6,9 @@ public partial class ShipmentController
     [Route("{shipmentId}/record")]
     public async Task<IActionResult> AddRecordToShipmentAsync(
         string shipmentId,
-        AddRecordToShipment.AddRecordToShipmentRequest request,
+        AddRecordToShipmentHandler.AddRecordToShipmentRequest request,
         [FromServices]
-        AddRecordToShipment handler)
+        AddRecordToShipmentHandler handler)
     {
         StashMavenResult response = await handler.AddRecordToShipmentAsync(shipmentId, request);
 
@@ -22,7 +22,7 @@ public partial class ShipmentController
 }
 
 [Injectable]
-public class AddRecordToShipment(
+public class AddRecordToShipmentHandler(
     StashMavenContext context)
 {
     public class AddRecordToShipmentRequest
