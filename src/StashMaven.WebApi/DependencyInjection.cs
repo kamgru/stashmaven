@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using UnitOfWork = StashMaven.WebApi.Data.UnitOfWork;
 
 namespace StashMaven.WebApi;
 
@@ -18,6 +19,9 @@ public static class ServiceCollectionExtensions
             opt.UseNpgsql(writeModelConnectionString)
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
+
+        services.AddScoped<UnitOfWork>();
+        services.AddScoped<StashMavenRepository>();
     }
 
     public static void AddFeatures(

@@ -57,3 +57,59 @@ public class StashMavenContext : DbContext
     public DbSet<Stockpile> Stockpiles => Set<Stockpile>();
     public DbSet<SequenceGenerator> SequenceGenerators => Set<SequenceGenerator>();
 }
+
+public class UnitOfWork(StashMavenContext context)
+{
+    public async Task SaveChangesAsync()
+    {
+        await context.SaveChangesAsync();
+    }
+}
+
+public class StashMavenRepository(StashMavenContext context)
+{
+    public async Task<Stockpile?> GetStockpileAsync(
+        StockpileId stockpileId) =>
+        await context.Stockpiles
+            .AsTracking()
+            .SingleOrDefaultAsync(s => s.StockpileId == stockpileId);
+
+    public async Task<Shipment?> GetShipmentAsync(
+        ShipmentId shipmentId) =>
+        await context.Shipments
+            .Include(s => s.Kind)
+            .Include(s => s.Records)
+            .ThenInclude(r => r.InventoryItem)
+            .Include(s => s.Stockpile)
+            .Include(s => s.Partner)
+            .Include(s => s.PartnerRefSnapshot)
+            .AsTracking()
+            .FirstOrDefaultAsync(s => s.ShipmentId.Value == shipmentId.Value);
+
+    public async Task<SequenceGenerator?> GetSequenceGeneratorAsync(
+        SequenceGeneratorId sequenceGeneratorId) =>
+        await context.SequenceGenerators
+            .Include(x => x.Entries)
+            .AsTracking()
+            .FirstOrDefaultAsync(x => x.SequenceGeneratorId.Value == sequenceGeneratorId.Value);
+
+    public async Task<StashMavenOption?> GetStashMavenOptionAsync(
+        string key) =>
+        await context.StashMavenOptions
+            .AsTracking()
+            .FirstOrDefaultAsync(x => x.Key == key);
+
+    public async void InsertStashMavenOption(
+        StashMavenOption option) =>
+        context.StashMavenOptions.Add(option);
+
+    public async Task<CompanyOption?> GetCompanyOptionAsync(
+        string key) =>
+        await context.CompanyOptions
+            .AsTracking()
+            .FirstOrDefaultAsync(x => x.Key == key);
+
+    public void InsertCompanyOption(
+        CompanyOption option) =>
+        context.CompanyOptions.Add(option);
+}

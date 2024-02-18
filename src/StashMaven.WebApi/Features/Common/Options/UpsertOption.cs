@@ -1,3 +1,5 @@
+using StashMaven.WebApi.Data.Services;
+
 namespace StashMaven.WebApi.Features.Common.Options;
 
 public partial class OptionController
@@ -18,7 +20,9 @@ public partial class OptionController
 }
 
 [Injectable]
-public class UpsertOptionHandler(StashMavenContext context)
+public class UpsertOptionHandler(StashMavenContext context,
+    UpsertOptionService optionService,
+    UnitOfWork unitOfWork)
 {
     public enum OptionType
     {
@@ -40,64 +44,20 @@ public class UpsertOptionHandler(StashMavenContext context)
         {
             case { Type: OptionType.Company }:
             {
-                await UpsertCompanyOption(request);
+                await optionService.UpsertCompanyOptionAsync(request.Key, request.Value);
                 break;
             }
             case { Type: OptionType.StashMaven }:
             {
-                await UpsertStashMavenOption(request);
+                await optionService.UpsertStashMavenOptionAsync(request.Key, request.Value);
                 break;
             }
             default:
                 return StashMavenResult.Error("Invalid option type");
         }
 
-        await context.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync();
 
         return StashMavenResult.Success();
-    }
-
-    private async Task UpsertStashMavenOption(
-        UpsertOptionRequest request)
-    {
-        StashMavenOption? option = await context.StashMavenOptions
-            .AsTracking()
-            .FirstOrDefaultAsync(x => x.Key == request.Key);
-
-        if (option == null)
-        {
-            option = new StashMavenOption
-            {
-                Key = request.Key,
-                Value = request.Value
-            };
-            context.StashMavenOptions.Add(option);
-        }
-        else
-        {
-            option.Value = request.Value;
-        }
-    }
-
-    private async Task UpsertCompanyOption(
-        UpsertOptionRequest request)
-    {
-        CompanyOption? option = await context.CompanyOptions
-            .AsTracking()
-            .FirstOrDefaultAsync(x => x.Key == request.Key);
-
-        if (option == null)
-        {
-            option = new CompanyOption
-            {
-                Key = request.Key,
-                Value = request.Value
-            };
-            context.CompanyOptions.Add(option);
-        }
-        else
-        {
-            option.Value = request.Value;
-        }
     }
 }
