@@ -4,9 +4,20 @@ namespace StashMaven.WebApi.Data.Services;
 
 public class CacheReader(StashMavenContext context, IMemoryCache cache)
 {
+    public static class Keys
+    {
+        public const string DefaultStockpile = "DefaultStockpile";
+        public const string Stockpiles = "Stockpiles";
+        public const string ShipmentKinds = "ShipmentKinds";
+    }
+
+    public void InvalidateKey(
+        string key) =>
+        cache.Remove(key);
+
     public async Task<Stockpile?> GetDefaultStockpileAsync()
     {
-        cache.TryGetValue("DefaultStockpile", out Stockpile? stockpile);
+        cache.TryGetValue(Keys.DefaultStockpile, out Stockpile? stockpile);
         
         if (stockpile != null)
         {
@@ -26,7 +37,7 @@ public class CacheReader(StashMavenContext context, IMemoryCache cache)
 
         if (stockpile != null)
         {
-            cache.Set("DefaultStockpile", stockpile, TimeSpan.FromMinutes(60));
+            cache.Set(Keys.DefaultStockpile, stockpile, TimeSpan.FromMinutes(60));
         }
         
         return stockpile;
@@ -34,7 +45,7 @@ public class CacheReader(StashMavenContext context, IMemoryCache cache)
 
     public async Task<IReadOnlyList<Stockpile>> GetStockpilesAsync()
     {
-        cache.TryGetValue("Stockpiles", out IReadOnlyList<Stockpile>? stockpiles);
+        cache.TryGetValue(Keys.Stockpiles, out IReadOnlyList<Stockpile>? stockpiles);
 
         if (stockpiles != null)
         {
@@ -42,14 +53,14 @@ public class CacheReader(StashMavenContext context, IMemoryCache cache)
         }
         
         stockpiles = await context.Stockpiles.ToListAsync();
-        cache.Set("Stockpiles", stockpiles, TimeSpan.FromMinutes(60));
+        cache.Set(Keys.Stockpiles, stockpiles, TimeSpan.FromMinutes(60));
 
         return stockpiles;
     }
     
     public async Task<IReadOnlyList<ShipmentKind>> GetKindsAsync()
     {
-        cache.TryGetValue("ShipmentKinds", out IReadOnlyList<ShipmentKind>? kinds);
+        cache.TryGetValue(Keys.ShipmentKinds, out IReadOnlyList<ShipmentKind>? kinds);
 
         if (kinds != null)
         {
@@ -57,7 +68,7 @@ public class CacheReader(StashMavenContext context, IMemoryCache cache)
         }
         
         kinds = await context.ShipmentKinds.ToListAsync();
-        cache.Set("ShipmentKinds", kinds, TimeSpan.FromMinutes(60));
+        cache.Set(Keys.ShipmentKinds, kinds, TimeSpan.FromMinutes(60));
 
         return kinds;
     }

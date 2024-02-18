@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using StashMaven.WebApi.Data.Services;
 using UnitOfWork = StashMaven.WebApi.Data.UnitOfWork;
 
 namespace StashMaven.WebApi;
@@ -87,6 +88,13 @@ public static class ServiceCollectionExtensions
 
         services.AddAuthentication()
             .AddMicrosoftIdentityWebApi(aadConfig.RawConfiguration);
+    }
+
+    public static void AddCache(
+        this IServiceCollection services)
+    {
+        services.AddMemoryCache();
+        services.AddScoped<CacheReader>();
     }
 }
 

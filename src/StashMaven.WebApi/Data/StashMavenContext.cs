@@ -72,7 +72,7 @@ public class StashMavenRepository(StashMavenContext context)
         StockpileId stockpileId) =>
         await context.Stockpiles
             .AsTracking()
-            .SingleOrDefaultAsync(s => s.StockpileId == stockpileId);
+            .SingleOrDefaultAsync(s => s.StockpileId.Value == stockpileId.Value);
 
     public async Task<Shipment?> GetShipmentAsync(
         ShipmentId shipmentId) =>

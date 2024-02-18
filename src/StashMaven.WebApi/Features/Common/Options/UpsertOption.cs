@@ -20,7 +20,7 @@ public partial class OptionController
 }
 
 [Injectable]
-public class UpsertOptionHandler(StashMavenContext context,
+public class UpsertOptionHandler(
     UpsertOptionService optionService,
     UnitOfWork unitOfWork)
 {

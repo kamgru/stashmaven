@@ -1,5 +1,6 @@
 namespace StashMaven.WebApi.Data.Services;
 
+[Injectable]
 public class UpsertOptionService(StashMavenRepository repository)
 {
     public async Task UpsertStashMavenOptionAsync(
