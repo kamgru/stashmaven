@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CreatePartnerRequest, CreatePartnerService} from "./create-partner.service";
 import {PartnerAddress} from "../partnerAddress";
 import {TaxIdentifierType} from "../taxIdentifierType";
 import {TaxIdentifier} from "../taxIdentifier";
+import {CountryService, IAvailableCountry} from "../../common/services/country.service";
 
 @Component({
     selector: 'app-create-partner',
@@ -15,20 +16,40 @@ import {TaxIdentifier} from "../taxIdentifier";
 })
 export class CreatePartnerComponent {
 
-    partnerForm = this.formBuilder.group({
+    private _availableCountries: IAvailableCountry[] = [];
+
+    public partnerForm = this.formBuilder.group({
         customIdentifier: ['', [Validators.required, Validators.minLength(3)]],
         legalName: ['', [Validators.required, Validators.minLength(3)]],
-        primaryTaxIdentifier: ['', [Validators.required, Validators.minLength(10)]],
+        isRetail: [false],
+        nip: ['', [Validators.required, Validators.minLength(10)]],
+        krs: [''],
+        regon: [''],
         address: this.formBuilder.group({
             city: ['', Validators.required],
             street: ['', Validators.required],
+            streetAdditional: [''],
             postalCode: ['', Validators.required],
+            country: [null]
         }),
     })
 
     constructor(
         private formBuilder: FormBuilder,
-        private partnersService: CreatePartnerService) {
+        private partnersService: CreatePartnerService,
+        private countryService: CountryService) {
+    }
+
+    ngOnInit(): void {
+        this.countryService.getAvailableCountries()
+            .subscribe(countries => {
+                this._availableCountries = countries
+                this.partnerForm.patchValue({
+                    address: {
+                        country: countries.find(c => c.code === 'PL') ?? null
+                    })
+                });
+            });
     }
 
     onSubmit() {
@@ -41,7 +62,7 @@ export class CreatePartnerComponent {
 
         const nipIdentifier = new TaxIdentifier(
             TaxIdentifierType.Nip,
-            this.partnerForm.value.primaryTaxIdentifier!,
+            this.partnerForm.value.nip!,
             true
         )
 

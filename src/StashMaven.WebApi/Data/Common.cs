@@ -60,6 +60,7 @@ public class StashMavenOption
     public static class Keys
     {
         public const string DefaultStockpileShortCode = "defaultStockpileShortCode";
+        public const string AvailableCountries = "availableCountries";
     }
 
     public int Id { get; set; }
