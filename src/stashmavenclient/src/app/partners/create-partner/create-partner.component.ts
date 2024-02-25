@@ -1,12 +1,22 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CreatePartnerRequest, CreatePartnerService} from "./create-partner.service";
 import {PartnerAddress} from "../partnerAddress";
 import {TaxIdentifierType} from "../taxIdentifierType";
 import {TaxIdentifier} from "../taxIdentifier";
-import {CountryService, IAvailableCountry} from "../../common/services/country.service";
+import {CountryService} from "../../common/services/country.service";
 
+export interface ICreatedPartner {
+    partnerId: string;
+    customIdentifier: string;
+    legalName: string;
+    isRetail: boolean;
+    nip: string;
+    krs: string;
+    regon: string;
+    address: PartnerAddress;
+}
 @Component({
     selector: 'app-create-partner',
     standalone: true,
@@ -14,9 +24,10 @@ import {CountryService, IAvailableCountry} from "../../common/services/country.s
     templateUrl: './create-partner.component.html',
     styleUrls: ['./create-partner.component.css']
 })
-export class CreatePartnerComponent {
+export class CreatePartnerComponent implements OnInit {
 
-    private _availableCountries: IAvailableCountry[] = [];
+    @Output()
+    public OnPartnerCreated: EventEmitter<ICreatedPartner> = new EventEmitter<ICreatedPartner>();
 
     public partnerForm = this.formBuilder.group({
         customIdentifier: ['', [Validators.required, Validators.minLength(3)]],
@@ -26,13 +37,15 @@ export class CreatePartnerComponent {
         krs: [''],
         regon: [''],
         address: this.formBuilder.group({
-            city: ['', Validators.required],
-            street: ['', Validators.required],
+            city: ['', { validators: [Validators.required], nonNullable: true }],
+            street: ['', { validators: [Validators.required], nonNullable: true }],
             streetAdditional: [''],
-            postalCode: ['', Validators.required],
-            country: [null]
+            postalCode: ['', { validators: [Validators.required], nonNullable: true }],
+            country: ['', { validators: [Validators.required], nonNullable: true }],
         }),
     })
+
+    public countries$ = this.countryService.getAvailableCountries();
 
     constructor(
         private formBuilder: FormBuilder,
@@ -40,29 +53,49 @@ export class CreatePartnerComponent {
         private countryService: CountryService) {
     }
 
-    ngOnInit(): void {
-        this.countryService.getAvailableCountries()
-            .subscribe(countries => {
-                this._availableCountries = countries
-                this.partnerForm.patchValue({
-                    address: {
-                        country: countries.find(c => c.code === 'PL') ?? null
-                    })
-                });
-            });
+    ngOnInit() {
+        this.partnerForm.get('isRetail')!.valueChanges.subscribe((value) => {
+            const nipControl = this.partnerForm.get('nip');
+            if (!nipControl) {
+                throw new Error('Nip control not found');
+            }
+
+            if (value) {
+                nipControl.clearValidators();
+                nipControl.disable();
+            } else {
+                nipControl.setValidators([Validators.required, Validators.minLength(10)]);
+                nipControl.enable();
+            }
+            nipControl.updateValueAndValidity();
+        });
     }
 
     onSubmit() {
+        if (this.partnerForm.invalid) {
+            return;
+        }
+
+        const addressControl = this.partnerForm.get('address');
+        if (!addressControl) {
+            throw new Error('Address control not found');
+        }
+
+        const addressValue = addressControl.value;
+        if (!addressValue) {
+            throw new Error('Address value not found');
+        }
+
         const address = new PartnerAddress(
-            this.partnerForm.value!.address!.street!,
-            this.partnerForm.value!.address!.city!,
-            this.partnerForm.value!.address!.postalCode!,
-            'PL',
+            addressValue.street!,
+            addressValue.city!,
+            addressValue.postalCode!,
+            addressValue.country!,
         );
 
         const nipIdentifier = new TaxIdentifier(
             TaxIdentifierType.Nip,
-            this.partnerForm.value.nip!,
+            this.partnerForm.value.nip ?? '0',
             true
         )
 

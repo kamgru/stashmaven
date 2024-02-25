@@ -19,6 +19,6 @@ export class CountryService {
     }
 
     public getAvailableCountries(): Observable<IAvailableCountry[]> {
-        return this.http.get<IAvailableCountry[]>(`${environment.apiUrl}/country/available`);
+        return this.http.get<IAvailableCountry[]>(`${environment.apiUrl}/api/v1/country/available`);
     }
 }

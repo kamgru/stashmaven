@@ -99,7 +99,7 @@ public class StashMavenRepository(StashMavenContext context)
             .AsTracking()
             .FirstOrDefaultAsync(x => x.Key == key);
 
-    public async void InsertStashMavenOption(
+    public void InsertStashMavenOption(
         StashMavenOption option) =>
         context.StashMavenOptions.Add(option);
 

@@ -14,9 +14,9 @@ import {CreatePartnerComponent} from "./create-partner/create-partner.component"
 })
 export class PartnersComponent {
 
-    public uiState: 'list' | 'edit' = 'list';
+    public uiState: 'list' | 'add' | 'edit' = 'list';
 
     handleAddPartner() {
-        this.uiState = 'edit';
+        this.uiState = 'add';
     }
 }
