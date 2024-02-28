@@ -103,12 +103,22 @@ export class CreatePartnerComponent implements OnInit {
             this.partnerForm.value.customIdentifier!,
             this.partnerForm.value.legalName!,
             [nipIdentifier],
-            address
+            address,
+            this.partnerForm.value.isRetail!,
         )
 
         this.partnersService.createPartner(request)
-            .subscribe(() => {
-                console.log('Partner created')
+            .subscribe(p => {
+                this.OnPartnerCreated.emit({
+                    partnerId: p.partnerId,
+                    customIdentifier: request.customIdentifier,
+                    legalName: request.legalName,
+                    isRetail: request.isRetail,
+                    nip: request.taxIdentifiers[0].value,
+                    krs: '',
+                    regon: '',
+                    address: request.address,
+                });
             });
     }
 }

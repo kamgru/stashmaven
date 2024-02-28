@@ -11,6 +11,7 @@ export class CreatePartnerRequest {
          public legalName: string,
          public taxIdentifiers: TaxIdentifier[],
          public address: PartnerAddress,
+         public isRetail: boolean,
     ) {
     }
 }

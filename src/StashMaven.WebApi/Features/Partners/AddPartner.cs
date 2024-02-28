@@ -1,3 +1,5 @@
+using StashMaven.WebApi.Data.Services;
+
 namespace StashMaven.WebApi.Features.Partners;
 
 public partial class PartnerController
@@ -22,7 +24,7 @@ public partial class PartnerController
 }
 
 [Injectable]
-public class AddPartnerHandler(StashMavenContext context)
+public class AddPartnerHandler(StashMavenContext context, CountryService countryService)
 {
     public class AddPartnerRequest
     {
@@ -54,6 +56,7 @@ public class AddPartnerHandler(StashMavenContext context)
         [MaxLength(Partner.LegalNameMaxLength)]
         public required string LegalName { get; set; }
 
+        public bool IsRetail { get; set; }
         public required List<TaxIdentifier> TaxIdentifiers { get; set; } = [];
         public required PartnerAddress Address { get; set; }
     }
@@ -65,14 +68,42 @@ public class AddPartnerHandler(StashMavenContext context)
     {
         PartnerId partnerId = new(Guid.NewGuid().ToString());
 
-        //TODO: validation:
-        // - null checks, duh
-        // - CustomIdentifier must be unique
-        // - TaxIdentifierType must be unique
-        // - TaxIdentifierType must be valid
-        // - CountryCode must be valid
-        // - Address must be valid
-        // - Only a single tax identifier can be primary
+        if (context.Partners.Any(p => p.CustomIdentifier == request.CustomIdentifier))
+        {
+            return StashMavenResult<AddPartnerResponse>.Error("CustomIdentifier must be unique");
+        }
+
+        if (request.TaxIdentifiers.GroupBy(ti => ti.Type).Any(g => g.Count() > 1))
+        {
+            return StashMavenResult<AddPartnerResponse>.Error("TaxIdentifierType must be unique");
+        }
+
+        if (request.TaxIdentifiers.Any(ti => !Enum.IsDefined(typeof(TaxIdentifierType), ti.Type)))
+        {
+            return StashMavenResult<AddPartnerResponse>.Error("TaxIdentifierType must be valid");
+        }
+
+        if (request.TaxIdentifiers.Count(ti => ti.IsPrimary) > 1)
+        {
+            return StashMavenResult<AddPartnerResponse>.Error("Only a single tax identifier can be primary");
+        }
+
+        if (!request.IsRetail)
+        {
+            if (request.TaxIdentifiers.Any(taxIdentifier =>
+                    context.TaxIdentifiers.Any(ti => ti.Type == taxIdentifier.Type && ti.Value == taxIdentifier.Value)))
+            {
+                return StashMavenResult<AddPartnerResponse>.Error("TaxIdentifier must be unique");
+            }
+        }
+
+        StashMavenResult countryAvailableResult =
+            await countryService.IsCountryAvailableAsync(request.Address.CountryCode);
+
+        if (!countryAvailableResult.IsSuccess)
+        {
+            return StashMavenResult<AddPartnerResponse>.Error("CountryCode must be valid");
+        }
 
         Partner partner = new()
         {

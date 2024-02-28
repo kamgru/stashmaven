@@ -22,4 +22,16 @@ public class CountryService(StashMavenRepository repository)
 
         return countries;
     }
+    
+    public async Task<StashMavenResult> IsCountryAvailableAsync(string countryCode)
+    {
+        IReadOnlyList<Country> countries = await GetAvailableCountries();
+
+        if (countries.Any(c => c.IsoCode == countryCode))
+        {
+            return StashMavenResult.Success();
+        }
+
+        return StashMavenResult.Error("Country is not available.");
+    }
 }

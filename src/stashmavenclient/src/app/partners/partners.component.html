@@ -1,11 +1,15 @@
 <div>
     <button class="btn" (click)="handleAddPartner()">Add</button>
+    <button class="btn"
+            (click)="handleDeletePartner()"
+            [disabled]="!selectedPartner">
+        Delete
+    </button>
 </div>
 <div class="h-4/5 mr-2">
-    @if (uiState == 'list'){
-        <app-list-partners></app-list-partners>
-    }
-    @else if (uiState == 'add'){
-        <app-create-partner></app-create-partner>
+    @if (uiState == 'list') {
+        <app-list-partners (OnItemSelected)="handlePartnerSelected($event)"></app-list-partners>
+    } @else if (uiState == 'add') {
+        <app-create-partner (OnPartnerCreated)="handlePartnerCreated($event)"></app-create-partner>
     }
 </div>
