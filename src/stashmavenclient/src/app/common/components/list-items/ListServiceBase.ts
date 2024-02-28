@@ -54,7 +54,9 @@ export abstract class ListServiceBase<TItem, TListRequest extends IListRequest, 
             })),
             tap(response => {
                 this._response = response;
-                this._cursor.tryReset(response.items.length);
+                if (this._cursor.tryReset(response.items.length)){
+                    this.selectedItem$.next(response.items[this._cursor.index()]);
+                }
             })
         );
     }
