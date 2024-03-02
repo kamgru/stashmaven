@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, ViewportScroller} from '@angular/common';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CreatePartnerRequest, CreatePartnerService} from "./create-partner.service";
 import {PartnerAddress} from "../partnerAddress";
@@ -56,7 +56,8 @@ export class CreatePartnerComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private partnersService: CreatePartnerService,
-        private countryService: CountryService) {
+        private countryService: CountryService,
+    ) {
     }
 
     ngOnInit() {
@@ -113,8 +114,10 @@ export class CreatePartnerComponent implements OnInit {
             this.partnerForm.value.isRetail!,
         )
 
+        this.partnerForm.disable();
+
         this.partnersService.createPartner(request).pipe(
-            catchError((error, caught) => {
+            catchError((error) => {
                 if (!Number.isFinite(error.error)){
                     throw error;
                 }
@@ -122,10 +125,12 @@ export class CreatePartnerComponent implements OnInit {
                 this.error = <IApiError>{
                     errorCode: error.error,
                     endpoint: error.url.replace(`${environment.apiUrl}/`, ''),
-                    requestBody: error.body
+                    requestBody: request
                 };
 
-                return caught;
+                this.partnerForm.enable();
+
+                return [];
             })
         )
             .subscribe(p => {

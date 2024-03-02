@@ -1,7 +1,8 @@
 <div class="w-1/2 mx-auto">
-@if (error){
-  <app-create-partner-error [error]="error"></app-create-partner-error>
-}
+    <h2 class="text-2xl py-2">Add a new partner</h2>
+    @if (error) {
+        <app-create-partner-error [error]="error"></app-create-partner-error>
+    }
     <form [formGroup]="partnerForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-col">
             <label for="custom-identifier">Custom Identifier</label>
@@ -38,14 +39,14 @@
             <div class="flex flex-col">
                 <label for="country">Country</label>
                 <select id="country" formControlName="country">
-                    @for(country of countries$ | async; track country.code){
+                    @for (country of countries$ | async; track country.code) {
                         <option [value]="country.code">{{ country.name }}</option>
                     }
                 </select>
             </div>
         </div>
 
-        <button type="submit" [disabled]="!partnerForm.valid">Submit</button>
+        <button class="btn" type="submit" [disabled]="!partnerForm.valid">Submit</button>
 
     </form>
 </div>
