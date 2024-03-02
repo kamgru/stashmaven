@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CommonModule, ViewportScroller} from '@angular/common';
-import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CreatePartnerRequest, CreatePartnerService} from "./create-partner.service";
 import {PartnerAddress} from "../partnerAddress";
 import {TaxIdentifierType} from "../taxIdentifierType";
@@ -21,6 +21,7 @@ export interface ICreatedPartner {
     regon: string;
     address: PartnerAddress;
 }
+
 @Component({
     selector: 'app-create-partner',
     standalone: true,
@@ -32,22 +33,49 @@ export class CreatePartnerComponent implements OnInit {
 
     public error: IApiError | null = null;
 
+    public get customIdentifier() {
+        return this.partnerForm.get('customIdentifier')!;
+    }
+
+    public get legalName() {
+        return this.partnerForm.get('legalName');
+    }
+
+    public get nip() {
+        return this.partnerForm.get('nip');
+    }
+
+    public get street(){
+        return this.partnerForm.get('address')!.get('street');
+    }
+
+    public get city(){
+        return this.partnerForm.get('address')!.get('city');
+    }
+
+    public get postalCode(){
+        return this.partnerForm.get('address')!.get('postalCode');
+    }
+
     @Output()
     public OnPartnerCreated: EventEmitter<ICreatedPartner> = new EventEmitter<ICreatedPartner>();
 
+    @Output()
+    public OnCreatePartnerCancelled: EventEmitter<void> = new EventEmitter<void>();
+
     public partnerForm = this.formBuilder.group({
-        customIdentifier: ['', [Validators.required, Validators.minLength(3)]],
-        legalName: ['', [Validators.required, Validators.minLength(3)]],
+        customIdentifier: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+        legalName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(256)]],
         isRetail: [false],
         nip: ['', [Validators.required, Validators.minLength(10)]],
         krs: [''],
         regon: [''],
         address: this.formBuilder.group({
-            city: ['', { validators: [Validators.required], nonNullable: true }],
-            street: ['', { validators: [Validators.required], nonNullable: true }],
+            city: ['', {validators: [Validators.required], nonNullable: true}],
+            street: ['', {validators: [Validators.required], nonNullable: true}],
             streetAdditional: [''],
-            postalCode: ['', { validators: [Validators.required], nonNullable: true }],
-            country: ['', { validators: [Validators.required], nonNullable: true }],
+            postalCode: ['', {validators: [Validators.required], nonNullable: true}],
+            country: ['', {validators: [Validators.required], nonNullable: true}],
         }),
     })
 
@@ -118,7 +146,7 @@ export class CreatePartnerComponent implements OnInit {
 
         this.partnersService.createPartner(request).pipe(
             catchError((error) => {
-                if (!Number.isFinite(error.error)){
+                if (!Number.isFinite(error.error)) {
                     throw error;
                 }
 
@@ -145,5 +173,9 @@ export class CreatePartnerComponent implements OnInit {
                     address: request.address,
                 });
             });
+    }
+
+    handleCancel() {
+        this.OnCreatePartnerCancelled.emit();
     }
 }

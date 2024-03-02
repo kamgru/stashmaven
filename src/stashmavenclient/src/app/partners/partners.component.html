@@ -12,6 +12,8 @@
     @if (uiState == 'list') {
         <app-list-partners (OnItemSelected)="handlePartnerSelected($event)"></app-list-partners>
     } @else if (uiState == 'add') {
-        <app-create-partner (OnPartnerCreated)="handlePartnerCreated($event)"></app-create-partner>
+        <app-create-partner (OnPartnerCreated)="handlePartnerCreated($event)"
+                            (OnCreatePartnerCancelled)="uiState = 'list'">
+        </app-create-partner>
     }
 </div>
