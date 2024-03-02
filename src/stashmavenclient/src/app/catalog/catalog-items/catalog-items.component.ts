@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AddCatalogItemComponent} from "./add-catalog-item/add-catalog-item.component";
-import {ListCatalogComponent} from "../../common/list-catalog/list-catalog.component";
+import {ListCatalogComponent} from "../../common/components/list-catalog/list-catalog.component";
 
 enum UiState {
     Add = 'add',

@@ -1,13 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AsyncPipe} from "@angular/common";
-import {ListShipmentsComponent} from "../../common/list-shipments/list-shipments.component";
+import {ListShipmentsComponent} from "../../common/components/list-shipments/list-shipments.component";
 import {forkJoin, map, Subject} from "rxjs";
 import {StockpileService} from "../../common/services/stockpile.service";
 import {IStockpileListItem} from "../../common/IStockpileListItem";
 import {AddShipmentRequest, ShipmentService} from "../../common/services/shipment.service";
 import {DropdownComponent, IDropdownItem} from "../../common/components/dropdown/dropdown.component";
 import {ActivatedRoute, Router} from "@angular/router";
-import {IShipment} from "../../common/list-shipments/list-shipments.service";
+import {IShipment} from "../../common/components/list-shipments/list-shipments.service";
 
 @Component({
     selector: 'app-stockpile-shipments',

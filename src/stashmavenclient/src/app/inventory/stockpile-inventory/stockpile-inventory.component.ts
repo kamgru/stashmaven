@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ListCatalogComponent} from "../../common/list-catalog/list-catalog.component";
+import {ListCatalogComponent} from "../../common/components/list-catalog/list-catalog.component";
 import {AsyncPipe, NgIf} from "@angular/common";
-import {ListInventoryComponent} from "../../common/list-inventory/list-inventory.component";
+import {ListInventoryComponent} from "../../common/components/list-inventory/list-inventory.component";
 import {StockpileInventoryService} from "./stockpile-inventory.service";
 import {forkJoin, map} from "rxjs";
 import {IStockpileListItem} from "../../common/IStockpileListItem";
-import {IInventoryItem} from "../../common/list-inventory/list-inventory.service";
+import {IInventoryItem} from "../../common/components/list-inventory/list-inventory.service";
 
 @Component({
     selector: 'app-stockpile-inventory',

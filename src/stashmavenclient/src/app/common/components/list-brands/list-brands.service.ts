@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import * as li from "../components/list-items";
+import * as li from "../list-items";
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
+import {environment} from "../../../../environments/environment";
 
 export * from "./list-brands.service";
 

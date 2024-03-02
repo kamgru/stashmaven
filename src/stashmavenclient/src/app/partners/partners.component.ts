@@ -1,26 +1,24 @@
 import {Component, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {PartnerPreviewComponent} from "./partner-preview/partner-preview.component";
 import {RouterLink} from "@angular/router";
-import {ListPartnersComponent} from "../common/list-partners/list-partners.component";
 import {CreatePartnerComponent, ICreatedPartner} from "./create-partner/create-partner.component";
-import {IPartner} from "../common/list-partners/list-partners.service";
 import {PartnerService} from "../common/services/partner.service";
+import * as p from "../common/components/list-partners";
 
 @Component({
     selector: 'app-partners',
     standalone: true,
-    imports: [CommonModule, ListPartnersComponent, PartnerPreviewComponent, RouterLink, CreatePartnerComponent],
+    imports: [CommonModule, p.ListPartnersComponent, RouterLink, CreatePartnerComponent],
     templateUrl: './partners.component.html',
     styleUrls: ['./partners.component.css']
 })
 export class PartnersComponent {
 
     public uiState: 'list' | 'add' | 'edit' = 'list';
-    public selectedPartner: IPartner | null = null;
+    public selectedPartner: p.IPartner | null = null;
 
-    @ViewChild(ListPartnersComponent)
-    private _listPartners?: ListPartnersComponent;
+    @ViewChild(p.ListPartnersComponent)
+    private _listPartners?: p.ListPartnersComponent;
 
     constructor(
         private partnerService: PartnerService,
@@ -31,7 +29,7 @@ export class PartnersComponent {
         this.uiState = 'add';
     }
 
-    handlePartnerSelected($event: IPartner) {
+    handlePartnerSelected($event: p.IPartner) {
         this.selectedPartner = $event;
     }
 

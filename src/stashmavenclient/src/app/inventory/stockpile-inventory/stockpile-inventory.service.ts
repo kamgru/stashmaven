@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
-import {IGetDefaultStockpileIdResponse} from "../../common/list-inventory/list-inventory.service";
+import {IGetDefaultStockpileIdResponse} from "../../common/components/list-inventory/list-inventory.service";
 
 export interface IStockpile {
     stockpileId: string;

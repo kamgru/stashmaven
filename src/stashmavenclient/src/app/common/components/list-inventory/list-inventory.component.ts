@@ -2,11 +2,11 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {tap} from "rxjs";
 import * as inv from "./list-inventory.service";
 import {AsyncPipe} from "@angular/common";
-import {IStockpileListItem} from "../IStockpileListItem";
+import {IStockpileListItem} from "../../IStockpileListItem";
 import {FormsModule} from "@angular/forms";
-import * as li from "../components/list-items";
-import {DropdownComponent} from "../components/dropdown/dropdown.component";
-import {ISelectOption, SelectComponent} from "../components/select/select.component";
+import * as li from "../list-items";
+import {DropdownComponent} from "../dropdown/dropdown.component";
+import {ISelectOption, SelectComponent} from "../select/select.component";
 
 @Component({
     selector: 'app-list-inventory',

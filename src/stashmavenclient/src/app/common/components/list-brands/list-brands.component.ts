@@ -1,8 +1,8 @@
 import {Component, OnDestroy} from '@angular/core';
-import * as li from "../components/list-items";
+import * as li from "../list-items";
 import * as br from "./list-brands.service";
 import {AsyncPipe} from "@angular/common";
-import {ListItemsLayoutComponent} from "../components/list-items";
+import {ListItemsLayoutComponent} from "../list-items";
 
 @Component({
     selector: 'app-list-brands',

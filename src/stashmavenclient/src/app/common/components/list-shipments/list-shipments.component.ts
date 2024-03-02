@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef} from '@angular/core';
 import {IShipment, ListShipmentsService} from "./list-shipments.service";
 import {AsyncPipe, NgTemplateOutlet} from "@angular/common";
-import * as li from "../components/list-items";
+import * as li from "../list-items";
 import * as ls from "./list-shipments.service";
-import {IStockpileListItem} from "../IStockpileListItem";
-import {ISelectOption, SelectComponent} from "../components/select/select.component";
+import {IStockpileListItem} from "../../IStockpileListItem";
+import {ISelectOption, SelectComponent} from "../select/select.component";
 import {tap} from "rxjs";
-import {ListItemsLayoutComponent} from "../components/list-items";
+import {ListItemsLayoutComponent} from "../list-items";
 
 @Component({
     selector: 'app-list-shipments',

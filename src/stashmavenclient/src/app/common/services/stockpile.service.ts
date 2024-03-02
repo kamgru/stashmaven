@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
-import {IGetDefaultStockpileIdResponse} from "../list-inventory/list-inventory.service";
+import {IGetDefaultStockpileIdResponse} from "../components/list-inventory/list-inventory.service";
 import {IListStockpilesResponse} from "../../inventory/stockpile-inventory/stockpile-inventory.service";
 import {HttpClient} from "@angular/common/http";
 

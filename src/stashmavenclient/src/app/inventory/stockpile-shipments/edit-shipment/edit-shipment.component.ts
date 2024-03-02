@@ -6,11 +6,11 @@ import {
     ShipmentService
 } from "../../../common/services/shipment.service";
 import {JsonPipe} from "@angular/common";
-import {ListPartnersComponent} from "../../../common/list-partners/list-partners.component";
-import {IPartner} from "../../../common/list-partners/list-partners.service";
+import {ListPartnersComponent} from "../../../common/components/list-partners/list-partners.component";
+import {IPartner} from "../../../common/components/list-partners/list-partners.service";
 import {AddRecordToShipmentRequest, EditShipmentService, IInventoryItemDetails} from "./edit-shipment.service";
-import {ListInventoryComponent} from "../../../common/list-inventory/list-inventory.component";
-import {IInventoryItem} from "../../../common/list-inventory/list-inventory.service";
+import {ListInventoryComponent} from "../../../common/components/list-inventory/list-inventory.component";
+import {IInventoryItem} from "../../../common/components/list-inventory/list-inventory.service";
 import {PartnerDetailsComponent} from "./partner-details/partner-details.component";
 import {AddRecordComponent, RecordAdded} from "./add-record/add-record.component";
 

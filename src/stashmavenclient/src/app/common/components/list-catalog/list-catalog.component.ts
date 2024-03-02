@@ -1,7 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import * as cat from "./list-catalog.service";
-import *  as li from "../components/list-items";
+import *  as li from "../list-items";
 
 @Component({
     selector: 'app-list-catalog',

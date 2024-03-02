@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ListBrandsComponent} from "../../common/list-brands/list-brands.component";
+import {ListBrandsComponent} from "../../common/components/list-brands/list-brands.component";
 import {RouterLink} from "@angular/router";
 
 @Component({
