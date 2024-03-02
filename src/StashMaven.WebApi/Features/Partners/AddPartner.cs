@@ -70,22 +70,22 @@ public class AddPartnerHandler(StashMavenContext context, CountryService country
 
         if (context.Partners.Any(p => p.CustomIdentifier == request.CustomIdentifier))
         {
-            return StashMavenResult<AddPartnerResponse>.Error("CustomIdentifier must be unique");
+            return StashMavenResult<AddPartnerResponse>.Error(ErrorCodes.CustomIdentifierNotUnique);
         }
 
         if (request.TaxIdentifiers.GroupBy(ti => ti.Type).Any(g => g.Count() > 1))
         {
-            return StashMavenResult<AddPartnerResponse>.Error("TaxIdentifierType must be unique");
+            return StashMavenResult<AddPartnerResponse>.Error(ErrorCodes.TaxIdentifierTypeNotUnique);
         }
 
         if (request.TaxIdentifiers.Any(ti => !Enum.IsDefined(typeof(TaxIdentifierType), ti.Type)))
         {
-            return StashMavenResult<AddPartnerResponse>.Error("TaxIdentifierType must be valid");
+            return StashMavenResult<AddPartnerResponse>.Error(ErrorCodes.TaxIdentifierTypeNotSupported);
         }
 
         if (request.TaxIdentifiers.Count(ti => ti.IsPrimary) > 1)
         {
-            return StashMavenResult<AddPartnerResponse>.Error("Only a single tax identifier can be primary");
+            return StashMavenResult<AddPartnerResponse>.Error(ErrorCodes.OnlyOnePrimaryTaxIdentifier);
         }
 
         if (!request.IsRetail)
@@ -93,7 +93,7 @@ public class AddPartnerHandler(StashMavenContext context, CountryService country
             if (request.TaxIdentifiers.Any(taxIdentifier =>
                     context.TaxIdentifiers.Any(ti => ti.Type == taxIdentifier.Type && ti.Value == taxIdentifier.Value)))
             {
-                return StashMavenResult<AddPartnerResponse>.Error("TaxIdentifier must be unique");
+                return StashMavenResult<AddPartnerResponse>.Error(ErrorCodes.TaxIdentifierValueNotUnique);
             }
         }
 
@@ -102,7 +102,7 @@ public class AddPartnerHandler(StashMavenContext context, CountryService country
 
         if (!countryAvailableResult.IsSuccess)
         {
-            return StashMavenResult<AddPartnerResponse>.Error("CountryCode must be valid");
+            return StashMavenResult<AddPartnerResponse>.Error(ErrorCodes.CountryCodeNotSupported);
         }
 
         Partner partner = new()

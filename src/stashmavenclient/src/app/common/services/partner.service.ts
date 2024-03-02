@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
+import {catchError} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +14,6 @@ export class PartnerService {
     }
 
     deletePartner(partnerId: string) {
-        return this.http.delete(`${environment.apiUrl}/api/v1/partner/${partnerId}`)
+        return this.http.delete(`${environment.apiUrl}/api/v1/partner/${partnerId}`);
     }
 }

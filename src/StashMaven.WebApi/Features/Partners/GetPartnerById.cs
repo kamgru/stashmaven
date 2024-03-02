@@ -61,20 +61,7 @@ public class GetPartnerByIdHandler(StashMavenContext context)
 
         if (partner == null)
         {
-            return StashMavenResult<GetPartnerResponse>.Error("Partner not found");
-        }
-
-        TaxIdentifier? primaryTaxIdentifier = partner.TaxIdentifiers
-            .FirstOrDefault(ti => ti.IsPrimary);
-
-        if (primaryTaxIdentifier == null)
-        {
-            throw new InvalidOperationException("Partner has no primary tax identifier");
-        }
-
-        if (partner.Address == null)
-        {
-            throw new InvalidOperationException("Partner has no address");
+            return StashMavenResult<GetPartnerResponse>.Error(ErrorCodes.PartnerNotFound);
         }
 
         GetPartnerResponse response = new()
@@ -90,7 +77,7 @@ public class GetPartnerByIdHandler(StashMavenContext context)
                 .ToList(),
             Address = new GetPartnerResponse.PartnerAddress
             {
-                Street = partner.Address.Street,
+                Street = partner.Address!.Street,
                 StreetAdditional = partner.Address.StreetAdditional,
                 City = partner.Address.City,
                 State = partner.Address.State,

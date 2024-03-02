@@ -36,12 +36,12 @@ public class DeletePartnerHandler(StashMavenContext context)
 
         if (partner is null)
         {
-            return StashMavenResult.Error("Partner not found");
+            return StashMavenResult.Error(ErrorCodes.PartnerNotFound);
         }
         
         if (partner.Shipments.Any())
         {
-            return StashMavenResult.Error("Partner has shipments");
+            return StashMavenResult.Error(ErrorCodes.PartnerHasShipments);
         }
         
         context.Partners.Remove(partner);

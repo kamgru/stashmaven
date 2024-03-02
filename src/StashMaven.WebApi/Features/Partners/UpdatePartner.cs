@@ -4,13 +4,21 @@ public partial class PartnerController
 {
     [HttpPatch]
     [Route("{partnerId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdatePartnerAsync(
         string partnerId,
         UpdatePartnerHandler.PatchPartnerRequest request,
         [FromServices]
         UpdatePartnerHandler handler)
     {
-        await handler.PatchPartnerAsync(partnerId, request);
+        StashMavenResult result = await handler.PatchPartnerAsync(partnerId, request);
+        
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.Message);
+        }
+        
         return Ok();
     }
 }
@@ -44,15 +52,19 @@ public class UpdatePartnerHandler(
         public AddressPatch? Address { get; set; }
     }
 
-    public async Task PatchPartnerAsync(
+    public async Task<StashMavenResult> PatchPartnerAsync(
         string partnerId,
         PatchPartnerRequest request)
     {
-        Partner partner = await context.Partners
-                              .Include(p => p.Address)
-                              .Include(p => p.TaxIdentifiers)
-                              .FirstOrDefaultAsync(p => p.PartnerId.Value == partnerId)
-                          ?? throw new EntityNotFoundException($"Partner with id {partnerId} not found");
+        Partner? partner = await context.Partners
+            .Include(p => p.Address)
+            .Include(p => p.TaxIdentifiers)
+            .FirstOrDefaultAsync(p => p.PartnerId.Value == partnerId);
+
+        if (partner is null)
+        {
+            return StashMavenResult.Error(ErrorCodes.PartnerNotFound);
+        }
 
         if (request.CustomIdentifier is not null)
         {
@@ -96,5 +108,7 @@ public class UpdatePartnerHandler(
             partner.UpdatedOn = DateTime.UtcNow;
             await context.SaveChangesAsync();
         }
+        
+        return StashMavenResult.Success();
     }
 }
