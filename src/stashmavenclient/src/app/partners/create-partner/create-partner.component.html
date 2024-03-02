@@ -1,5 +1,7 @@
 <div class="w-1/2 mx-auto">
-
+@if (error){
+  <app-create-partner-error [error]="error"></app-create-partner-error>
+}
     <form [formGroup]="partnerForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-col">
             <label for="custom-identifier">Custom Identifier</label>

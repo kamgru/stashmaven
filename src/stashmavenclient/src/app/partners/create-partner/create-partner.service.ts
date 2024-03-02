@@ -16,6 +16,10 @@ export class CreatePartnerRequest {
     }
 }
 
+export interface ICreatePartnerResponse {
+    partnerId: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -24,7 +28,7 @@ export class CreatePartnerService {
     constructor(private http: HttpClient) {
     }
 
-    createPartner(req: CreatePartnerRequest): Observable<Partner> {
-        return this.http.post<Partner>('http://localhost:5253/api/v1/partner', req);
+    createPartner(req: CreatePartnerRequest): Observable<ICreatePartnerResponse> {
+        return this.http.post<ICreatePartnerResponse>('http://localhost:5253/api/v1/partner', req);
     }
 }

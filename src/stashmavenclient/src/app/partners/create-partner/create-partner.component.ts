@@ -6,6 +6,10 @@ import {PartnerAddress} from "../partnerAddress";
 import {TaxIdentifierType} from "../taxIdentifierType";
 import {TaxIdentifier} from "../taxIdentifier";
 import {CountryService} from "../../common/services/country.service";
+import {catchError} from "rxjs";
+import {IApiError} from "../../common/IApiError";
+import {environment} from "../../../environments/environment";
+import {CreatePartnerErrorComponent} from "./create-partner-error/create-partner-error.component";
 
 export interface ICreatedPartner {
     partnerId: string;
@@ -20,11 +24,13 @@ export interface ICreatedPartner {
 @Component({
     selector: 'app-create-partner',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule],
+    imports: [CommonModule, ReactiveFormsModule, CreatePartnerErrorComponent],
     templateUrl: './create-partner.component.html',
     styleUrls: ['./create-partner.component.css']
 })
 export class CreatePartnerComponent implements OnInit {
+
+    public error: IApiError | null = null;
 
     @Output()
     public OnPartnerCreated: EventEmitter<ICreatedPartner> = new EventEmitter<ICreatedPartner>();
@@ -107,7 +113,21 @@ export class CreatePartnerComponent implements OnInit {
             this.partnerForm.value.isRetail!,
         )
 
-        this.partnersService.createPartner(request)
+        this.partnersService.createPartner(request).pipe(
+            catchError((error, caught) => {
+                if (!Number.isFinite(error.error)){
+                    throw error;
+                }
+
+                this.error = <IApiError>{
+                    errorCode: error.error,
+                    endpoint: error.url.replace(`${environment.apiUrl}/`, ''),
+                    requestBody: error.body
+                };
+
+                return caught;
+            })
+        )
             .subscribe(p => {
                 this.OnPartnerCreated.emit({
                     partnerId: p.partnerId,

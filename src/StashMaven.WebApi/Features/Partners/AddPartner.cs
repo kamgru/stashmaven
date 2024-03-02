@@ -16,7 +16,7 @@ public partial class PartnerController
 
         if (!result.IsSuccess || result.Data is null)
         {
-            return BadRequest(result.Message);
+            return BadRequest(result.ErrorCode);
         }
 
         return Created($"/api/v1/partner/{result.Data.PartnerId}", result.Data);
