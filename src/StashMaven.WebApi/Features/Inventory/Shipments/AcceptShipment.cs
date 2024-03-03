@@ -37,17 +37,23 @@ public class AcceptShipmentHandler(
 
         if (shipment == null)
         {
-            return StashMavenResult.Error($"Shipment {shipmentId} not found");
+            return StashMavenResult.Error(ErrorCodes.ShipmentNotFound, $"Shipment {shipmentId} not found");
         }
 
         if (shipment.PartnerRefSnapshot is null || shipment.Partner is null)
         {
-            return StashMavenResult.Error($"Shipment {shipmentId} has no partner");
+            return StashMavenResult.Error(ErrorCodes.ShipmentHasNoPartner, $"Shipment {shipmentId} has no partner");
         }
 
         if (shipment.Acceptance != ShipmentAcceptance.Pending)
         {
-            return StashMavenResult.Error($"Shipment {shipmentId} is not pending");
+            return StashMavenResult.Error(ErrorCodes.ShipmentNotPending, $"Shipment {shipmentId} is not pending");
+        }
+
+        if (shipment.SourceReference is null)
+        {
+            return StashMavenResult.Error(ErrorCodes.ShipmentHasNoSourceReference,
+                $"Shipment {shipmentId} has no source reference");
         }
 
         shipment.Acceptance = ShipmentAcceptance.Accepted;
@@ -59,27 +65,19 @@ public class AcceptShipmentHandler(
             recordGroup.Key.Quantity += (int)shipment.Kind.Direction * recordGroup.Sum(x => x.Quantity);
         }
 
-        SequenceGenerator? sequenceGenerator =
-            await repository.GetSequenceGeneratorAsync(shipment.Kind.SequenceGeneratorId);
-
-        if (sequenceGenerator == null)
-        {
-            return StashMavenResult.Error($"Sequence generator {shipment.Kind.SequenceGeneratorId.Value} not found.");
-        }
-
         try
         {
             StashMavenResult<ShipmentSequenceNumber> result = await sequenceService.GenerateShipmentSequence(shipment);
             if (!result.IsSuccess)
             {
-                return StashMavenResult.Error(result.Message);
+                return StashMavenResult.Error(result);
             }
 
             shipment.SequenceNumber = result.Data;
         }
         catch (StashMavenException sme)
         {
-            return StashMavenResult.Error(sme.Message);
+            return StashMavenResult.Error(ErrorCodes.FatalError, sme.Message);
         }
 
         bool changesSaved = false;
@@ -113,14 +111,14 @@ public class AcceptShipmentHandler(
                                     await sequenceService.GenerateShipmentSequence(shipment);
                                 if (!sequenceResult.IsSuccess)
                                 {
-                                    return StashMavenResult.Error(sequenceResult.Message);
+                                    return StashMavenResult.Error(sequenceResult);
                                 }
 
                                 shipment.SequenceNumber = sequenceResult.Data;
                             }
                             catch (StashMavenException sme)
                             {
-                                return StashMavenResult.Error(sme.Message);
+                                return StashMavenResult.Error(ErrorCodes.FatalError, sme.Message);
                             }
 
                             break;
@@ -148,6 +146,7 @@ public class AcceptShipmentHandler(
         if (databaseValues == null)
         {
             return StashMavenResult.Error(
+                ErrorCodes.ConcurrencyResolutionFailed,
                 $"Fatal error during concurrency resolution: database values for {currentInventoryItem.InventoryItemId} are null");
         }
 
@@ -163,6 +162,7 @@ public class AcceptShipmentHandler(
             if (databaseValue == null)
             {
                 return StashMavenResult.Error(
+                    ErrorCodes.ConcurrencyResolutionFailed,
                     $"Fatal error during concurrency resolution: database value for {currentInventoryItem.InventoryItemId} is null");
             }
 

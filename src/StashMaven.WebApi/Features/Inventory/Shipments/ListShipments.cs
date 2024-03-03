@@ -106,8 +106,8 @@ public class ListShipmentsHandler(StashMavenContext context, CacheReader cacheRe
         if (!string.IsNullOrWhiteSpace(request.Search) && request.Search.Length >= MinSearchLength)
         {
             string search = $"%{request.Search}%";
-            query = query.Where(i => EF.Functions.ILike(i.SequenceNumber.Value, search)
-                                     || EF.Functions.ILike(i.SourceReference.Identifier, search));
+            query = query.Where(i => EF.Functions.ILike(i.SequenceNumber!.Value, search)
+                                     || EF.Functions.ILike(i.SourceReference!.Identifier, search));
         }
 
         query = request.SortBy?.ToLowerInvariant() switch

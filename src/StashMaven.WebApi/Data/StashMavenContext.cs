@@ -83,6 +83,7 @@ public class StashMavenRepository(StashMavenContext context)
             .Include(s => s.Stockpile)
             .Include(s => s.Partner)
             .Include(s => s.PartnerRefSnapshot)
+            .Include(s => s.SourceReference)
             .AsTracking()
             .FirstOrDefaultAsync(s => s.ShipmentId.Value == shipmentId.Value);
 

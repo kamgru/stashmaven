@@ -41,6 +41,7 @@ public class AcceptShipmentHandlerTests(
                 ? await fixture.AddShipment(stockpileId, inShipmentKindId)
                 : await fixture.AddShipment(stockpileId, outShipmentKindId);
 
+            await fixture.AddSourceReference(shipmentId, Guid.NewGuid().ToString());
             shipmentIds.Add(shipmentId);
 
             await fixture.ChangeShipmentPartner(shipmentId, partnerId);
@@ -79,6 +80,7 @@ public class AcceptShipmentHandlerTests(
         string inventoryItemId = await fixture.AddInventoryItem(catalogItemId, stockpileId);
         string partnerId = await fixture.AddPartner();
         string shipmentId = await fixture.AddShipment(stockpileId, shipmentKindId);
+        await fixture.AddSourceReference(shipmentId, Guid.NewGuid().ToString());
         await fixture.ChangeShipmentPartner(shipmentId, partnerId);
         await fixture.AddRecordToShipment(shipmentId, inventoryItemId, 1, 1);
 
@@ -100,6 +102,7 @@ public class AcceptShipmentHandlerTests(
         string inventoryItemId = await fixture.AddInventoryItem(catalogItemId, stockpileId);
         string partnerId = await fixture.AddPartner();
         string shipmentId = await fixture.AddShipment(stockpileId, shipmentKindId);
+        await fixture.AddSourceReference(shipmentId, Guid.NewGuid().ToString());
         await fixture.ChangeShipmentPartner(shipmentId, partnerId);
         await fixture.AddRecordToShipment(shipmentId, inventoryItemId, 1, 1);
         await fixture.AddRecordToShipment(shipmentId, inventoryItemId, 1, 1);

@@ -4,6 +4,10 @@ using ErrorCode = int;
 
 public static class ErrorCodes
 {
+    // General
+    public const ErrorCode FatalError = 1;
+    
+    // Partner
     public const ErrorCode PartnerNotFound = 100000;
     public const ErrorCode CustomIdentifierNotUnique = 100001;
     public const ErrorCode PartnerHasShipments = 100002;
@@ -12,43 +16,66 @@ public static class ErrorCodes
     public const ErrorCode TaxIdentifierTypeNotUnique = 100005;
     public const ErrorCode TaxIdentifierValueNotUnique = 100006;
     public const ErrorCode CountryCodeNotSupported = 100007;
+    
+    // Shipment
+    public const ErrorCode ShipmentNotFound = 200000;
+    public const ErrorCode ShipmentHasNoPartner = 200001;
+    public const ErrorCode ShipmentNotPending = 200002;
+    public const ErrorCode ShipmentHasNoSourceReference = 200003;
+    public const ErrorCode ShipmentHasNoPartnerRefSnapshot = 200004;
+    public const ErrorCode ShipmentKindSequenceGeneratorNotFound = 200005;
+    public const ErrorCode ConcurrencyResolutionFailed = 200006;
+    
 }
 
 public class StashMavenResult
 {
-    public bool IsSuccess { get; private set; }
-    public string? Message { get; private set; }
+    public bool IsSuccess { get; set; }
+    public string? Message { get; set; }
     public ErrorCode? ErrorCode { get; set; }
 
-    public static StashMavenResult Success()
-    {
-        return new StashMavenResult
+    public static StashMavenResult Success() =>
+        new()
         {
             IsSuccess = true,
             Message = string.Empty
         };
-    }
 
     public static StashMavenResult Error(
-        string message)
-    {
-        return new StashMavenResult
+        string message) =>
+        new()
         {
             IsSuccess = false,
             Message = message
         };
-    }
-    
+
     public static StashMavenResult Error(
-        ErrorCode errorCode)
-    {
-        return new StashMavenResult
+        ErrorCode errorCode) =>
+        new()
         {
             IsSuccess = false,
             Message = string.Empty,
             ErrorCode = errorCode
         };
-    }
+
+    public static StashMavenResult Error(
+        ErrorCode errorCode,
+        string message) =>
+        new()
+        {
+            IsSuccess = false,
+            Message = message,
+            ErrorCode = errorCode
+        };
+
+    public static StashMavenResult Error<T>(
+        StashMavenResult<T> result) =>
+        new()
+        {
+            ErrorCode = result.ErrorCode,
+            IsSuccess = result.IsSuccess,
+            Message = result.Message
+        };
 }
 
 public class StashMavenResult<T>
@@ -59,37 +86,50 @@ public class StashMavenResult<T>
     public ErrorCode? ErrorCode { get; set; }
 
     public static StashMavenResult<T> Success(
-        T data)
-    {
-        return new StashMavenResult<T>
+        T data) =>
+        new()
         {
             Data = data,
             IsSuccess = true,
             Message = string.Empty
         };
-    }
 
     public static StashMavenResult<T> Error(
-        string message)
-    {
-        return new StashMavenResult<T>
-
+        string message) =>
+        new()
         {
             Data = default,
             IsSuccess = false,
             Message = message
         };
-    }
-    
+
     public static StashMavenResult<T> Error(
-        ErrorCode errorCode)
-    {
-        return new StashMavenResult<T>
+        ErrorCode errorCode) =>
+        new()
         {
             Data = default,
             IsSuccess = false,
             Message = string.Empty,
             ErrorCode = errorCode
         };
-    }
+
+    public static StashMavenResult<T> Error(
+        ErrorCode errorCode,
+        string message) =>
+        new()
+        {
+            Data = default,
+            IsSuccess = false,
+            Message = message,
+            ErrorCode = errorCode
+        };
+
+    public static StashMavenResult Error(
+        StashMavenResult<T> result) =>
+        new()
+        {
+            IsSuccess = result.IsSuccess,
+            Message = result.Message,
+            ErrorCode = result.ErrorCode
+        };
 }

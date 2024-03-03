@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StashMaven.WebApi.Data;
@@ -12,9 +13,11 @@ using StashMaven.WebApi.Data;
 namespace StashMaven.WebApi.Data.Migrations
 {
     [DbContext(typeof(StashMavenContext))]
-    partial class StashMavenContextModelSnapshot : ModelSnapshot
+    [Migration("20240303160206_ReworkSourceReference")]
+    partial class ReworkSourceReference
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -383,9 +386,6 @@ namespace StashMaven.WebApi.Data.Migrations
 
                     b.Property<int>("Currency")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime>("IssuedOn")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("KindId")
                         .HasColumnType("integer");

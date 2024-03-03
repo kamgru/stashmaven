@@ -64,6 +64,7 @@ public class AddShipmentHandler(
             CreatedOn = DateTime.UtcNow,
             UpdatedOn = DateTime.UtcNow,
             Stockpile = stockpile,
+            IssuedOn = DateTime.UtcNow,
         };
 
         await context.Shipments.AddAsync(shipment);

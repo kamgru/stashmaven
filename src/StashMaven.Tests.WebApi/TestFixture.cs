@@ -235,6 +235,19 @@ public abstract class TestFixture
         HttpResponseMessage response = await http.PostAsJsonAsync("api/v1/country/available", request);
         response.EnsureSuccessStatusCode();
     }
+    
+    public async Task AddSourceReference(
+        string shipmentId,
+        string sourceReference)
+    {
+        using HttpClient http = CreateClient();
+        PatchShipmentHandler.PatchShipmentRequest request = new()
+        {
+            SourceReferenceIdentifier = sourceReference
+        };
+        HttpResponseMessage response = await http.PatchAsJsonAsync($"api/v1/shipment/{shipmentId}", request);
+        response.EnsureSuccessStatusCode();
+    }
 }
 
 public class DefaultTestFixture : TestFixture

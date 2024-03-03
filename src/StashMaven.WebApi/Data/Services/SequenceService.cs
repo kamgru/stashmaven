@@ -12,6 +12,7 @@ public class SequenceService(StashMavenRepository repository)
         if (sequenceGenerator == null)
         {
             return StashMavenResult<ShipmentSequenceNumber>.Error(
+                ErrorCodes.ShipmentKindSequenceGeneratorNotFound,
                 $"Sequence generator {shipment.Kind.SequenceGeneratorId.Value} not found.");
         }
 

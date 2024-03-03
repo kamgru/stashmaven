@@ -157,6 +157,7 @@ public class Shipment
     public Stockpile Stockpile { get; set; } = null!;
     public PartnerRefSnapshot? PartnerRefSnapshot { get; set; }
     public Partner? Partner { get; set; }
+    public DateTime IssuedOn { get; set; }
 
     public class TypeConfig : IEntityTypeConfiguration<Shipment>
     {
@@ -227,7 +228,6 @@ public class SourceReference
 {
     public int Id { get; set; }
     public required string Identifier { get; set; }
-    public ICollection<Shipment> Shipments { get; set; } = new List<Shipment>();
 
     public class TypeConfig : IEntityTypeConfiguration<SourceReference>
     {
@@ -235,8 +235,6 @@ public class SourceReference
             EntityTypeBuilder<SourceReference> builder)
         {
             builder.ToTable("SourceReference", "inv");
-            builder.HasMany(e => e.Shipments)
-                .WithOne(e => e.SourceReference);
         }
     }
 }
