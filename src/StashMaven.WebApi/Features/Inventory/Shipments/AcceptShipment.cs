@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
+using StashMaven.WebApi.Data.Services;
 
 namespace StashMaven.WebApi.Features.Inventory.Shipments;
 
@@ -25,6 +26,7 @@ public partial class ShipmentController
 
 [Injectable]
 public class AcceptShipmentHandler(
+    SequenceService sequenceService,
     StashMavenRepository repository,
     UnitOfWork unitOfWork)
 {
@@ -67,10 +69,13 @@ public class AcceptShipmentHandler(
 
         try
         {
-            shipment.SequenceNumber = shipment.SequenceNumber = GenerateNextSequence(
-                sequenceGenerator,
-                shipment.Stockpile,
-                shipment.Kind);
+            StashMavenResult<ShipmentSequenceNumber> result = await sequenceService.GenerateShipmentSequence(shipment);
+            if (!result.IsSuccess)
+            {
+                return StashMavenResult.Error(result.Message);
+            }
+
+            shipment.SequenceNumber = result.Data;
         }
         catch (StashMavenException sme)
         {
@@ -104,10 +109,14 @@ public class AcceptShipmentHandler(
                             await entry.ReloadAsync();
                             try
                             {
-                                shipment.SequenceNumber = GenerateNextSequence(
-                                    sequenceGenerator,
-                                    shipment.Stockpile,
-                                    shipment.Kind);
+                                StashMavenResult<ShipmentSequenceNumber> sequenceResult =
+                                    await sequenceService.GenerateShipmentSequence(shipment);
+                                if (!sequenceResult.IsSuccess)
+                                {
+                                    return StashMavenResult.Error(sequenceResult.Message);
+                                }
+
+                                shipment.SequenceNumber = sequenceResult.Data;
                             }
                             catch (StashMavenException sme)
                             {
@@ -129,7 +138,8 @@ public class AcceptShipmentHandler(
     {
         if (entry.Entity is not InventoryItem currentInventoryItem)
         {
-            throw new StashMavenException("");
+            throw new StashMavenException(
+                "Fatal error during concurrency resolution: entity is not InventoryItem. This should never happen.");
         }
 
         PropertyValues proposedValues = entry.CurrentValues;
@@ -166,27 +176,5 @@ public class AcceptShipmentHandler(
         entry.OriginalValues.SetValues(databaseValues);
 
         return StashMavenResult.Success();
-    }
-
-    private ShipmentSequenceNumber GenerateNextSequence(
-        SequenceGenerator sequenceGenerator,
-        Stockpile stockpile,
-        ShipmentKind shipmentKind)
-    {
-        SequenceEntry? entry = sequenceGenerator.Entries
-            .FirstOrDefault(x => x.Delimiter == stockpile.ShortCode && x.Group == shipmentKind.ShortCode);
-
-        if (entry == null)
-        {
-            throw new StashMavenException(
-                $"Sequence entry for stockpile {stockpile.Name} not found. This should never happen.");
-        }
-
-        string shipmentSequenceIdentifier =
-            $"{entry.Group} {entry.NextValue}/{entry.Delimiter}/{DateTime.UtcNow:yy}";
-
-        entry.NextValue += 1;
-
-        return new ShipmentSequenceNumber(shipmentSequenceIdentifier);
     }
 }

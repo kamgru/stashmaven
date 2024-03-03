@@ -21,6 +21,7 @@ public class AcceptShipmentHandlerTests(
     [Fact]
     public async Task WhenConcurrentShipmentsUpdateItemQuantity_QuantityShouldBeCorrect()
     {
+        await fixture.AddCountry();
         string stockpileId = await fixture.AddStockpile();
         string inShipmentKindId = await fixture.AddShipmentKind(ShipmentDirection.In);
         string outShipmentKindId = await fixture.AddShipmentKind(ShipmentDirection.Out);
@@ -70,6 +71,7 @@ public class AcceptShipmentHandlerTests(
     [Fact]
     public async Task WhenRequestValid_ShipmentShouldBeAccepted()
     {
+        await fixture.AddCountry();
         string stockpileId = await fixture.AddStockpile();
         string shipmentKindId = await fixture.AddShipmentKind();
         string taxDefinitionId = await fixture.AddTaxDefinition();
@@ -90,6 +92,7 @@ public class AcceptShipmentHandlerTests(
     [Fact]
     public async Task GivenMultipleRecordsForSingleItem_WhenShipmentAccepted_QuantityShouldBeCorrect()
     {
+        await fixture.AddCountry();
         string stockpileId = await fixture.AddStockpile();
         string shipmentKindId = await fixture.AddShipmentKind();
         string taxDefinitionId = await fixture.AddTaxDefinition();

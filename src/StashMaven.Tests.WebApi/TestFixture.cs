@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Options;
 using StashMaven.WebApi.Features.Catalog.CatalogItems;
+using StashMaven.WebApi.Features.Common.Countries;
 using StashMaven.WebApi.Features.Common.TaxDefinitions;
 using StashMaven.WebApi.Features.Inventory.InventoryItems;
 using StashMaven.WebApi.Features.Inventory.Shipments;
@@ -153,7 +154,7 @@ public abstract class TestFixture
                 {
                     IsPrimary = true,
                     Type = TaxIdentifierType.Nip,
-                    Value = "1234567890"
+                    Value = Guid.NewGuid().ToString()[..10]
                 }
             ]
         };
@@ -220,6 +221,18 @@ public abstract class TestFixture
     {
         using HttpClient http = CreateClient();
         HttpResponseMessage response = await http.PostAsJsonAsync($"api/v1/shipment/{shipmentId}/accept", new { });
+        response.EnsureSuccessStatusCode();
+    }
+    
+    public async Task AddCountry()
+    {
+        using HttpClient http = CreateClient();
+        AddAvailableCountryHandler.AddAvailableCountryRequest request = new()
+        {
+            Code = "PL",
+            Name = "Poland"
+        };
+        HttpResponseMessage response = await http.PostAsJsonAsync("api/v1/country/available", request);
         response.EnsureSuccessStatusCode();
     }
 }
