@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace StashMaven.WebApi.Data.Migrations
+namespace StashMaven.WebApi.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -98,7 +98,7 @@ namespace StashMaven.WebApi.Data.Migrations
                     ShipmentKindId = table.Column<string>(type: "text", nullable: false),
                     SequenceGeneratorId = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    ShortCode = table.Column<string>(type: "text", nullable: false),
+                    ShortCode = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
                     Direction = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -123,7 +123,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "SourceReference",
-                schema: "inv",
+                schema: "com",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -191,7 +191,7 @@ namespace StashMaven.WebApi.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CatalogItemId = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    Sku = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Sku = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
                     UnitOfMeasure = table.Column<int>(type: "integer", nullable: false),
                     BarCode = table.Column<string>(type: "text", nullable: true),
                     BrandId = table.Column<int>(type: "integer", nullable: true),
@@ -346,7 +346,8 @@ namespace StashMaven.WebApi.Data.Migrations
                     SourceReferenceId = table.Column<int>(type: "integer", nullable: true),
                     StockpileId = table.Column<int>(type: "integer", nullable: false),
                     PartnerRefSnapshotId = table.Column<int>(type: "integer", nullable: true),
-                    PartnerId = table.Column<int>(type: "integer", nullable: true)
+                    PartnerId = table.Column<int>(type: "integer", nullable: true),
+                    IssuedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -373,7 +374,7 @@ namespace StashMaven.WebApi.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Shipment_SourceReference_SourceReferenceId",
                         column: x => x.SourceReferenceId,
-                        principalSchema: "inv",
+                        principalSchema: "com",
                         principalTable: "SourceReference",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -585,7 +586,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "SourceReference",
-                schema: "inv");
+                schema: "com");
 
             migrationBuilder.DropTable(
                 name: "Stockpile",

@@ -10,11 +10,11 @@ using StashMaven.WebApi.Data;
 
 #nullable disable
 
-namespace StashMaven.WebApi.Data.Migrations
+namespace StashMaven.WebApi.Migrations
 {
     [DbContext(typeof(StashMavenContext))]
-    [Migration("20240303172612_AddIssuedOn")]
-    partial class AddIssuedOn
+    [Migration("20240303184434_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -500,7 +500,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SourceReference", "inv");
+                    b.ToTable("SourceReference", "com");
                 });
 
             modelBuilder.Entity("StashMaven.WebApi.Data.StashMavenOption", b =>
