@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Partner} from "../partner";
 import {PartnerAddress} from "../partnerAddress";
 import {TaxIdentifier} from "../taxIdentifier";
+import {environment} from "../../../environments/environment";
 
-export class CreatePartnerRequest {
+export class AddPartnerRequest {
    constructor(
          public customIdentifier: string,
          public legalName: string,
@@ -16,19 +16,20 @@ export class CreatePartnerRequest {
     }
 }
 
-export interface ICreatePartnerResponse {
+export interface IAddPartnerResponse {
     partnerId: string;
 }
 
 @Injectable({
     providedIn: 'root'
 })
-export class CreatePartnerService {
+export class AddPartnerService {
 
     constructor(private http: HttpClient) {
     }
 
-    createPartner(req: CreatePartnerRequest): Observable<ICreatePartnerResponse> {
-        return this.http.post<ICreatePartnerResponse>('http://localhost:5253/api/v1/partner', req);
+    addPartner(req: AddPartnerRequest): Observable<IAddPartnerResponse> {
+        return this.http.post<IAddPartnerResponse>(`${environment.apiUrl}/api/v1/partner`, req);
+
     }
 }

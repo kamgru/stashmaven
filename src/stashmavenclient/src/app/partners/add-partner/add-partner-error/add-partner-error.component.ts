@@ -1,23 +1,23 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {IApiError} from "../../../common/IApiError";
-import {ICreatedPartner} from "../create-partner.component";
-import {CreatePartnerRequest} from "../create-partner.service";
+import {IAddedPartner} from "../add-partner.component";
+import {AddPartnerRequest} from "../add-partner.service";
 import {ViewportScroller} from "@angular/common";
 
 @Component({
-    selector: 'app-create-partner-error',
+    selector: 'app-add-partner-error',
     standalone: true,
-    templateUrl: './create-partner-error.component.html',
-    styleUrls: ['./create-partner-error.component.css']
+    templateUrl: './add-partner-error.component.html',
+    styleUrls: ['./add-partner-error.component.css']
 })
-export class CreatePartnerErrorComponent implements OnInit {
+export class AddPartnerErrorComponent implements OnInit {
     @Input()
     public error!: IApiError;
 
     public message: string = '';
 
     ngOnInit() {
-        const request = this.error.requestBody as CreatePartnerRequest;
+        const request = this.error.requestBody as AddPartnerRequest;
         if (!request) {
             throw new Error('Request body is missing');
         }

@@ -1,14 +1,14 @@
 import {Component, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterLink} from "@angular/router";
-import {CreatePartnerComponent, ICreatedPartner} from "./create-partner/create-partner.component";
+import {AddPartnerComponent, IAddedPartner} from "./add-partner/add-partner.component";
 import {PartnerService} from "../common/services/partner.service";
 import * as p from "../common/components/list-partners";
 
 @Component({
     selector: 'app-partners',
     standalone: true,
-    imports: [CommonModule, p.ListPartnersComponent, RouterLink, CreatePartnerComponent],
+    imports: [CommonModule, p.ListPartnersComponent, RouterLink, AddPartnerComponent],
     templateUrl: './partners.component.html',
     styleUrls: ['./partners.component.css']
 })
@@ -40,7 +40,7 @@ export class PartnersComponent {
         });
     }
 
-    handlePartnerCreated($event: ICreatedPartner) {
+    handlePartnerCreated($event: IAddedPartner) {
         this.uiState = 'list';
         this._listPartners?.reload();
     }

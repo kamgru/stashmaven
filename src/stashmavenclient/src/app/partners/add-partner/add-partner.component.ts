@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {CommonModule, ViewportScroller} from '@angular/common';
-import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
-import {CreatePartnerRequest, CreatePartnerService} from "./create-partner.service";
+import {CommonModule} from '@angular/common';
+import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
+import {AddPartnerRequest, AddPartnerService} from "./add-partner.service";
 import {PartnerAddress} from "../partnerAddress";
 import {TaxIdentifierType} from "../taxIdentifierType";
 import {TaxIdentifier} from "../taxIdentifier";
@@ -9,9 +9,9 @@ import {CountryService} from "../../common/services/country.service";
 import {catchError} from "rxjs";
 import {IApiError} from "../../common/IApiError";
 import {environment} from "../../../environments/environment";
-import {CreatePartnerErrorComponent} from "./create-partner-error/create-partner-error.component";
+import {AddPartnerErrorComponent} from "./add-partner-error/add-partner-error.component";
 
-export interface ICreatedPartner {
+export interface IAddedPartner {
     partnerId: string;
     customIdentifier: string;
     legalName: string;
@@ -23,13 +23,13 @@ export interface ICreatedPartner {
 }
 
 @Component({
-    selector: 'app-create-partner',
+    selector: 'app-add-partner',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, CreatePartnerErrorComponent],
-    templateUrl: './create-partner.component.html',
-    styleUrls: ['./create-partner.component.css']
+    imports: [CommonModule, ReactiveFormsModule, AddPartnerErrorComponent],
+    templateUrl: './add-partner.component.html',
+    styleUrls: ['./add-partner.component.css']
 })
-export class CreatePartnerComponent implements OnInit {
+export class AddPartnerComponent implements OnInit {
 
     public error: IApiError | null = null;
 
@@ -58,10 +58,10 @@ export class CreatePartnerComponent implements OnInit {
     }
 
     @Output()
-    public OnPartnerCreated: EventEmitter<ICreatedPartner> = new EventEmitter<ICreatedPartner>();
+    public OnPartnerAdded: EventEmitter<IAddedPartner> = new EventEmitter<IAddedPartner>();
 
     @Output()
-    public OnCreatePartnerCancelled: EventEmitter<void> = new EventEmitter<void>();
+    public OnAddPartnerCancelled: EventEmitter<void> = new EventEmitter<void>();
 
     public partnerForm = this.formBuilder.group({
         customIdentifier: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
@@ -83,7 +83,7 @@ export class CreatePartnerComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private partnersService: CreatePartnerService,
+        private partnersService: AddPartnerService,
         private countryService: CountryService,
     ) {
     }
@@ -134,7 +134,7 @@ export class CreatePartnerComponent implements OnInit {
             true
         )
 
-        const request = new CreatePartnerRequest(
+        const request = new AddPartnerRequest(
             this.partnerForm.value.customIdentifier!,
             this.partnerForm.value.legalName!,
             [nipIdentifier],
@@ -144,7 +144,7 @@ export class CreatePartnerComponent implements OnInit {
 
         this.partnerForm.disable();
 
-        this.partnersService.createPartner(request).pipe(
+        this.partnersService.addPartner(request).pipe(
             catchError((error) => {
                 if (!Number.isFinite(error.error)) {
                     throw error;
@@ -162,7 +162,7 @@ export class CreatePartnerComponent implements OnInit {
             })
         )
             .subscribe(p => {
-                this.OnPartnerCreated.emit({
+                this.OnPartnerAdded.emit({
                     partnerId: p.partnerId,
                     customIdentifier: request.customIdentifier,
                     legalName: request.legalName,
@@ -176,6 +176,6 @@ export class CreatePartnerComponent implements OnInit {
     }
 
     handleCancel() {
-        this.OnCreatePartnerCancelled.emit();
+        this.OnAddPartnerCancelled.emit();
     }
 }

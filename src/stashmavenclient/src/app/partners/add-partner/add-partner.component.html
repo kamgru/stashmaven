@@ -1,7 +1,7 @@
 <div class="w-1/2 mx-auto">
     <h2 class="text-2xl py-2">Add a new partner</h2>
     @if (error) {
-        <app-create-partner-error [error]="error"></app-create-partner-error>
+        <app-add-partner-error [error]="error"></app-add-partner-error>
     }
     <form [formGroup]="partnerForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-col">
