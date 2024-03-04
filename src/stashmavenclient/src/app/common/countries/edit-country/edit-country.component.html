@@ -1,1 +1,37 @@
-<p>edit-country works!</p>
+<form [formGroup]="countryForm" (ngSubmit)="onSubmit()">
+    <div class="flex flex-col">
+        <label for="name">Name</label>
+        <input type="text" id="name" formControlName="name">
+        @if (name?.invalid && name?.touched) {
+            <div>
+                @if (name?.errors?.['required']) {
+                    <p class="text-red-500">Name is required</p>
+                }
+                @if (name?.errors?.['minlength']) {
+                    <p class="text-red-500">Name must be at least 3 characters long</p>
+                }
+                @if (name?.errors?.['maxlength']) {
+                    <p class="text-red-500">Name must be at most 256 characters long</p>
+                }
+            </div>
+        }
+    </div>
+    <div class="flex flex-col">
+        <label for="code">Code</label>
+        <input type="text" id="code" formControlName="code">
+        @if (code?.invalid && code?.touched) {
+            <div>
+                @if (code?.errors?.['required']) {
+                    <p class="text-red-500">Code is required</p>
+                }
+                @if (code?.errors?.['minlength'] || code?.errors?.['maxlength']) {
+                    <p class="text-red-500">Code must be 2 characters long</p>
+                }
+            </div>
+        }
+    </div>
+    <div class="flex flex-row">
+        <button type="submit" [disabled]="countryForm.invalid">Save</button>
+        <button type="button" (click)="onCancel()">Cancel</button>
+    </div>
+</form>

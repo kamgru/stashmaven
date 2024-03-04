@@ -1,1 +1,28 @@
-<p>countries works!</p>
+<h2>Available Countries</h2>
+<hr/>
+@if (uiState == 'list') {
+    @if (countries$ | async) {
+        <table class="table table-auto">
+            <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+            </tr>
+            </thead>
+            <tbody>
+                @for (country of countries$ | async; track country.code) {
+                    <tr (click)="handleCountryClicked(country)">
+                        <td>{{ country.code }}</td>
+                        <td>{{ country.name }}</td>
+                    </tr>
+                }
+        </table>
+    } @else {
+        <p>Loading...</p>
+    }
+} @else if (uiState == 'edit') {
+    <app-edit-country [country]="selectedCountry"
+                      (OnCountryAddCanceled)="uiState = 'list'"
+                      (OnCountryAdded)="handleCountryAdded($event)">
+    </app-edit-country>
+}

@@ -8,6 +8,16 @@ export interface IAvailableCountry {
     code: string;
 }
 
+export class AddAvailableCountryRequest {
+    name: string;
+    code: string;
+
+    constructor(name: string, code: string) {
+        this.name = name;
+        this.code = code;
+    }
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -20,5 +30,9 @@ export class CountryService {
 
     public getAvailableCountries(): Observable<IAvailableCountry[]> {
         return this.http.get<IAvailableCountry[]>(`${environment.apiUrl}/api/v1/country/available`);
+    }
+
+    public addAvailableCountry(req: AddAvailableCountryRequest): Observable<void> {
+        return this.http.post<void>(`${environment.apiUrl}/api/v1/country/available`, req);
     }
 }
