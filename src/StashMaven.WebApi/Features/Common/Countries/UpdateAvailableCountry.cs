@@ -5,43 +5,45 @@ namespace StashMaven.WebApi.Features.Common.Countries;
 
 public partial class CountryController
 {
-    [HttpPost]
+    [HttpPut]
     [Route("available")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddAvailableCountryAsync(
+    public async Task<IActionResult> UpdateAvailableCountryAsync(
         [FromServices]
-        AddAvailableCountryHandler handler,
-        AddAvailableCountryHandler.AddAvailableCountryRequest request)
+        UpdateAvailableCountryHandler handler,
+        UpdateAvailableCountryHandler.UpdateAvailableCountryRequest request)
     {
-        StashMavenResult result = await handler.AddAvailableCountryAsync(request);
+        StashMavenResult result = await handler.UpdateAvailableCountryAsync(request);
         return Ok(result);
     }
 }
 
 [Injectable]
-public class AddAvailableCountryHandler(
+public class UpdateAvailableCountryHandler(
     UpsertOptionService optionService,
     CountryService countryService,
     CacheReader cacheReader,
     UnitOfWork unitOfWork)
 {
-    public class AddAvailableCountryRequest
+    public class UpdateAvailableCountryRequest
     {
         public required string Name { get; set; }
         public required string Code { get; set; }
     }
 
-    public async Task<StashMavenResult> AddAvailableCountryAsync(
-        AddAvailableCountryRequest request)
+    public async Task<StashMavenResult> UpdateAvailableCountryAsync(
+        UpdateAvailableCountryRequest request)
     {
         IReadOnlyList<Country> countries = await countryService.GetAvailableCountries();
-        if (countries.Any(c => c.IsoCode == request.Code))
+        Country? country = countries.FirstOrDefault(c => c.IsoCode == request.Code);
+        if (country is null)
         {
-            return StashMavenResult.Error(ErrorCodes.CountryAlreadyExists);
+            return StashMavenResult.Error(ErrorCodes.CountryNotFound);
         }
 
         List<Country> availableCountries = countries.ToList();
+        availableCountries.RemoveAll(c => c.IsoCode == request.Code);
         availableCountries.Add(new Country(request.Name, request.Code));
 
         string value = JsonSerializer.Serialize(availableCountries);
@@ -51,7 +53,7 @@ public class AddAvailableCountryHandler(
             value);
 
         await unitOfWork.SaveChangesAsync();
-        
+
         cacheReader.InvalidateKey(CacheReader.Keys.AvailableCountries);
 
         return StashMavenResult.Success();

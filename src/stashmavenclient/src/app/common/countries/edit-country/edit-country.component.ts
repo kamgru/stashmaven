@@ -1,5 +1,10 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {AddAvailableCountryRequest, CountryService, IAvailableCountry} from "../../services/country.service";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+    AddAvailableCountryRequest,
+    CountryService,
+    IAvailableCountry,
+    UpdateAvailableCountryRequest
+} from "../../services/country.service";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 
 @Component({
@@ -11,16 +16,18 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/
     templateUrl: './edit-country.component.html',
     styleUrl: './edit-country.component.css'
 })
-export class EditCountryComponent {
+export class EditCountryComponent implements OnInit {
+
+    private _mode: 'add' | 'edit' = 'add';
 
     @Input()
     public country: IAvailableCountry | null = null;
 
     @Output()
-    public OnCountryAdded: EventEmitter<IAvailableCountry> = new EventEmitter<IAvailableCountry>();
+    public OnEditCompleted: EventEmitter<IAvailableCountry> = new EventEmitter<IAvailableCountry>();
 
     @Output()
-    public OnCountryAddCanceled: EventEmitter<void> = new EventEmitter<void>();
+    public OnEditCancelled: EventEmitter<void> = new EventEmitter<void>();
 
     public countryForm = new FormGroup({
         name: new FormControl<string>('', {
@@ -31,7 +38,6 @@ export class EditCountryComponent {
             validators: [Validators.required, Validators.minLength(2), Validators.maxLength(2)],
             nonNullable: true
         })
-
     })
 
     public get name(): FormControl<string> {
@@ -47,6 +53,18 @@ export class EditCountryComponent {
     ) {
     }
 
+    public ngOnInit() {
+        this._mode = this.country ? 'edit' : 'add';
+
+        if (this.country) {
+            this.name.setValue(this.country.name);
+            this.code.setValue(this.country.code);
+            this.code.disable();
+
+            this.countryForm.markAsPristine();
+        }
+    }
+
     public onSubmit() {
         if (!this.countryForm.valid) {
             return;
@@ -55,14 +73,30 @@ export class EditCountryComponent {
         const name = this.name.value;
         const code = this.code.value;
 
-        const req = new AddAvailableCountryRequest(name, code);
-        this.countryService.addAvailableCountry(req)
-            .subscribe(() => {
-                this.OnCountryAdded.emit({name, code});
-            });
+        if (this._mode === 'add') {
+            this.addCountry(name, code);
+        } else {
+            this.updateCountry(name, code);
+        }
     }
 
     onCancel() {
-        this.OnCountryAddCanceled.emit();
+        this.OnEditCancelled.emit();
+    }
+
+    private addCountry(name: string, code: string) {
+        const req = new AddAvailableCountryRequest(name, code);
+        this.countryService.addAvailableCountry(req)
+            .subscribe(() => {
+                this.OnEditCompleted.emit({name, code});
+            });
+    }
+
+    private updateCountry(name: string, code: string) {
+        const req = new UpdateAvailableCountryRequest(name, code);
+        this.countryService.updateAvailableCountry(req)
+            .subscribe(() => {
+                this.OnEditCompleted.emit({name, code});
+            });
     }
 }

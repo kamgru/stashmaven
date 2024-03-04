@@ -22,10 +22,12 @@ public static class ErrorCodes
     public const ErrorCode ShipmentHasNoPartner = 200001;
     public const ErrorCode ShipmentNotPending = 200002;
     public const ErrorCode ShipmentHasNoSourceReference = 200003;
-    public const ErrorCode ShipmentHasNoPartnerRefSnapshot = 200004;
     public const ErrorCode ShipmentKindSequenceGeneratorNotFound = 200005;
     public const ErrorCode ConcurrencyResolutionFailed = 200006;
     
+    // Country
+    public const ErrorCode CountryNotFound = 110000;
+    public const ErrorCode CountryAlreadyExists = 110001;
 }
 
 public class StashMavenResult

@@ -18,6 +18,16 @@ export class AddAvailableCountryRequest {
     }
 }
 
+export class UpdateAvailableCountryRequest {
+    name: string;
+    code: string;
+
+    constructor(name: string, code: string) {
+        this.name = name;
+        this.code = code;
+    }
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -34,5 +44,9 @@ export class CountryService {
 
     public addAvailableCountry(req: AddAvailableCountryRequest): Observable<void> {
         return this.http.post<void>(`${environment.apiUrl}/api/v1/country/available`, req);
+    }
+
+    public updateAvailableCountry(req: UpdateAvailableCountryRequest): Observable<void> {
+        return this.http.put<void>(`${environment.apiUrl}/api/v1/country/available`, req);
     }
 }

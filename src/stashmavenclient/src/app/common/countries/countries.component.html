@@ -1,6 +1,9 @@
 <h2>Available Countries</h2>
 <hr/>
 @if (uiState == 'list') {
+    <div>
+        <button (click)="handleAddCountry()">Add</button>
+    </div>
     @if (countries$ | async) {
         <table class="table table-auto">
             <thead>
@@ -22,7 +25,7 @@
     }
 } @else if (uiState == 'edit') {
     <app-edit-country [country]="selectedCountry"
-                      (OnCountryAddCanceled)="uiState = 'list'"
-                      (OnCountryAdded)="handleCountryAdded($event)">
+                      (OnEditCancelled)="uiState = 'list'"
+                      (OnEditCompleted)="handleCountryAdded($event)">
     </app-edit-country>
 }

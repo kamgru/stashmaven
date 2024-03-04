@@ -32,5 +32,11 @@ export class CountriesComponent {
 
     handleCountryAdded($event: IAvailableCountry) {
         this.countries$ = this.countryService.getAvailableCountries();
+        this.uiState = 'list';
+    }
+
+    handleAddCountry() {
+        this.selectedCountry = null;
+        this.uiState = 'edit';
     }
 }
