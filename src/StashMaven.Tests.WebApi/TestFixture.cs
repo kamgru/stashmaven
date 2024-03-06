@@ -81,7 +81,8 @@ public abstract class TestFixture
         AddTaxDefinitionHandler.AddTaxDefinitionRequest request = new()
         {
             Name = name,
-            Rate = 0.1m
+            Rate = 0.1m,
+            CountryCode = "PL"
         };
         HttpResponseMessage response = await http.PostAsJsonAsync("api/v1/taxdefinition", request);
         response.EnsureSuccessStatusCode();
