@@ -3,12 +3,6 @@ import {CommonModule} from '@angular/common';
 import {AddCatalogItemComponent} from "./add-catalog-item/add-catalog-item.component";
 import {ListCatalogComponent} from "../../common/components/list-catalog/list-catalog.component";
 
-enum UiState {
-    Add = 'add',
-    List = 'list',
-    Edit = 'edit'
-}
-
 @Component({
     selector: 'app-catalog-items',
     standalone: true,
@@ -18,30 +12,7 @@ enum UiState {
 })
 export class CatalogItemsComponent {
 
-    uiState = UiState.List;
+    public uiState: 'list' | 'add' = 'list';
 
-    constructor() {
-    }
 
-    onAdd() {
-        this.uiState = UiState.Add;
-    }
-
-    onCancel() {
-        this.uiState = UiState.List;
-    }
-
-    onEdit() {
-        this.uiState = UiState.Edit;
-    }
-
-    onSave() {
-        this.uiState = UiState.List;
-    }
-
-    onDelete() {
-        this.uiState = UiState.List;
-    }
-
-    protected readonly UiState = UiState;
 }
