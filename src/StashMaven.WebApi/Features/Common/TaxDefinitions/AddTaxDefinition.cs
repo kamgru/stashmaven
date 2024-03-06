@@ -1,3 +1,5 @@
+using StashMaven.WebApi.Data.Services;
+
 namespace StashMaven.WebApi.Features.Common.TaxDefinitions;
 
 public partial class TaxDefinitionController
@@ -22,12 +24,14 @@ public partial class TaxDefinitionController
 
 [Injectable]
 public class AddTaxDefinitionHandler(
+    CountryService countryService,
     StashMavenContext context)
 {
     public class AddTaxDefinitionRequest
     {
         public required string Name { get; set; }
         public required decimal Rate { get; set; }
+        public required string CountryCode { get; set; }
     }
 
     public record AddTaxDefinitionResponse(string TaxDefinitionId);
@@ -35,11 +39,18 @@ public class AddTaxDefinitionHandler(
     public async Task<StashMavenResult<AddTaxDefinitionResponse>> AddTaxDefinitionAsync(
         AddTaxDefinitionRequest request)
     {
+        StashMavenResult result = await countryService.IsCountryAvailableAsync(request.CountryCode);
+        if (!result.IsSuccess)
+        {
+            return StashMavenResult<AddTaxDefinitionResponse>.Error(ErrorCodes.CountryCodeNotSupported);
+        }
+
         TaxDefinition taxDefinition = new()
         {
             TaxDefinitionId = new TaxDefinitionId(Guid.NewGuid().ToString()),
             Name = request.Name,
-            Rate = request.Rate
+            Rate = request.Rate,
+            CountryCode = request.CountryCode
         };
 
         await context.TaxDefinitions.AddAsync(taxDefinition);

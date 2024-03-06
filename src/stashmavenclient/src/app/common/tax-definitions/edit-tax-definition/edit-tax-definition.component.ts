@@ -1,8 +1,7 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {TaxDefinition} from "../list-tax-definitions/list-tax-definitions.service";
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {EditTaxDefinitionService} from "./edit-tax-definition.service";
+import {TaxDefinition, TaxDefinitionService} from "../../services/tax-definition.service";
 
 @Component({
     selector: 'app-edit-tax-definition',
@@ -11,7 +10,7 @@ import {EditTaxDefinitionService} from "./edit-tax-definition.service";
     templateUrl: './edit-tax-definition.component.html',
     styleUrls: ['./edit-tax-definition.component.css']
 })
-export class EditTaxDefinitionComponent {
+export class EditTaxDefinitionComponent implements OnChanges {
 
     @Input() taxDefinition?: TaxDefinition;
     @Output() onCancel = new EventEmitter<void>();
@@ -28,7 +27,7 @@ export class EditTaxDefinitionComponent {
 
     constructor(
         private formBuilder: FormBuilder,
-        private editTaxDefinitionService: EditTaxDefinitionService
+        private editTaxDefinitionService: TaxDefinitionService
     ) {
     }
 

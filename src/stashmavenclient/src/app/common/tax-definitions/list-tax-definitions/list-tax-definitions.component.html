@@ -3,12 +3,14 @@
     <tr class="text-left">
         <th>Name</th>
         <th>Rate</th>
+        <th>Country</th>
     </tr>
     </thead>
     <tbody class="divide-y">
     <tr *ngFor="let item of taxDefinitions" class="hover:cursor-pointer">
         <td class="pr-5 py-2">{{ item.name }}</td>
         <td>{{ item.rate }}</td>
+        <td>{{ item.countryCode }}</td>
         <td class="px-2">
             <span class="text-sm text-gray-300 hover:text-gray-600" (click)="notifyOnEdit(item)">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

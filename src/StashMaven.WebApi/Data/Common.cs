@@ -20,10 +20,14 @@ public record TaxDefinitionId(
 
 public class TaxDefinition
 {
+    public const int NameMaxLength = 100;
+    public const int CountryCodeMaxLength = 2;
+    
     public int Id { get; set; }
     public required TaxDefinitionId TaxDefinitionId { get; set; }
     public required string Name { get; set; }
     public required decimal Rate { get; set; }
+    public required string CountryCode { get; set; }
 
     public class TypeConfig : IEntityTypeConfiguration<TaxDefinition>
     {
@@ -34,6 +38,10 @@ public class TaxDefinition
             builder.OwnsOne(e => e.TaxDefinitionId)
                 .Property(e => e.Value)
                 .HasColumnName("TaxDefinitionId");
+            builder.Property(e => e.Name)
+                .HasMaxLength(NameMaxLength);
+            builder.Property(e => e.CountryCode)
+                .HasMaxLength(CountryCodeMaxLength);
         }
     }
 }

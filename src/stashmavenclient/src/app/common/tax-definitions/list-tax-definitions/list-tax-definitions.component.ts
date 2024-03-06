@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ListTaxDefinitionsService, TaxDefinition} from "./list-tax-definitions.service";
+import {TaxDefinition, TaxDefinitionService} from "../../services/tax-definition.service";
 
 @Component({
     selector: 'app-list-tax-definitions',
@@ -9,14 +9,14 @@ import {ListTaxDefinitionsService, TaxDefinition} from "./list-tax-definitions.s
     templateUrl: './list-tax-definitions.component.html',
     styleUrls: ['./list-tax-definitions.component.css']
 })
-export class ListTaxDefinitionsComponent {
+export class ListTaxDefinitionsComponent implements OnInit {
 
     taxDefinitions: TaxDefinition[] = [];
 
     @Output() onEdit = new EventEmitter<TaxDefinition>();
 
     constructor(
-        private listTaxDefinitionsService: ListTaxDefinitionsService
+        private listTaxDefinitionsService: TaxDefinitionService
     ) {
     }
 

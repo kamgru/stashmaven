@@ -2,8 +2,8 @@ import {Component, signal, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AddTaxDefinitionComponent, TaxDefinitionAddedEvent} from "./add-tax-definition/add-tax-definition.component";
 import {ListTaxDefinitionsComponent} from "./list-tax-definitions/list-tax-definitions.component";
-import {TaxDefinition} from "./list-tax-definitions/list-tax-definitions.service";
 import {EditTaxDefinitionComponent} from "./edit-tax-definition/edit-tax-definition.component";
+import {TaxDefinition} from "../services/tax-definition.service";
 
 enum UiState {
     List,

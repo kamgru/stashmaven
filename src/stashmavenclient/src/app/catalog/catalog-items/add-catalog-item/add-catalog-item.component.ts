@@ -1,11 +1,9 @@
 import {Component, EventEmitter, Output, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {
-    ListTaxDefinitionsService, TaxDefinition
-} from "../../../common/tax-definitions/list-tax-definitions/list-tax-definitions.service";
 import {UnitOfMeasure} from "../../../common/unitOfMeasure";
 import {AddCatalogItemRequest, AddCatalogItemService} from "./add-catalog-item.service";
+import {TaxDefinition, TaxDefinitionService} from "../../../common/services/tax-definition.service";
 
 @Component({
     selector: 'app-add-catalog-item',
@@ -31,13 +29,13 @@ export class AddCatalogItemComponent {
 
     constructor(
         private formBuilder: FormBuilder,
-        private listTaxDefinitionsService: ListTaxDefinitionsService,
-        private addCatalogItemService: AddCatalogItemService
+        private addCatalogItemService: AddCatalogItemService,
+        private taxDefinitionService: TaxDefinitionService
     ) {
     }
 
     ngOnInit() {
-        this.listTaxDefinitionsService.listAll().subscribe(data => {
+        this.taxDefinitionService.listAll().subscribe(data => {
             this.taxDefinitions = data.items;
             this.addCatalogItemForm.patchValue({
                 taxDefinitionId: this.taxDefinitions
