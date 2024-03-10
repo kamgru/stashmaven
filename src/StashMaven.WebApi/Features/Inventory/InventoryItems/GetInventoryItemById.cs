@@ -35,8 +35,6 @@ public class GetInventoryItemByIdHandler(StashMavenContext context)
         public required string UnitOfMeasure { get; set; }
         public decimal LastPurchasePrice { get; set; }
         public decimal SellPrice { get; set; }
-        public decimal BuyTaxRate { get; set; }
-        public decimal SellTaxRate { get; set; }
     }
 
     public async Task<StashMavenResult<GetInventoryItemByIdResponse>> GetInventoryItemByIdAsync(
@@ -59,8 +57,6 @@ public class GetInventoryItemByIdHandler(StashMavenContext context)
             UnitOfMeasure = inventoryItem.UnitOfMeasure.ToString(),
             LastPurchasePrice = inventoryItem.LastPurchasePrice,
             SellPrice = inventoryItem.LastPurchasePrice * 1.2m,
-            BuyTaxRate = inventoryItem.BuyTax.Rate,
-            SellTaxRate = inventoryItem.SellTax.Rate,
         };
 
         return StashMavenResult<GetInventoryItemByIdResponse>.Success(response);

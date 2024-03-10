@@ -72,18 +72,6 @@ public class AddCatalogItemHandler(
             Sku = request.Sku,
             Name = request.Name,
             UnitOfMeasure = request.UnitOfMeasure,
-            BuyTax = new CatalogItemTaxReference
-            {
-                Name = buyTax.Name,
-                Rate = buyTax.Rate,
-                TaxDefinitionIdValue = buyTax.TaxDefinitionId.Value
-            },
-            SellTax = new CatalogItemTaxReference
-            {
-                Name = sellTax.Name,
-                Rate = sellTax.Rate,
-                TaxDefinitionIdValue = sellTax.TaxDefinitionId.Value
-            },
             CreatedOn = DateTime.UtcNow,
             UpdatedOn = DateTime.UtcNow
         };

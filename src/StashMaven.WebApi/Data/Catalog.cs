@@ -45,8 +45,6 @@ public class CatalogItem
     public required string Name { get; set; }
     public required string Sku { get; set; }
     public required UnitOfMeasure UnitOfMeasure { get; set; }
-    public required CatalogItemTaxReference BuyTax { get; set; }
-    public required CatalogItemTaxReference SellTax { get; set; }
     public string? BarCode { get; set; }
     public Brand? Brand { get; set; } = null!;
     public DateTime CreatedOn { get; set; }
@@ -66,8 +64,6 @@ public class CatalogItem
                 .IsUnique();
             builder.Property(e => e.Name)
                 .HasMaxLength(NameMaxLength);
-            builder.ComplexProperty(e => e.BuyTax);
-            builder.ComplexProperty(e => e.SellTax);
         }
     }
 }

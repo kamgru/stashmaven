@@ -15,8 +15,7 @@ public class AcceptShipmentTestFixture : TestFixture
 }
 
 public class AcceptShipmentHandlerTests(
-    AcceptShipmentTestFixture fixture,
-    ITestOutputHelper testOutputHelper) : IClassFixture<AcceptShipmentTestFixture>
+    AcceptShipmentTestFixture fixture) : IClassFixture<AcceptShipmentTestFixture>
 {
     [Fact]
     public async Task WhenConcurrentShipmentsUpdateItemQuantity_QuantityShouldBeCorrect()

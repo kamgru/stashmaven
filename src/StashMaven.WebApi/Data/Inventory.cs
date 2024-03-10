@@ -49,8 +49,6 @@ public class InventoryItem
     public decimal Quantity { get; set; }
     public UnitOfMeasure UnitOfMeasure { get; set; }
     public decimal LastPurchasePrice { get; set; }
-    public required InventoryItemTaxReference BuyTax { get; set; }
-    public required InventoryItemTaxReference SellTax { get; set; }
     public ICollection<ShipmentRecord> ShipmentRecords { get; set; } = new List<ShipmentRecord>();
     public Stockpile Stockpile { get; set; } = null!;
 
@@ -68,8 +66,6 @@ public class InventoryItem
                 .HasColumnName("InventoryItemId");
             builder.Property(e => e.Version)
                 .IsRowVersion();
-            builder.ComplexProperty(e => e.BuyTax);
-            builder.ComplexProperty(e => e.SellTax);
         }
     }
 }
