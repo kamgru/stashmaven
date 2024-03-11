@@ -37,8 +37,6 @@ public class AddCatalogItemHandler(
         public required string Name { get; set; } = null!;
 
         public UnitOfMeasure UnitOfMeasure { get; set; }
-        public required string BuyTaxDefinitionId { get; set; }
-        public required string SellTaxDefinitionId { get; set; }
     }
 
     public record AddCatalogItemResponse(string CatalogItemId);
@@ -46,24 +44,6 @@ public class AddCatalogItemHandler(
     public async Task<StashMavenResult<AddCatalogItemResponse>> AddCatalogItemAsync(
         AddCatalogItemRequest request)
     {
-        TaxDefinition? buyTax = await context.TaxDefinitions
-            .SingleOrDefaultAsync(t => t.TaxDefinitionId.Value == request.BuyTaxDefinitionId);
-
-        if (buyTax == null)
-        {
-            return StashMavenResult<AddCatalogItemResponse>.Error(
-                $"Tax definition {request.BuyTaxDefinitionId} not found");
-        }
-
-        TaxDefinition? sellTax = await context.TaxDefinitions
-            .SingleOrDefaultAsync(t => t.TaxDefinitionId.Value == request.SellTaxDefinitionId);
-
-        if (sellTax == null)
-        {
-            return StashMavenResult<AddCatalogItemResponse>.Error(
-                $"Tax definition {request.SellTaxDefinitionId} not found");
-        }
-
         CatalogItemId catalogItemId = new(Guid.NewGuid().ToString());
 
         CatalogItem catalogItem = new()
