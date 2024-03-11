@@ -9,6 +9,8 @@ public class AddPartnerTests(DefaultTestFixture fixture) : IClassFixture<Default
     {
         HttpClient client = fixture.CreateClient();
 
+        await fixture.AddCountry();
+
         AddPartnerHandler.AddPartnerRequest request = new()
         {
             CustomIdentifier = Guid.NewGuid().ToString().Substring(0, 10),

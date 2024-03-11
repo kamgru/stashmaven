@@ -31,7 +31,6 @@ public class ListCatalogItemsHandler(
         public required string Sku { get; set; }
         public required string Name { get; set; }
         public UnitOfMeasure UnitOfMeasure { get; set; }
-        public required string Tax { get; set; }
         public DateTime CreatedOn { get; set; }
     }
 
@@ -63,7 +62,6 @@ public class ListCatalogItemsHandler(
                 Sku = c.Sku,
                 Name = c.Name,
                 UnitOfMeasure = c.UnitOfMeasure,
-                Tax = c.SellTax.Name,
                 CreatedOn = c.CreatedOn,
             });
 

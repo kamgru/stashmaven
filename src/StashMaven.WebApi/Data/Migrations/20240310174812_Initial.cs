@@ -174,8 +174,9 @@ namespace StashMaven.WebApi.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     TaxDefinitionId = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Rate = table.Column<decimal>(type: "numeric", nullable: false)
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Rate = table.Column<decimal>(type: "numeric", nullable: false),
+                    CountryCode = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -196,13 +197,7 @@ namespace StashMaven.WebApi.Data.Migrations
                     BarCode = table.Column<string>(type: "text", nullable: true),
                     BrandId = table.Column<int>(type: "integer", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    BuyTax_Name = table.Column<string>(type: "text", nullable: false),
-                    BuyTax_Rate = table.Column<decimal>(type: "numeric", nullable: false),
-                    BuyTax_TaxDefinitionIdValue = table.Column<string>(type: "text", nullable: false),
-                    SellTax_Name = table.Column<string>(type: "text", nullable: false),
-                    SellTax_Rate = table.Column<decimal>(type: "numeric", nullable: false),
-                    SellTax_TaxDefinitionIdValue = table.Column<string>(type: "text", nullable: false)
+                    UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -309,13 +304,7 @@ namespace StashMaven.WebApi.Data.Migrations
                     UnitOfMeasure = table.Column<int>(type: "integer", nullable: false),
                     LastPurchasePrice = table.Column<decimal>(type: "numeric", nullable: false),
                     StockpileId = table.Column<int>(type: "integer", nullable: false),
-                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
-                    BuyTax_Name = table.Column<string>(type: "text", nullable: false),
-                    BuyTax_Rate = table.Column<decimal>(type: "numeric", nullable: false),
-                    BuyTax_TaxDefintionIdValue = table.Column<string>(type: "text", nullable: false),
-                    SellTax_Name = table.Column<string>(type: "text", nullable: false),
-                    SellTax_Rate = table.Column<decimal>(type: "numeric", nullable: false),
-                    SellTax_TaxDefintionIdValue = table.Column<string>(type: "text", nullable: false)
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {

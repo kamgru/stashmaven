@@ -60,12 +60,6 @@ public class AddRecordToShipmentHandler(
             Quantity = request.Quantity,
             UnitOfMeasure = inventoryItem.UnitOfMeasure,
             UnitPrice = request.UnitPrice,
-            TaxRate = shipment.Kind.Direction switch
-            {
-                ShipmentDirection.In => inventoryItem.BuyTax.Rate,
-                ShipmentDirection.Out => inventoryItem.SellTax.Rate,
-                _ => -1
-            },
             InventoryItem = inventoryItem
         });
 

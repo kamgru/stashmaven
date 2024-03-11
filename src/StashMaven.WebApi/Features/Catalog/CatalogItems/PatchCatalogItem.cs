@@ -34,8 +34,6 @@ public class PatchCatalogItemHandler(
         public string? Name { get; set; }
 
         public UnitOfMeasure? UnitOfMeasure { get; set; }
-        public string? BuyTaxDefinitionId { get; set; }
-        public string? SellTaxDefinitionId { get; set; }
     }
 
     public async Task<StashMavenResult> PatchCatalogItemAsync(
@@ -62,42 +60,6 @@ public class PatchCatalogItemHandler(
         if (request.UnitOfMeasure != null)
         {
             catalogItem.UnitOfMeasure = request.UnitOfMeasure.Value;
-        }
-
-        if (request.BuyTaxDefinitionId != null)
-        {
-            TaxDefinition? taxDefinition = await context.TaxDefinitions
-                .SingleOrDefaultAsync(t => t.TaxDefinitionId.Value == request.BuyTaxDefinitionId);
-
-            if (taxDefinition == null)
-            {
-                return StashMavenResult.Error($"Tax definition {request.BuyTaxDefinitionId} not found");
-            }
-
-            catalogItem.BuyTax = new CatalogItemTaxReference
-            {
-                Name = taxDefinition.Name,
-                Rate = taxDefinition.Rate,
-                TaxDefinitionIdValue = taxDefinition.TaxDefinitionId.Value
-            };
-        }
-
-        if (request.SellTaxDefinitionId != null)
-        {
-            TaxDefinition? taxDefinition = await context.TaxDefinitions
-                .SingleOrDefaultAsync(t => t.TaxDefinitionId.Value == request.SellTaxDefinitionId);
-
-            if (taxDefinition == null)
-            {
-                return StashMavenResult.Error($"Tax definition {request.SellTaxDefinitionId} not found");
-            }
-
-            catalogItem.SellTax = new CatalogItemTaxReference
-            {
-                Name = taxDefinition.Name,
-                Rate = taxDefinition.Rate,
-                TaxDefinitionIdValue = taxDefinition.TaxDefinitionId.Value
-            };
         }
 
         catalogItem.UpdatedOn = DateTime.UtcNow;
