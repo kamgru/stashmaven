@@ -1,0 +1,66 @@
+import {HttpClient} from "@angular/common/http";
+import {Injectable} from "@angular/core";
+import {map, Observable} from "rxjs";
+import {environment} from "../../../environments/environment";
+
+export interface ICatalogItemDetails {
+    catalogItemId: string;
+    name: string;
+    sku: string;
+    unitOfMeasure: string;
+}
+
+export interface IGetCatalogItemStockpilesResponse {
+    stockpiles: ICatalogItemStockpile[];
+}
+
+export interface ICatalogItemStockpile {
+    stockpileId: string;
+    stockpileShortCode: string;
+    stockpileName: string;
+    quantity: number;
+}
+
+export class AddInventoryItemRequest {
+    constructor(
+        public catalogItemId: string,
+        public stockpileId: string
+    ) {
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class CatalogItemService {
+
+    constructor(
+        private http: HttpClient,
+    ) {
+    }
+
+    public getCatalogItemDetails(catalogItemId: string): Observable<ICatalogItemDetails> {
+        return this.http.get<ICatalogItemDetails>(`${environment.apiUrl}/api/v1/catalogitem/${catalogItemId}`).pipe(
+            map((res: any) => {
+                return {
+                    catalogItemId: catalogItemId,
+                    name: res.name,
+                    sku: res.sku,
+                    unitOfMeasure: res.unitOfMeasure
+                };
+            }));
+    }
+
+    public updateCatalogItemDetails(details: ICatalogItemDetails): Observable<void> {
+        return this.http.patch<void>(`${environment.apiUrl}/api/v1/catalogitem`, details);
+    }
+
+    public getCatalogItemStockpiles(catalogItemId: string): Observable<IGetCatalogItemStockpilesResponse> {
+        return this.http.get<IGetCatalogItemStockpilesResponse>(
+            `${environment.apiUrl}/api/v1/catalogitem/${catalogItemId}/stockpiles`);
+    }
+
+    public addInventoryItem(req: AddInventoryItemRequest){
+        return this.http.post(`${environment.apiUrl}/api/v1/inventoryitem`, req);
+    }
+}

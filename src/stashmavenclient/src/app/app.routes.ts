@@ -10,11 +10,13 @@ import {StockpileShipmentsComponent} from "./inventory/stockpile-shipments/stock
 import {BrandsComponent} from "./catalog/brands/brands.component";
 import {EditShipmentComponent} from "./inventory/stockpile-shipments/edit-shipment/edit-shipment.component";
 import {CountriesComponent} from "./common/countries/countries.component";
+import {EditCatalogItemComponent} from "./catalog/catalog-items/edit-catalog-item/edit-catalog-item.component";
 
 export const routes: Routes = [
     {path: 'partners/create', component: AddPartnerComponent, canActivate: [MsalGuard]},
     {path: 'partners', component: PartnersComponent, canActivate: [MsalGuard]},
     {path: 'catalog/catalog-items', component: CatalogItemsComponent, canActivate: [MsalGuard]},
+    {path: 'catalog/catalog-items/:id', component: EditCatalogItemComponent, canActivate: [MsalGuard]},
     {path: 'catalog/brands', component: BrandsComponent, canActivate: [MsalGuard]},
     {path: 'catalog/brands/add', component: AddBrandComponent, canActivate: [MsalGuard]},
     {path: 'common/tax-definitions', component: TaxDefinitionsComponent, canActivate: [MsalGuard]},

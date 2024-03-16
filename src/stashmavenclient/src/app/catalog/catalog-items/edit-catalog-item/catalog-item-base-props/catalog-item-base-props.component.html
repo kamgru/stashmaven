@@ -1,0 +1,22 @@
+<div>
+    <form class="form-container" [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+        <div class="form-control">
+            <label for="item-name">Name</label>
+            <input type="text" id="item-name" formControlName="name">
+        </div>
+        <div class="form-control">
+            <label for="sku">SKU</label>
+            <input type="text" id="sku" formControlName="sku">
+        </div>
+        <div class="form-control">
+            <label for="unit">Unit</label>
+            <select id="unit" formControlName="unitOfMeasure">
+                <option *ngFor="let unit of unitsOfMeasure" [value]="unit">{{ unit }}</option>
+            </select>
+        </div>
+
+        <div class="">
+            <button class="mr-2" type="submit" [disabled]="!itemForm.valid">Save</button>
+        </div>
+    </form>
+</div>

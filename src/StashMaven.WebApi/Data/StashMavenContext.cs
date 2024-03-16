@@ -113,4 +113,11 @@ public class StashMavenRepository(StashMavenContext context)
     public void InsertCompanyOption(
         CompanyOption option) =>
         context.CompanyOptions.Add(option);
+    
+    public async Task<CatalogItem?> GetCatalogItemAsync(
+        CatalogItemId catalogItemId) =>
+        await context.CatalogItems
+            .AsTracking()
+            .Include(x => x.Brand)
+            .FirstOrDefaultAsync(ci => ci.CatalogItemId.Value == catalogItemId.Value);
 }

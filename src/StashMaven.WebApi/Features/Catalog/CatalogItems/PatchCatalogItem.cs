@@ -21,7 +21,8 @@ public partial class CatalogItemController
 
 [Injectable]
 public class PatchCatalogItemHandler(
-    StashMavenContext context)
+    StashMavenRepository repository,
+    UnitOfWork unitOfWork)
 {
     public class PatchCatalogItemRequest
     {
@@ -39,12 +40,11 @@ public class PatchCatalogItemHandler(
     public async Task<StashMavenResult> PatchCatalogItemAsync(
         PatchCatalogItemRequest request)
     {
-        CatalogItem? catalogItem = await context.CatalogItems
-            .SingleOrDefaultAsync(c => c.CatalogItemId.Value == request.CatalogItemId);
+        CatalogItem? catalogItem = await repository.GetCatalogItemAsync(new CatalogItemId(request.CatalogItemId));
 
         if (catalogItem == null)
         {
-            return StashMavenResult.Error($"Catalog item {request.CatalogItemId} not found");
+            return StashMavenResult.Error(ErrorCodes.CatalogItemNotFound);
         }
 
         if (request.Sku != null)
@@ -63,7 +63,8 @@ public class PatchCatalogItemHandler(
         }
 
         catalogItem.UpdatedOn = DateTime.UtcNow;
-        await context.SaveChangesAsync();
+        
+        await unitOfWork.SaveChangesAsync();
 
         return StashMavenResult.Success();
     }

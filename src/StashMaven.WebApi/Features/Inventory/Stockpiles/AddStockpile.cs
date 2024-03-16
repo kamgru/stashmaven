@@ -1,4 +1,5 @@
 using Npgsql;
+using StashMaven.WebApi.Data.Services;
 
 namespace StashMaven.WebApi.Features.Inventory.Stockpiles;
 
@@ -23,7 +24,9 @@ public partial class StockpileController
 }
 
 [Injectable]
-public class AddStockpileHandler(StashMavenContext context)
+public class AddStockpileHandler(
+    StashMavenContext context,
+    CacheReader cacheReader)
 {
     public class AddStockpileRequest
     {
@@ -66,8 +69,11 @@ public class AddStockpileHandler(StashMavenContext context)
         try
         {
             await context.SaveChangesAsync();
+            cacheReader.InvalidateKey(CacheReader.Keys.Stockpiles);
+            
             return StashMavenResult<AddStockpileResponse>.Success(
                 new AddStockpileResponse(stockpile.StockpileId.Value));
+            
         }
         catch (DbUpdateException e)
         {

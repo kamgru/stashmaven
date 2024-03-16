@@ -1,4 +1,5 @@
 using Npgsql;
+using StashMaven.WebApi.Data.Services;
 
 namespace StashMaven.WebApi.Features.Inventory.Shipments;
 
@@ -26,7 +27,9 @@ public partial class ShipmentController
 }
 
 [Injectable]
-public class AddShipmentKindHandler(StashMavenContext context)
+public class AddShipmentKindHandler(
+    StashMavenContext context,
+    CacheReader cacheReader)
 {
     public class AddShipmentKindRequest
     {
@@ -73,6 +76,7 @@ public class AddShipmentKindHandler(StashMavenContext context)
         try
         {
             await context.SaveChangesAsync();
+            cacheReader.InvalidateKey(CacheReader.Keys.ShipmentKinds);
             return StashMavenResult<AddShipmentKindResponse>.Success(
                 new AddShipmentKindResponse(shipmentKind.ShipmentKindId.Value));
         }

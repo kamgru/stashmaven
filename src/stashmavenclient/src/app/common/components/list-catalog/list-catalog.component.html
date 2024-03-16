@@ -17,7 +17,9 @@
                 </thead>
                 <tbody>
                     @for (catalogItem of listResponse.items; track catalogItem.catalogItemId; let i = $index) {
-                        <tr [class.idx]="i == currentIndex_$()" (click)="handleRowClick(catalogItem)"
+                        <tr [class.idx]="i == currentIndex_$()"
+                            (click)="handleRowClick(catalogItem)"
+                            (dblclick)="handleRowDblClick(catalogItem)"
                             class="grid grid-cols-inventory-items text-base">
                             <td>{{ (listResponse.currentPage - 1) * listResponse.pageSize + i + 1 }}</td>
                             <td>{{ catalogItem.sku }}</td>

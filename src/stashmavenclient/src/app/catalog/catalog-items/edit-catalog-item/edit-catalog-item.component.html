@@ -1,0 +1,13 @@
+<h2></h2>
+<hr/>
+@if (catalogItem$ | async; as catalogItem) {
+    <app-catalog-item-base-props [CatalogItemDetails]="catalogItem"
+                                 (OnFormSubmit)="handleSubmitDetails($event)">
+    </app-catalog-item-base-props>
+}
+<hr/>
+@if (stockpiles$ | async; as stockpiles) {
+    <app-catalog-item-stockpiles [stockpiles]="stockpiles.stockpiles"
+                                 (OnFormSubmit)="handleSubmitAvailability($event)">
+    </app-catalog-item-stockpiles>
+}

@@ -102,8 +102,6 @@ public abstract class TestFixture
         {
             Name = name,
             Sku = name[..CatalogItem.SkuMaxLength],
-            BuyTaxDefinitionId = taxDefinitionId,
-            SellTaxDefinitionId = taxDefinitionId,
             UnitOfMeasure = UnitOfMeasure.Kg
         };
         HttpResponseMessage response = await http.PostAsJsonAsync("api/v1/catalogitem", request);

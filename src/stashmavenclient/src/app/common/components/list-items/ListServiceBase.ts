@@ -110,7 +110,9 @@ export abstract class ListServiceBase<TItem, TListRequest extends IListRequest, 
                 return this.tryPrevPage();
             }
             case 'Enter': {
-                this.confirmedItem$.next(this._response.items[this._cursor.index()]);
+                event.preventDefault();
+                const item = this._response.items[this._cursor.index()];
+                this.confirm(item);
                 return true;
             }
         }
