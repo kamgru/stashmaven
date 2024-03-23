@@ -64,7 +64,7 @@ public class AddShipmentKindHandler(
         ShipmentKind shipmentKind = new()
         {
             ShipmentKindId = new ShipmentKindId(Guid.NewGuid().ToString()),
-            SequenceGeneratorId = sequenceGenerator.SequenceGeneratorId,
+            SequenceGeneratorId = sequenceGenerator.SequenceGeneratorId.Value,
             Name = request.Name,
             ShortCode = request.ShortCode,
             Direction = request.Direction

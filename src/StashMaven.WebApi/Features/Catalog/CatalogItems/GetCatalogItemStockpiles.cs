@@ -54,7 +54,7 @@ public class GetCatalogItemStockpilesHandler(
         IReadOnlyList<Stockpile> stockpiles = await cacheReader.GetStockpilesAsync();
 
         List<InventoryItem> items = await context.InventoryItems
-            .Where(x => x.InventoryItemId.Value == catalogItemId)
+            .Where(x => x.CatalogItem.CatalogItemId.Value == catalogItemId)
             .Include(inventoryItem => inventoryItem.Stockpile)
             .ToListAsync();
 

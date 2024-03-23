@@ -37,6 +37,7 @@ public class DeleteTaxDefinitionHandler(StashMavenContext context)
         //TODO: remember to add check if tax definition is in use by any other entity
         
         TaxDefinition? taxDefinition = await context.TaxDefinitions
+            .AsTracking()
             .FirstOrDefaultAsync(x => x.TaxDefinitionId.Value == request.TaxDefinitionId);
 
         if (taxDefinition is null)

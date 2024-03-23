@@ -73,7 +73,7 @@ public class AddInventoryItemHandler(
             Name = catalogItem.Name,
             Version = 0,
             Stockpile = stockpile,
-            CatalogItem = catalogItem
+            CatalogItem = catalogItem,
         };
 
         context.InventoryItems.Add(inventoryItem);

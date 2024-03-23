@@ -97,7 +97,7 @@ public class ShipmentKind
 
     public int Id { get; set; }
     public required ShipmentKindId ShipmentKindId { get; set; }
-    public required SequenceGeneratorId SequenceGeneratorId { get; set; }
+    public required string SequenceGeneratorId { get; set; }
     public required string Name { get; set; }
     public required string ShortCode { get; set; }
     public ShipmentDirection Direction { get; set; }
@@ -114,9 +114,6 @@ public class ShipmentKind
                 .HasColumnName("ShipmentKindId");
             builder.HasIndex(e => e.ShortCode)
                 .IsUnique();
-            builder.OwnsOne(e => e.SequenceGeneratorId)
-                .Property(e => e.Value)
-                .HasColumnName("SequenceGeneratorId");
             builder.Property(e => e.ShortCode)
                 .HasMaxLength(ShortCodeMaxLength);
         }

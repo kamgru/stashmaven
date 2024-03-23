@@ -87,13 +87,6 @@ public class StashMavenRepository(StashMavenContext context)
             .AsTracking()
             .FirstOrDefaultAsync(s => s.ShipmentId.Value == shipmentId.Value);
 
-    public async Task<SequenceGenerator?> GetSequenceGeneratorAsync(
-        SequenceGeneratorId sequenceGeneratorId) =>
-        await context.SequenceGenerators
-            .Include(x => x.Entries)
-            .AsTracking()
-            .FirstOrDefaultAsync(x => x.SequenceGeneratorId.Value == sequenceGeneratorId.Value);
-
     public async Task<StashMavenOption?> GetStashMavenOptionAsync(
         string key) =>
         await context.StashMavenOptions
