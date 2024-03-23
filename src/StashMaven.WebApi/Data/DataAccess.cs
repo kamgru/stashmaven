@@ -113,4 +113,8 @@ public class StashMavenRepository(StashMavenContext context)
             .AsTracking()
             .Include(x => x.Brand)
             .FirstOrDefaultAsync(ci => ci.CatalogItemId.Value == catalogItemId.Value);
+    
+    public void InsertStockpile(
+        Stockpile stockpile) =>
+        context.Stockpiles.Add(stockpile);
 }

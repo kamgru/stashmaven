@@ -25,16 +25,18 @@ public partial class StockpileController
 
 [Injectable]
 public class AddStockpileHandler(
-    StashMavenContext context,
+    StashMavenRepository repository,
+    UnitOfWork unitOfWork,
+    UpsertOptionService optionService,
     CacheReader cacheReader)
 {
-    public class AddStockpileRequest
-    {
-        public required string Name { get; set; }
-        public required string ShortCode { get; set; }
-    }
+    public record AddStockpileRequest(
+        string Name,
+        string ShortCode,
+        bool IsDefault);
 
-    public record AddStockpileResponse(string StockpileId);
+    public record AddStockpileResponse(
+        string StockpileId);
 
     public async Task<StashMavenResult<AddStockpileResponse>> AddStockpileAsync(
         AddStockpileRequest request)
@@ -46,34 +48,22 @@ public class AddStockpileHandler(
             ShortCode = request.ShortCode
         };
 
-        List<ShipmentKind> shipmentKinds = await context.ShipmentKinds.ToListAsync();
+        repository.InsertStockpile(stockpile);
 
-        SequenceGenerator sequenceGenerator = new()
+        if (request.IsDefault)
         {
-            SequenceGeneratorId = new SequenceGeneratorId(Guid.NewGuid().ToString()),
-            Version = 0,
-        };
-
-        sequenceGenerator.Entries = shipmentKinds.Select(x => new SequenceEntry
-            {
-                Group = request.ShortCode,
-                Delimiter = x.ShortCode,
-                NextValue = 1,
-                SequenceGenerator = sequenceGenerator,
-                Version = 0
-            })
-            .ToList();
-
-        await context.Stockpiles.AddAsync(stockpile);
+            await optionService.UpsertStashMavenOptionAsync(
+                StashMavenOption.Keys.DefaultStockpileShortCode,
+                stockpile.ShortCode);
+        }
 
         try
         {
-            await context.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync();
             cacheReader.InvalidateKey(CacheReader.Keys.Stockpiles);
-            
+
             return StashMavenResult<AddStockpileResponse>.Success(
                 new AddStockpileResponse(stockpile.StockpileId.Value));
-            
         }
         catch (DbUpdateException e)
         {

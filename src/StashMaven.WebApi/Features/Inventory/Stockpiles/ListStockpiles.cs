@@ -26,6 +26,7 @@ public class ListStockpilesHandler(CacheReader cacheReader)
         public required string StockpileId { get; set; }
         public required string Name { get; set; }
         public required string ShortCode { get; set; }
+        public bool IsDefault { get; set; }
     }
 
     public class ListStockpilesResponse
@@ -36,6 +37,8 @@ public class ListStockpilesHandler(CacheReader cacheReader)
     public async Task<ListStockpilesResponse> ListStockpilesAsync()
     {
         IReadOnlyList<Stockpile> stockpiles = await cacheReader.GetStockpilesAsync();
+        
+        Stockpile? defaultStockpile = await cacheReader.GetDefaultStockpileAsync();
 
         return new ListStockpilesResponse
         {
@@ -43,7 +46,8 @@ public class ListStockpilesHandler(CacheReader cacheReader)
                 {
                     StockpileId = x.StockpileId.Value,
                     Name = x.Name,
-                    ShortCode = x.ShortCode
+                    ShortCode = x.ShortCode,
+                    IsDefault = defaultStockpile?.StockpileId == x.StockpileId
                 })
                 .ToList()
         };
