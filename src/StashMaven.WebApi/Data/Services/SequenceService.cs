@@ -1,19 +1,20 @@
 namespace StashMaven.WebApi.Data.Services;
 
 [Injectable]
-public class SequenceService(StashMavenRepository repository)
+public class SequenceService(StashMavenContext context)
 {
     public async Task<StashMavenResult<ShipmentSequenceNumber>> GenerateShipmentSequence(
         Shipment shipment)
     {
-        SequenceGenerator? sequenceGenerator =
-            await repository.GetSequenceGeneratorAsync(shipment.Kind.SequenceGeneratorId);
+        SequenceGenerator? sequenceGenerator = await context.SequenceGenerators
+            .Include(x => x.Entries)
+            .FirstOrDefaultAsync(x => x.SequenceGeneratorId.Value == shipment.Kind.SequenceGeneratorId);
 
         if (sequenceGenerator == null)
         {
             return StashMavenResult<ShipmentSequenceNumber>.Error(
                 ErrorCodes.ShipmentKindSequenceGeneratorNotFound,
-                $"Sequence generator {shipment.Kind.SequenceGeneratorId.Value} not found.");
+                $"Sequence generator {shipment.Kind.SequenceGeneratorId} not found.");
         }
 
         SequenceEntry? entry = sequenceGenerator.Entries

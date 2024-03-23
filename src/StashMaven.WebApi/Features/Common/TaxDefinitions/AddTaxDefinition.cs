@@ -25,7 +25,8 @@ public partial class TaxDefinitionController
 [Injectable]
 public class AddTaxDefinitionHandler(
     CountryService countryService,
-    StashMavenContext context)
+    StashMavenContext context,
+    CacheReader cacheReader)
 {
     public class AddTaxDefinitionRequest
     {
@@ -55,6 +56,8 @@ public class AddTaxDefinitionHandler(
 
         await context.TaxDefinitions.AddAsync(taxDefinition);
         await context.SaveChangesAsync();
+        
+        cacheReader.InvalidateKey(CacheReader.Keys.TaxDefinitions);
 
         return StashMavenResult<AddTaxDefinitionResponse>.Success(
             new AddTaxDefinitionResponse(taxDefinition.TaxDefinitionId.Value));

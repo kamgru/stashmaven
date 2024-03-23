@@ -24,6 +24,8 @@ public partial class InventoryItemController
 
 [Injectable]
 public class AddInventoryItemHandler(
+    StashMavenRepository repository,
+    UnitOfWork unitOfWork,
     StashMavenContext context)
 {
     public class AddInventoryItemRequest
@@ -40,17 +42,14 @@ public class AddInventoryItemHandler(
     public async Task<StashMavenResult<AddInventoryItemResponse>> AddInventoryItemAsync(
         AddInventoryItemRequest request)
     {
-        CatalogItem? catalogItem = await context.CatalogItems
-            .FirstOrDefaultAsync(c => c.CatalogItemId.Value == request.CatalogItemId);
+        CatalogItem? catalogItem = await repository.GetCatalogItemAsync(new CatalogItemId(request.CatalogItemId));
 
         if (catalogItem == null)
         {
             return StashMavenResult<AddInventoryItemResponse>.Error($"Catalog item {request.CatalogItemId} not found");
         }
 
-        Stockpile? stockpile = await context.Stockpiles
-            .AsTracking()
-            .FirstOrDefaultAsync(s => s.StockpileId.Value == request.StockpileId);
+        Stockpile? stockpile = await repository.GetStockpileAsync(new StockpileId(request.StockpileId));
 
         if (stockpile == null)
         {
@@ -69,11 +68,12 @@ public class AddInventoryItemHandler(
 
         InventoryItem inventoryItem = new()
         {
-            InventoryItemId = new InventoryItemId(catalogItem.CatalogItemId.Value),
+            InventoryItemId = new InventoryItemId(Guid.NewGuid().ToString()),
             Sku = catalogItem.Sku,
             Name = catalogItem.Name,
             Version = 0,
-            Stockpile = stockpile
+            Stockpile = stockpile,
+            CatalogItem = catalogItem,
         };
 
         context.InventoryItems.Add(inventoryItem);

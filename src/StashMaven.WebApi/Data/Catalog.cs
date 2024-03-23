@@ -49,6 +49,7 @@ public class CatalogItem
     public Brand? Brand { get; set; } = null!;
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
+    public ICollection<InventoryItem> InventoryItems { get; set; } = [];
 
     public class TypeConfig : IEntityTypeConfiguration<CatalogItem>
     {
