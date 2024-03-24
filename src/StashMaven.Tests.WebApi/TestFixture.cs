@@ -40,11 +40,7 @@ public abstract class TestFixture
     {
         using HttpClient http = CreateClient();
         string name = Guid.NewGuid().ToString();
-        AddStockpileHandler.AddStockpileRequest request = new()
-        {
-            Name = name,
-            ShortCode = name[..Stockpile.ShortCodeMaxLength]
-        };
+        AddStockpileHandler.AddStockpileRequest request = new(name, name[..Stockpile.ShortCodeMaxLength], false);
         HttpResponseMessage response = await http.PostAsJsonAsync("api/v1/stockpile", request);
         response.EnsureSuccessStatusCode();
 

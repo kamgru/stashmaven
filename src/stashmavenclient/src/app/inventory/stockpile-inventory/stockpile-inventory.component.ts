@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {ListCatalogComponent} from "../../common/components/list-catalog/list-catalog.component";
 import {AsyncPipe, NgIf} from "@angular/common";
 import {ListInventoryComponent} from "../../common/components/list-inventory/list-inventory.component";
-import {StockpileInventoryService} from "./stockpile-inventory.service";
 import {forkJoin, map} from "rxjs";
 import {IStockpileListItem} from "../../common/IStockpileListItem";
 import {IInventoryItem} from "../../common/components/list-inventory/list-inventory.service";
+import {StockpileService} from "../../common/services/stockpile.service";
 
 @Component({
     selector: 'app-stockpile-inventory',
@@ -24,14 +24,14 @@ export class StockpileInventoryComponent implements OnInit {
     public stockpiles: IStockpileListItem[] = [];
 
     constructor(
-        private stockpileInventoryService: StockpileInventoryService,
+        private stockpileService: StockpileService,
     ) {
     }
 
     ngOnInit(): void {
         forkJoin([
-            this.stockpileInventoryService.listStockpiles(),
-            this.stockpileInventoryService.getDefaultStockpileId()
+            this.stockpileService.listStockpiles(),
+            this.stockpileService.getDefaultStockpileId()
         ])
             .pipe(
                 map(([stockpiles, defaultStockpile]) => {

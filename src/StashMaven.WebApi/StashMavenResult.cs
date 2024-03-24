@@ -31,6 +31,11 @@ public static class ErrorCodes
     // Country
     public const ErrorCode CountryNotFound = 110000;
     public const ErrorCode CountryAlreadyExists = 110001;
+    
+    // Stockpile
+    public const ErrorCode StockpileNotFound = 120000;
+    public const ErrorCode StockpileHasShipments = 120001;
+    public const ErrorCode StockpileShortCodeNotUnique = 120002;
 }
 
 public class StashMavenResult

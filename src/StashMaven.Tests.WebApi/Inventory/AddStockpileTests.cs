@@ -10,11 +10,7 @@ public class AddStockpileTests(DefaultTestFixture fixture) : IClassFixture<Defau
         HttpClient client = fixture.CreateClient();
 
         HttpResponseMessage result = await client.PostAsJsonAsync("api/v1/stockpile",
-            new AddStockpileHandler.AddStockpileRequest
-            {
-                Name = "Test Stockpile",
-                ShortCode = Guid.NewGuid().ToString()[..Stockpile.ShortCodeMaxLength]
-            });
+            new AddStockpileHandler.AddStockpileRequest("Test Stockpile", Guid.NewGuid().ToString()[..Stockpile.ShortCodeMaxLength], false));
 
         result.EnsureSuccessStatusCode();
 

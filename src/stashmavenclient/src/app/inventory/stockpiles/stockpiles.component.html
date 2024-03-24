@@ -1,0 +1,30 @@
+<h2>Stockpiles</h2>
+<hr/>
+@if (uiState == 'list') {
+    @if (stockpiles$ | async; as stockpiles) {
+        <table class="table table-auto">
+            <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+            </tr>
+            </thead>
+            <tbody>
+                @for (stockpile of stockpiles.items; track stockpile.stockpileId) {
+                    <tr (click)="handleStockpileClicked(stockpile)">
+                        <td>{{ stockpile.shortCode }}</td>
+                        <td>{{ stockpile.name }}</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    } @else {
+        <p>Loading...</p>
+    }
+} @else {
+    <app-edit-stockpile [stockpile]="selectedStockpile"
+                        (OnEditCancelled)="uiState = 'list'"
+                        (OnEditCompleted)="handleEditCompleted($event)">
+    </app-edit-stockpile>
+}

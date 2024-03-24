@@ -1,0 +1,41 @@
+<form [formGroup]="editForm" (ngSubmit)="handleSubmit()">
+    <div class="flex flex-col">
+        <label for="name">Name</label>
+        <input type="text" id="name" formControlName="name">
+        @if (name.invalid && name.touched) {
+            <div>
+                @if (name.errors?.['required']) {
+                    <p class="text-red-500">Name is required</p>
+                }
+                @if (name.errors?.['minlength']) {
+                    <p class="text-red-500">Name must be at least 3 characters long</p>
+                }
+                @if (name.errors?.['maxlength']) {
+                    <p class="text-red-500">Name must be at most 256 characters long</p>
+                }
+            </div>
+        }
+    </div>
+    <div class="flex flex-col">
+        <label for="code">Code</label>
+        <input type="text" id="code" formControlName="shortCode">
+        @if (shortCode.invalid && shortCode.touched) {
+            <div>
+                @if (shortCode.errors?.['required']) {
+                    <p class="text-red-500">Code is required</p>
+                }
+                @if (shortCode.errors?.['minlength'] || shortCode.errors?.['maxlength']) {
+                    <p class="text-red-500">Code must be 2 characters long</p>
+                }
+            </div>
+        }
+    </div>
+    <div class="flex flex-col">
+        <label for="is-default">Default</label>
+        <input type="checkbox" id="is-default" formControlName="isDefault">
+    </div>
+    <div class="flex flex-row">
+        <button class="btn" type="submit" [disabled]="editForm.invalid">Save</button>
+        <button class="btn" type="button" (click)="handleCancel()">Cancel</button>
+    </div>
+</form>
