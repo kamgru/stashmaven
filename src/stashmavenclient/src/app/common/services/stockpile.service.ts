@@ -8,6 +8,16 @@ export class AddStockpileRequest {
     constructor(
         public name: string,
         public shortCode: string,
+        public isDefault: boolean
+    ) {
+    }
+}
+
+export class UpdateStockpileRequest {
+    constructor(
+        public name: string,
+        public shortCode: string,
+        public isDefault: boolean
     ) {
     }
 }
@@ -16,6 +26,7 @@ export interface IStockpile {
     stockpileId: string;
     name: string;
     shortCode: string;
+    isDefault: boolean;
 }
 
 export interface IListStockpilesResponse {
@@ -53,5 +64,9 @@ export class StockpileService {
             .pipe(
                 map(x => x.stockpileId)
             )
+    }
+
+    public updateStockpile(stockpileId: string, request: UpdateStockpileRequest): Observable<void> {
+        return this.http.put<void>(`${environment.apiUrl}/api/v1/stockpile/${stockpileId}`, request);
     }
 }

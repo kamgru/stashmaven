@@ -30,7 +30,8 @@ export class EditStockpileComponent implements OnInit {
         shortCode: new FormControl<string>('', {
             validators: [Validators.required, Validators.minLength(2), Validators.maxLength(2)],
             nonNullable: true
-        })
+        }),
+        isDefault: new FormControl<boolean>(false)
     });
 
     public get name(): FormControl<string> {
@@ -41,6 +42,10 @@ export class EditStockpileComponent implements OnInit {
         return this.editForm.get('shortCode') as FormControl<string>;
     }
 
+    public get isDefault(): FormControl<boolean> {
+        return this.editForm.get('isDefault') as FormControl<boolean>;
+    }
+
     constructor() {
     }
 
@@ -48,6 +53,7 @@ export class EditStockpileComponent implements OnInit {
         if (this.stockpile) {
             this.name.setValue(this.stockpile.name);
             this.shortCode.setValue(this.stockpile.shortCode);
+            this.isDefault.setValue(this.stockpile.isDefault);
         }
     }
 
@@ -56,7 +62,8 @@ export class EditStockpileComponent implements OnInit {
             this.OnEditCompleted.emit({
                 stockpileId: this.stockpile ? this.stockpile.stockpileId : '',
                 name: this.name.value,
-                shortCode: this.shortCode.value
+                shortCode: this.shortCode.value,
+                isDefault: this.isDefault.value
             });
         }
     }

@@ -6,6 +6,8 @@ namespace StashMaven.WebApi.Features.Inventory.Stockpiles;
 public partial class StockpileController
 {
     [HttpPost]
+    [ProducesResponseType<string>(StatusCodes.Status201Created)]
+    [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddStockpileAsync(
         [FromBody]
         AddStockpileHandler.AddStockpileRequest request,
@@ -16,7 +18,7 @@ public partial class StockpileController
 
         if (!result.IsSuccess || result.Data is null)
         {
-            return BadRequest(result.Message);
+            return BadRequest(result.ErrorCode);
         }
 
         return Created($"api/v1/inventory/stockpile/{result.Data.StockpileId}", result.Data);
@@ -69,7 +71,7 @@ public class AddStockpileHandler(
         {
             if (e.InnerException is PostgresException { SqlState: StashMavenContext.PostgresUniqueViolation })
             {
-                return StashMavenResult<AddStockpileResponse>.Error($"Stockpile {request.ShortCode} already exists.");
+                return StashMavenResult<AddStockpileResponse>.Error(ErrorCodes.StockpileShortCodeNotUnique);
             }
 
             throw;

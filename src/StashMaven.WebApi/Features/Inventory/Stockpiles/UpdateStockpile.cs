@@ -1,58 +1,62 @@
+using Npgsql;
 using StashMaven.WebApi.Data.Services;
 
 namespace StashMaven.WebApi.Features.Inventory.Stockpiles;
 
 public partial class StockpileController
 {
-    [HttpPatch]
+    [HttpPut]
     [Route("{stockpileId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PatchStockpileAsync(
-        [FromRoute] string stockpileId,
-        [FromBody] PatchStockpileHandler.PatchStockpileRequest request,
-        [FromServices] PatchStockpileHandler handler)
+        [FromRoute]
+        string stockpileId,
+        [FromBody]
+        UpdateStockpileHandler.UpdateStockpileRequest request,
+        [FromServices]
+        UpdateStockpileHandler handler)
     {
         StashMavenResult result = await handler.PatchStockpileAsync(new StockpileId(stockpileId), request);
 
         if (!result.IsSuccess)
         {
-            return BadRequest(result.Message);
+            return BadRequest(result.ErrorCode);
         }
-        
+
         return Ok();
     }
 }
 
 [Injectable]
-public class PatchStockpileHandler(
+public class UpdateStockpileHandler(
     StashMavenRepository repository,
     UnitOfWork unitOfWork,
     UpsertOptionService optionService,
     ShipmentService shipmentService,
     CacheReader cacheReader)
 {
-    public record PatchStockpileRequest(
+    public record UpdateStockpileRequest(
         string ShortCode,
         string Name,
         bool IsDefault);
 
     public async Task<StashMavenResult> PatchStockpileAsync(
         StockpileId stockpileId,
-        PatchStockpileRequest request)
+        UpdateStockpileRequest request)
     {
         Stockpile? stockpile = await repository.GetStockpileAsync(stockpileId);
 
         if (stockpile is null)
         {
-            return StashMavenResult.Error("Stockpile not found");
+            return StashMavenResult.Error(ErrorCodes.StockpileNotFound);
         }
 
         if (!stockpile.ShortCode.Equals(request.ShortCode))
         {
             if (await shipmentService.CheckIfStockpileHasShipmentsAsync(stockpile.StockpileId))
             {
-                return StashMavenResult.Error("Cannot change the short code of a stockpile that has shipments");
+                return StashMavenResult.Error(ErrorCodes.StockpileHasShipments);
             }
 
             stockpile.ShortCode = request.ShortCode;
@@ -65,12 +69,22 @@ public class PatchStockpileHandler(
             await optionService.UpsertStashMavenOptionAsync(
                 StashMavenOption.Keys.DefaultStockpileShortCode,
                 stockpile.ShortCode);
-            
+
             cacheReader.InvalidateKey(CacheReader.Keys.DefaultStockpile);
         }
 
-        await unitOfWork.SaveChangesAsync();
-        cacheReader.InvalidateKey(CacheReader.Keys.Stockpiles);
+        try
+        {
+            await unitOfWork.SaveChangesAsync();
+            cacheReader.InvalidateKey(CacheReader.Keys.Stockpiles);
+        }
+        catch (DbUpdateException exception) when (exception.InnerException is PostgresException
+                                                  {
+                                                      SqlState: StashMavenContext.PostgresUniqueViolation
+                                                  })
+        {
+            return StashMavenResult.Error(ErrorCodes.StockpileShortCodeNotUnique);
+        }
 
         return StashMavenResult.Success();
     }

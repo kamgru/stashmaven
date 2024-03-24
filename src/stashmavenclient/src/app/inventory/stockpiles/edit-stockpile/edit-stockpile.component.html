@@ -18,7 +18,7 @@
     </div>
     <div class="flex flex-col">
         <label for="code">Code</label>
-        <input type="text" id="code" formControlName="code">
+        <input type="text" id="code" formControlName="shortCode">
         @if (shortCode.invalid && shortCode.touched) {
             <div>
                 @if (shortCode.errors?.['required']) {
@@ -29,6 +29,10 @@
                 }
             </div>
         }
+    </div>
+    <div class="flex flex-col">
+        <label for="is-default">Default</label>
+        <input type="checkbox" id="is-default" formControlName="isDefault">
     </div>
     <div class="flex flex-row">
         <button class="btn" type="submit" [disabled]="editForm.invalid">Save</button>
