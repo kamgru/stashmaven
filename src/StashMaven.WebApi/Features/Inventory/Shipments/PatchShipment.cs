@@ -31,7 +31,7 @@ public class PatchShipmentHandler(StashMavenRepository repository, UnitOfWork un
         public string? SourceReferenceIdentifier { get; set; }
         public DateTime? IssuedOn { get; set; }
     }
-    
+
     public async Task<StashMavenResult> PatchShipmentAsync(
         string shipmentId,
         PatchShipmentRequest request)
@@ -40,15 +40,22 @@ public class PatchShipmentHandler(StashMavenRepository repository, UnitOfWork un
 
         if (shipment is null)
         {
-            return StashMavenResult.Error($"Shipment {shipmentId} not found");
+            return StashMavenResult.Error(ErrorCodes.ShipmentNotFound);
         }
 
         if (request.SourceReferenceIdentifier is not null)
         {
-            shipment.SourceReference = new SourceReference
+            if (shipment.SourceReference is null)
             {
-                Identifier = request.SourceReferenceIdentifier
-            };
+                shipment.SourceReference = new SourceReference
+                {
+                    Identifier = request.SourceReferenceIdentifier
+                };
+            }
+            else
+            {
+                shipment.SourceReference.Identifier = request.SourceReferenceIdentifier;
+            }
         }
 
         if (request.IssuedOn is not null)

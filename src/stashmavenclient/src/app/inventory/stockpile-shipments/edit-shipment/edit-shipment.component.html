@@ -4,6 +4,8 @@
 <hr/>
 <div class="my-2 py-2">
     @if (uiState == 'view') {
+
+        <hr/>
         <app-partner-details [partner]="shipment?.partner"
                              (OnPartnerEdit)="uiState = 'edit-partner'">
         </app-partner-details>

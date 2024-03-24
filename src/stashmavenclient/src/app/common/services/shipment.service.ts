@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 
 export interface IListShipmentKindsResponse {
-   items: IShipmentKind[];
+    items: IShipmentKind[];
 }
 
 export interface IShipmentKind {
@@ -57,6 +57,14 @@ export interface IShipmentPartnerEditDetails {
     address: string;
 }
 
+export class UpdateShipmentRequest {
+    constructor(
+        public sourceReferenceIdentifier: string,
+        public issuedOn: string
+    ) {
+    }
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -81,5 +89,9 @@ export class ShipmentService {
 
     deleteShipment(shipmentId: string): Observable<void> {
         return this.http.delete<void>(`${environment.apiUrl}/api/v1/shipment/${shipmentId}`);
+    }
+
+    updateShipment(shipmentId: string, req: UpdateShipmentRequest): Observable<void> {
+        return this.http.patch<void>(`${environment.apiUrl}/api/v1/shipment/${shipmentId}`, req);
     }
 }
