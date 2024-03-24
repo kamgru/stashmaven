@@ -1,17 +1,10 @@
-<div>Shipment partner</div>
-@if (partner) {
-
-    <div>
-        {{ partner.customIdentifier }}
-    </div>
-    <div>
-        {{ partner.legalName }}
-    </div>
-    <div>
-        {{ partner.address }}
-    </div>
-    <button class="btn" (click)="OnPartnerEdit.emit()">Change</button>
-}
-@else {
-    <button class="btn" (click)="OnPartnerEdit.emit()">Add</button>
-}
+<div class="flex items-baseline">
+    <span class="mr-2">Partner: </span>
+    @if (partner) {
+        <span class="mr-2 text-sm text-slate-800">{{ partner.legalName }}, </span>
+        <span class="mr-2 text-sm text-slate-800">{{ partner.address }}</span>
+    } @else {
+        <span class="text-xs italic text-slate-400 mr-2">No partner selected</span>
+    }
+    <button class="btn" (click)="OnPartnerEdit.emit()">Select</button>
+</div>

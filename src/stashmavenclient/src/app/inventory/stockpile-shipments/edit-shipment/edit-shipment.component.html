@@ -1,65 +1,27 @@
-<div class="my-2 py-2">
-    {{ shipment?.kind?.shortCode }} - {{ shipment?.kind?.name }}
-</div>
+<h2>Edit Shipment</h2>
 <hr/>
 <div class="my-2 py-2">
     @if (uiState == 'view') {
 
-        <hr/>
-        <app-partner-details [partner]="shipment?.partner"
-                             (OnPartnerEdit)="uiState = 'edit-partner'">
-        </app-partner-details>
-        <hr/>
-        <button class="btn" (click)="uiState = 'select-item'">Add Item</button>
-        <table class="table table-auto">
-            <thead>
-            <tr>
-                <th>
-                    Sku
-                </th>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Quantity
-                </th>
-                <th>
-                    Price
-                </th>
-                <th>
-                    Tax
-                </th>
-                <th>
-                    Total
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-                @for (item of shipment?.records; track item.inventoryItemId) {
-                    <tr>
-                        <td>
-                            {{ item?.sku }}
-                        </td>
-                        <td>
-                            {{ item?.name }}
-                        </td>
-                        <td>
-                            {{ item?.quantity }}
-                        </td>
-                        <td>
-                            {{ item?.unitPrice }}
-                        </td>
-                        <td>
-                            {{ item?.taxRate }}
-                        </td>
-                        <td>
-                            {{ item!.quantity * item!.unitPrice }}
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <button class="btn" (click)="handleAccept()">Accept</button>
+        <div class="p-2 mx-auto max-w-7xl">
+
+            <div class="my-2 py-2">
+                {{ shipment?.kind?.shortCode }} - {{ shipment?.kind?.name }}
+            </div>
+
+            <app-partner-details [partner]="shipment?.partner"
+                                 (OnPartnerEdit)="uiState = 'edit-partner'" class="p-2 border border-slate-200 block rounded">
+            </app-partner-details>
+            <app-list-records [records]="shipment!.records"
+                              [currency]="shipment!.currency"
+                              class="p-2 block border-slate-200 rounded border my-2 ">
+            </app-list-records>
+            <div class="flex">
+                <button class="btn mr-2" (click)="uiState = 'select-item'">Add Item</button>
+                <button class="btn" (click)="handleAccept()">Accept</button>
+            </div>
+        </div>
+
     }
     @if (uiState == 'edit-partner') {
         <app-list-partners (OnItemConfirmed)="handlePartnerConfirmed($event); uiState = 'view'"></app-list-partners>

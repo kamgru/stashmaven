@@ -1,18 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {
-    IShipmentEditDetails,
-    IShipmentPartnerEditDetails,
+    AddRecordToShipmentRequest,
+    IGetShipmentResponse,
+    IShipmentPartner,
     ShipmentService
 } from "../../../common/services/shipment.service";
 import {JsonPipe} from "@angular/common";
-import {ListPartnersComponent} from "../../../common/components/list-partners/list-partners.component";
-import {IPartner} from "../../../common/components/list-partners/list-partners.service";
-import {AddRecordToShipmentRequest, EditShipmentService, IInventoryItemDetails} from "./edit-shipment.service";
+import {ListPartnersComponent, IPartner} from "../../../common/components/list-partners";
 import {ListInventoryComponent} from "../../../common/components/list-inventory/list-inventory.component";
 import {IInventoryItem} from "../../../common/components/list-inventory/list-inventory.service";
 import {PartnerDetailsComponent} from "./partner-details/partner-details.component";
 import {AddRecordComponent, RecordAdded} from "./add-record/add-record.component";
+import {IInventoryItemDetails, InventoryItemService} from "../../../common/services/inventory-item.service";
+import {ListRecordsComponent} from "./list-records/list-records.component";
 
 @Component({
     selector: 'app-edit-shipment',
@@ -22,7 +23,8 @@ import {AddRecordComponent, RecordAdded} from "./add-record/add-record.component
         ListPartnersComponent,
         ListInventoryComponent,
         PartnerDetailsComponent,
-        AddRecordComponent
+        AddRecordComponent,
+        ListRecordsComponent
     ],
     templateUrl: './edit-shipment.component.html',
     styleUrl: './edit-shipment.component.css'
@@ -31,7 +33,7 @@ export class EditShipmentComponent implements OnInit {
 
     private _shipmentId: string | null = null;
 
-    public shipment?: IShipmentEditDetails;
+    public shipment?: IGetShipmentResponse;
     public uiState: 'view' | 'edit-partner' | 'select-item' | 'add-record' = 'view';
     public inventoryItem: IInventoryItemDetails | null = null;
 
@@ -39,7 +41,7 @@ export class EditShipmentComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private shipmentService: ShipmentService,
-        private editShipmentService: EditShipmentService
+        private inventoryItemService: InventoryItemService
     ) {
     }
 
@@ -58,9 +60,9 @@ export class EditShipmentComponent implements OnInit {
             throw new Error('shipmentId is not set');
         }
 
-        this.editShipmentService.addPartnerToShipment(this._shipmentId, $event.partnerId)
+        this.shipmentService.addPartnerToShipment(this._shipmentId, $event.partnerId)
             .subscribe(_ => {
-                this.shipment!.partner = <IShipmentPartnerEditDetails>{
+                this.shipment!.partner = <IShipmentPartner>{
                     partnerId: $event.partnerId,
                     legalName: $event.legalName,
                     customIdentifier: $event.customIdentifier,
@@ -70,7 +72,7 @@ export class EditShipmentComponent implements OnInit {
     }
 
     handleInventoryItemConfirmed($event: IInventoryItem) {
-        this.editShipmentService.getInventoryItem($event.inventoryItemId)
+        this.inventoryItemService.getInventoryItem($event.inventoryItemId)
             .subscribe(response => {
                 this.inventoryItem = response;
                 this.uiState = 'add-record';
@@ -78,8 +80,7 @@ export class EditShipmentComponent implements OnInit {
     }
 
     handleRecordAdded($event: RecordAdded) {
-        this.editShipmentService.addRecordToShipment(new AddRecordToShipmentRequest(
-            this._shipmentId!,
+        this.shipmentService.addRecordToShipment(this._shipmentId!, new AddRecordToShipmentRequest(
             $event.inventoryItem.inventoryItemId,
             $event.quantity,
             $event.unitPrice,
@@ -106,7 +107,7 @@ export class EditShipmentComponent implements OnInit {
             throw new Error('shipmentId is not set');
         }
 
-        this.editShipmentService.acceptShipment(this._shipmentId)
+        this.shipmentService.acceptShipment(this._shipmentId)
             .subscribe(_ => {
                 this.router.navigate(['/shipments']);
             });

@@ -18,7 +18,6 @@ import {IShipment} from "../../common/components/list-shipments/list-shipments.s
         DropdownComponent
     ],
     templateUrl: './stockpile-shipments.component.html',
-    styleUrl: './stockpile-shipments.component.css'
 })
 export class StockpileShipmentsComponent implements OnInit {
 

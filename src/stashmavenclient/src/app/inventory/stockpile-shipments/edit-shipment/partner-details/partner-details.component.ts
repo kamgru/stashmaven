@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {IShipmentPartnerEditDetails} from "../../../../common/services/shipment.service";
+import {IShipmentPartner} from "../../../../common/services/shipment.service";
 
 @Component({
     selector: 'app-partner-details',
@@ -11,7 +11,7 @@ import {IShipmentPartnerEditDetails} from "../../../../common/services/shipment.
 export class PartnerDetailsComponent {
 
     @Input()
-    public partner?: IShipmentPartnerEditDetails;
+    public partner?: IShipmentPartner;
 
     @Output()
     public OnPartnerEdit = new EventEmitter<void>();

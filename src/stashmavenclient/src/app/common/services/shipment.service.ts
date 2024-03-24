@@ -27,21 +27,29 @@ export interface IAddShipmentResponse {
     shipmentId: string;
 }
 
-export interface IShipmentEditDetails {
-    partner: IShipmentPartnerEditDetails;
-    records: IShipmentRecordEditDetails[];
-    kind: IShipmentKindEditDetails;
+export class AddRecordToShipmentRequest{
+    constructor(
+        public inventoryItemId: string,
+        public quantity: number,
+        public unitPrice: number
+    ) {
+    }
+
+}
+export interface IGetShipmentResponse {
+    partner: IShipmentPartner;
+    records: IShipmentRecord[];
+    kind: IShipmentKindInfo;
     currency: string;
 }
 
-export interface IShipmentKindEditDetails {
+export interface IShipmentKindInfo {
     name: string;
     shortCode: string;
     direction: string;
-
 }
 
-export interface IShipmentRecordEditDetails {
+export interface IShipmentRecord {
     inventoryItemId: string;
     quantity: number;
     unitPrice: number;
@@ -50,7 +58,7 @@ export interface IShipmentRecordEditDetails {
     taxRate: number;
 }
 
-export interface IShipmentPartnerEditDetails {
+export interface IShipmentPartner {
     partnerId: string;
     legalName: string;
     customIdentifier: string;
@@ -83,8 +91,8 @@ export class ShipmentService {
         return this.http.post<IAddShipmentResponse>(`${environment.apiUrl}/api/v1/shipment`, req);
     }
 
-    getShipment(shipmentId: string): Observable<IShipmentEditDetails> {
-        return this.http.get<IShipmentEditDetails>(`${environment.apiUrl}/api/v1/shipment/${shipmentId}`);
+    getShipment(shipmentId: string): Observable<IGetShipmentResponse> {
+        return this.http.get<IGetShipmentResponse>(`${environment.apiUrl}/api/v1/shipment/${shipmentId}`);
     }
 
     deleteShipment(shipmentId: string): Observable<void> {
@@ -93,5 +101,16 @@ export class ShipmentService {
 
     updateShipment(shipmentId: string, req: UpdateShipmentRequest): Observable<void> {
         return this.http.patch<void>(`${environment.apiUrl}/api/v1/shipment/${shipmentId}`, req);
+    }
+    public addPartnerToShipment(shipmentId: string, partnerId: string) {
+        return this.http.patch(`${environment.apiUrl}/api/v1/shipment/${shipmentId}/partner`, {partnerId});
+    }
+
+    public addRecordToShipment(shipmentId: string, req: AddRecordToShipmentRequest) {
+        return this.http.patch(`${environment.apiUrl}/api/v1/shipment/${shipmentId}/record`, req);
+    }
+
+    public acceptShipment(shipmentId: string) {
+        return this.http.post(`${environment.apiUrl}/api/v1/shipment/${shipmentId}/accept`, {});
     }
 }

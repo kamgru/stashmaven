@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IInventoryItemDetails} from "../edit-shipment.service";
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import {IInventoryItemDetails} from "../../../../common/services/inventory-item.service";
 
 export class RecordAdded{
     constructor(

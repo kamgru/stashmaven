@@ -1,0 +1,24 @@
+<table class="border-separate border-spacing-y-2 w-full">
+    <thead>
+    <tr class="text-left">
+        <th class="border-b pb-2 text-sm">Sku</th>
+        <th class="border-b pb-2 text-sm">Name</th>
+        <th class="border-b pb-2 text-sm text-right">Quantity</th>
+        <th class="border-b pb-2 text-sm text-right">Price</th>
+        <th class="border-b pb-2 text-sm text-right">Tax</th>
+        <th class="border-b pb-2 text-sm text-right">Total</th>
+    </tr>
+    </thead>
+    <tbody>
+        @for (item of records; track item.inventoryItemId) {
+            <tr class="hover:bg-slate-200 cursor-pointer">
+                <td class="border-b p-1">{{ item?.sku }}</td>
+                <td class="border-b p-1">{{ item?.name }}</td>
+                <td class="border-b p-1 text-right">{{ item?.quantity }}</td>
+                <td class="border-b p-1 text-right">{{ item?.unitPrice }} {{ currency }}</td>
+                <td class="border-b p-1 text-right">{{ item?.taxRate }}</td>
+                <td class="border-b p-1 text-right">{{ item!.quantity * item!.unitPrice }} {{ currency }}</td>
+            </tr>
+        }
+    </tbody>
+</table>
