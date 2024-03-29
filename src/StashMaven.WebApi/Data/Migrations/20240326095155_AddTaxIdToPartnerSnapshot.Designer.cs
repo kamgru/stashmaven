@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StashMaven.WebApi.Data;
@@ -12,9 +13,11 @@ using StashMaven.WebApi.Data;
 namespace StashMaven.WebApi.Data.Migrations
 {
     [DbContext(typeof(StashMavenContext))]
-    partial class StashMavenContextModelSnapshot : ModelSnapshot
+    [Migration("20240326095155_AddTaxIdToPartnerSnapshot")]
+    partial class AddTaxIdToPartnerSnapshot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -426,27 +429,14 @@ namespace StashMaven.WebApi.Data.Migrations
                     b.Property<int>("ShipmentId")
                         .HasColumnType("integer");
 
+                    b.Property<decimal>("TaxRate")
+                        .HasColumnType("numeric");
+
                     b.Property<int>("UnitOfMeasure")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("numeric");
-
-                    b.ComplexProperty<Dictionary<string, object>>("Tax", "StashMaven.WebApi.Data.ShipmentRecord.Tax#ShipmentRecordTax", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<decimal>("Rate")
-                                .HasColumnType("numeric");
-
-                            b1.Property<string>("TaxDefinitionId")
-                                .IsRequired()
-                                .HasColumnType("text");
-                        });
 
                     b.HasKey("Id");
 

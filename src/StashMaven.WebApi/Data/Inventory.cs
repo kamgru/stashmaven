@@ -37,7 +37,7 @@ public class InventoryItemTaxReference
 {
     public required string Name { get; set; }
     public decimal Rate { get; set; }
-    public required string TaxDefintionIdValue { get; set; }
+    public required string TaxDefinitionId { get; set; }
 }
 
 public class InventoryItem
@@ -70,6 +70,12 @@ public class InventoryItem
         }
     }
 }
+public class ShipmentRecordTax
+{
+    public required string Name { get; set; }
+    public decimal Rate { get; set; }
+    public required string TaxDefinitionId { get; set; }
+}
 
 public class ShipmentRecord
 {
@@ -77,9 +83,9 @@ public class ShipmentRecord
     public decimal Quantity { get; set; }
     public UnitOfMeasure UnitOfMeasure { get; set; }
     public decimal UnitPrice { get; set; }
-    public decimal TaxRate { get; set; }
     public InventoryItem InventoryItem { get; set; } = null!;
     public Shipment Shipment { get; set; } = null!;
+    public required ShipmentRecordTax Tax { get; set; }
 
     public class TypeConfig : IEntityTypeConfiguration<ShipmentRecord>
     {
@@ -87,6 +93,7 @@ public class ShipmentRecord
             EntityTypeBuilder<ShipmentRecord> builder)
         {
             builder.ToTable("ShipmentRecord", "inv");
+            builder.ComplexProperty(e => e.Tax);
         }
     }
 }
@@ -120,11 +127,18 @@ public class ShipmentKind
     }
 }
 
+public class PartnerTaxIdSnapshot
+{
+    public string? TaxIdType { get; set; }
+    public string? TaxIdValue { get; set; }
+}
+
 public class PartnerRefSnapshot
 {
     public int Id { get; set; }
     public required string LegalName { get; set; }
     public required string Address { get; set; }
+    public required PartnerTaxIdSnapshot PartnerTaxId { get; set; }
 
     public class TypeConfig : IEntityTypeConfiguration<PartnerRefSnapshot>
     {
@@ -132,6 +146,13 @@ public class PartnerRefSnapshot
             EntityTypeBuilder<PartnerRefSnapshot> builder)
         {
             builder.ToTable("ShipmentPartnerReference", "inv");
+            builder.ComplexProperty(x => x.PartnerTaxId, x =>
+            {
+                x.Property(e => e.TaxIdType)
+                    .HasColumnName("TaxIdType");
+                x.Property(e => e.TaxIdValue)
+                    .HasColumnName("TaxIdValue");
+            });
         }
     }
 }
@@ -152,6 +173,7 @@ public class Shipment
     public PartnerRefSnapshot? PartnerRefSnapshot { get; set; }
     public Partner? Partner { get; set; }
     public DateTime IssuedOn { get; set; }
+    public DateTime ShippedOn { get; set; }
 
     public class TypeConfig : IEntityTypeConfiguration<Shipment>
     {

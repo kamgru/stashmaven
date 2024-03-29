@@ -27,7 +27,7 @@
         <app-list-partners (OnItemConfirmed)="handlePartnerConfirmed($event); uiState = 'view'"></app-list-partners>
     }
     @if (uiState == 'select-item') {
-        <app-list-inventory (OnItemConfirmed)="handleInventoryItemConfirmed($event)"></app-list-inventory>
+<!--        <app-list-inventory [stockpiles]="null!" (OnItemConfirmed)="handleInventoryItemConfirmed($event)"></app-list-inventory>-->
     }
     @if (uiState == 'add-record'){
         <app-add-record [inventoryItem]="inventoryItem" (OnRecordAdded)="handleRecordAdded($event)"></app-add-record>

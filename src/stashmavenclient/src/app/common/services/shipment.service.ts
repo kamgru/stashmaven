@@ -40,7 +40,22 @@ export interface IGetShipmentResponse {
     partner: IShipmentPartner;
     records: IShipmentRecord[];
     kind: IShipmentKindInfo;
+    header: IShipmentHeader;
+    stockpile: IShipmentStockpile;
     currency: string;
+}
+
+export interface IShipmentStockpile {
+    stockpileId: string;
+    name: string;
+    shortCode: string;
+}
+
+export interface IShipmentHeader {
+    sequenceNumber: string | null;
+    sourceReference: string | null;
+    issuedOn: string;
+    shippedOn: string;
 }
 
 export interface IShipmentKindInfo {
@@ -63,6 +78,7 @@ export interface IShipmentPartner {
     legalName: string;
     customIdentifier: string;
     address: string;
+    taxId: string;
 }
 
 export class UpdateShipmentRequest {

@@ -1,0 +1,32 @@
+<div class="mt-2 mx-auto shadow p-2 inline-block">
+    <h2>{{ inventoryItem?.sku }} | {{ inventoryItem?.name }}</h2>
+    <form [formGroup]="form"
+          (ngSubmit)="handleSubmit()">
+        <div class="flex flex-col">
+            <label for="quantity">Quantity</label>
+            <input type="number"
+                   formControlName="quantity"
+                   id="quantity"
+                   class="no-arrows pr-2 text-right h-8 p-0 rounded border-slate-300 max-w-sm"
+                   #quantityInput/>
+        </div>
+        <div class="flex flex-col">
+            <label for="price">Price</label>
+            <input type="number"
+                   formControlName="price"
+                   id="price"
+                   class="no-arrows pr-2 text-right h-8 p-0 rounded border-slate-300 max-w-sm"/>
+        </div>
+        <div class="flex flex-col">
+            <label for="taxRate">Tax Rate</label>
+            <input type="number"
+                   formControlName="taxRate"
+                   id="taxRate"
+                   class="no-arrows pr-2 text-right h-8 p-0 rounded border-slate-300 max-w-sm"/>
+        </div>
+        <div class="mt-2 space-x-2">
+            <button class="btn" type="submit">Submit</button>
+            <button class="btn" type="button" (click)="handleCancel()">Cancel</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,108 @@
+@if (uiState == 'add-record') {
+    @if (selectedInventoryItem$ | async; as inventoryItem) {
+        <app-add-record [inventoryItem]="inventoryItem"
+                        (OnCancel)="uiState = 'edit'" (OnRecordAdded)="handleRecordAdded($event)"></app-add-record>
+    }
+} @else if (uiState == 'list-inventory-items') {
+    @if (stockpiles.length > 0) {
+        <app-list-inventory (OnItemConfirmed)="handleInventoryItemConfirmed($event)"
+                            [stockpiles]="stockpiles"></app-list-inventory>
+    }
+} @else if (uiState == 'list-partners') {
+    <app-list-partners (OnItemConfirmed)="handlePartnerChanged($event)"></app-list-partners>
+} @else {
+    @if (shipment$ | async; as shipment) {
+
+        <div class="mt-2 max-w-7xl mx-auto shadow p-2">
+            <h2 class="py-1">
+                @if (shipment.header.sequenceNumber) {
+                    {{ shipment.header.sequenceNumber }}
+                } @else {
+                    {{ shipment.kind.shortCode }} - {{ shipment.kind.name }}
+                }
+            </h2>
+            <hr/>
+            <form class="text-sm" [formGroup]="form">
+                <div class="flex space-x-5 py-4" [formGroup]="header">
+                    <div class="space-x-2">
+                        <label for="issued-on">Issued on</label>
+                        <input class="h-8 p-0 rounded border-slate-300"
+                               type="date"
+                               id="issued-on"
+                               name="issued-on"
+                               autofocus
+                               formControlName="issuedOn">
+                    </div>
+                    <div class="space-x-2">
+                        <label for="shipped-on">Shipped on</label>
+                        <input class="h-8 p-0 rounded border-slate-300"
+                               type="date"
+                               id="shipped-on"
+                               name="received-on"
+                               formControlName="shippedOn">
+                    </div>
+                </div>
+                <div class="space-x-2 pb-4 flex items-center" [formGroup]="header">
+                    <label for="source-reference" class="mr-2">Source reference</label>
+                    <input class="h-8 p-2 rounded border-slate-300 flex-1"
+                           type="text"
+                           id="source-reference"
+                           name="source-reference"
+                           formControlName="sourceReference">
+                </div>
+                <div class="space-x-2 pb-4 flex items-start">
+                    <div class="flex flex-col">
+                        <span>Partner:</span>
+                        <button class="btn" (click)="handleChangePartner()">Change</button>
+                    </div>
+                    <!--                    <span>{{ shipment!.partner.legalName }}<br/>{{ shipment!.partner.taxId }}-->
+                    <!--                        <br/>{{ shipment!.partner.address }}</span>-->
+                    <span>{{ partner.get('legalName')?.value }}<br/>{{ partner.get('taxId')?.value }}
+                        <br/>{{ partner.get('address')?.value }}</span>
+                </div>
+                <table class="border-separate border-spacing-y-2 w-full mt-2">
+                    <thead>
+                    <tr class="text-left text-slate-600 ">
+                        <th class="border-b pb-2 text-sm">#</th>
+                        <th class="border-b pb-2 text-sm">Sku</th>
+                        <th class="border-b pb-2 text-sm">Name</th>
+                        <th class="border-b pb-2 text-sm text-right">Quantity</th>
+                        <th class="border-b pb-2 text-sm text-right">Price</th>
+                        <th class="border-b pb-2 text-sm text-right">Tax</th>
+                        <th class="border-b pb-2 text-sm text-right">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @for (record of records.controls; track record) {
+                            <tr class="hover:bg-slate-200 cursor-pointer">
+                                <td class="border-b p-1 text-slate-400">{{ $index + 1 }}</td>
+                                <td class="border-b p-1">{{ record.get('sku')?.value }}</td>
+                                <td class="border-b p-1">{{ record.get('name')?.value }}</td>
+                                <td class="border-b p-1 text-right">{{ record.get('quantity')?.value }} szt</td>
+                                <td class="border-b p-1 text-right">{{ record.get('unitPrice')?.value }}</td>
+                                <td class="border-b p-1 text-right">{{ record.get('taxRate')?.value }}</td>
+                                <td class="border-b p-1 text-right">{{ record.get('unitPrice')?.value * record.get('quantity')?.value }}</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td>
+                            <button class="btn" (click)="handleAddRecord()">Add</button>
+                        </td>
+                        <td colspan="4"></td>
+                        <td class="p-1 text-right">Total</td>
+                        <td class="p-1 text-right">{{ total }}
+                        <td>
+                    </tr>
+                    </tfoot>
+                </table>
+                <hr/>
+                <div class="py-2 space-x-2">
+                    <button class="btn" (click)="handleSave()">Save</button>
+                    <button class="btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    }
+}

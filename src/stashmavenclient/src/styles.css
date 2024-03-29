@@ -41,3 +41,7 @@ form *:disabled {
 form input[type="checkbox"]:disabled {
     @apply text-gray-400;
 }
+
+form input[type="number"].no-arrows {
+    @apply [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none;
+}

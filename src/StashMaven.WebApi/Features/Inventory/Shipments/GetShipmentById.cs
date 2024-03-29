@@ -35,6 +35,16 @@ public class GetShipmentByIdHandler(
         public required string ShipmentId { get; init; }
     }
 
+    public class GetShipmentByIdResponse
+    {
+        public ShipmentPartner? Partner { get; set; }
+        public Currency Currency { get; set; }
+        public required ShipmentKindInfo Kind { get; set; }
+        public required ShipmentHeader Header { get; set; }
+        public required ShipmentStockpile Stockpile { get; set; }
+        public List<ShipmentRecord> Records { get; set; } = [];
+    }
+    
     public class ShipmentRecord
     {
         public required string InventoryItemId { get; init; }
@@ -42,15 +52,16 @@ public class GetShipmentByIdHandler(
         public required decimal UnitPrice { get; init; }
         public required string Sku { get; init; }
         public required string Name { get; init; }
-        public decimal TaxRate { get; init; }
+        public required decimal TaxRate { get; init; }
+        public required string TaxDefinitionId { get; init; }
+        public required string TaxName { get; init; }
     }
 
-    public class GetShipmentByIdResponse
+    public class ShipmentStockpile
     {
-        public ShipmentPartner? Partner { get; set; }
-        public Currency Currency { get; set; }
-        public required ShipmentKindInfo Kind { get; set; }
-        public List<ShipmentRecord> Records { get; set; } = [];
+        public required string StockpileId { get; set; }
+        public required string Name { get; set; }
+        public required string ShortCode { get; set; }
     }
 
     public class ShipmentKindInfo
@@ -66,6 +77,15 @@ public class GetShipmentByIdHandler(
         public required string CustomIdentifier { get; set; }
         public required string LegalName { get; set; }
         public required string Address { get; set; }
+        public string? TaxId { get; set; }
+    }
+
+    public class ShipmentHeader
+    {
+        public string? SourceReference { get; init; }
+        public string? SequenceNumber { get; init; }
+        public DateTime IssuedOn { get; init; }
+        public DateTime ShippedOn { get; init; }
     }
 
     public async Task<StashMavenResult<GetShipmentByIdResponse>> GetShipmentByIdAsync(
@@ -75,8 +95,12 @@ public class GetShipmentByIdHandler(
             .Include(s => s.Kind)
             .Include(s => s.Records)
             .ThenInclude(shipmentRecord => shipmentRecord.InventoryItem)
-            .Include(shipment => shipment.PartnerRefSnapshot)
-            .Include(shipment => shipment.Partner)
+            .Include(s => s.PartnerRefSnapshot)
+            .Include(s => s.Partner)
+            .Include(s => s.SourceReference)
+            .Include(s => s.Stockpile)
+            .Include(shipment => shipment.Records)
+            .ThenInclude(shipmentRecord => shipmentRecord.Tax)
             .SingleOrDefaultAsync(s => s.ShipmentId.Value == request.ShipmentId);
 
         if (shipment == null)
@@ -94,13 +118,27 @@ public class GetShipmentByIdHandler(
                     CustomIdentifier = shipment.Partner.CustomIdentifier,
                     LegalName = shipment.PartnerRefSnapshot.LegalName,
                     Address = shipment.PartnerRefSnapshot.Address,
+                    TaxId = $"{shipment.PartnerRefSnapshot.PartnerTaxId.TaxIdType}: {shipment.PartnerRefSnapshot.PartnerTaxId.TaxIdValue}"
                 },
             Currency = shipment.Currency,
+            Header = new ShipmentHeader
+            {
+                SequenceNumber = shipment.SequenceNumber?.Value,
+                SourceReference = shipment.SourceReference?.Identifier,
+                IssuedOn = shipment.IssuedOn,
+                ShippedOn = shipment.ShippedOn,
+            },
             Kind = new ShipmentKindInfo
             {
                 Direction = shipment.Kind.Direction.ToString(),
                 Name = shipment.Kind.Name,
                 ShortCode = shipment.Kind.ShortCode,
+            },
+            Stockpile = new ShipmentStockpile
+            {
+                StockpileId = shipment.Stockpile.StockpileId.Value,
+                Name = shipment.Stockpile.Name,
+                ShortCode = shipment.Stockpile.ShortCode,
             },
             Records = shipment.Records.Select(r => new ShipmentRecord
                 {
@@ -109,7 +147,9 @@ public class GetShipmentByIdHandler(
                     UnitPrice = r.UnitPrice,
                     Sku = r.InventoryItem.Sku,
                     Name = r.InventoryItem.Name,
-                    TaxRate = r.TaxRate,
+                    TaxRate = r.Tax.Rate,
+                    TaxDefinitionId = r.Tax.TaxDefinitionId,
+                    TaxName = r.Tax.Name,
                 })
                 .ToList(),
         });

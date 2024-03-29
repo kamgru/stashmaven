@@ -36,7 +36,7 @@ public class ListInventoryItemsHandler(StashMavenContext context, CacheReader ca
 
     public class ListInventoryItemsRequest
     {
-        public string? StockpileId { get; set; }
+        public required string StockpileId { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }
         public string? Search { get; set; }
@@ -69,16 +69,16 @@ public class ListInventoryItemsHandler(StashMavenContext context, CacheReader ca
 
         Stockpile? stockpile;
 
-        if (string.IsNullOrWhiteSpace(request.StockpileId))
-        {
-            stockpile = await cacheReader.GetDefaultStockpileAsync();
-        }
-        else
-        {
-            stockpile = await context.Stockpiles
-                .Include(s => s.InventoryItems)
-                .SingleOrDefaultAsync(s => s.StockpileId.Value == request.StockpileId);
-        }
+        // if (string.IsNullOrWhiteSpace(request.StockpileId))
+        // {
+        //     // stockpile = await cacheReader.GetDefaultStockpileAsync();
+        // }
+        // else
+        // {
+        stockpile = await context.Stockpiles
+            .Include(s => s.InventoryItems)
+            .SingleOrDefaultAsync(s => s.StockpileId.Value == request.StockpileId);
+        // }
 
         if (stockpile == null)
         {
@@ -108,7 +108,7 @@ public class ListInventoryItemsHandler(StashMavenContext context, CacheReader ca
         int totalCount = await query.CountAsync();
 
         List<InventoryItemListItem> inventoryItems = await query
-            .Skip((request.Page - 1 ) * request.PageSize)
+            .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
             .Select(i => new InventoryItemListItem
             {

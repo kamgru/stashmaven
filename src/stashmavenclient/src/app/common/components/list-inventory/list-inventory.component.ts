@@ -25,7 +25,7 @@ export class ListInventoryComponent
     extends li.ListItemsBaseComponent<inv.IInventoryItem, inv.ListInventoryItemsRequest, inv.IListInventoryItemsResponse, inv.ListInventoryService>
     implements OnInit, OnDestroy {
 
-    @Input()
+    @Input({required: true})
     public stockpiles: IStockpileListItem[] = [];
 
     public selectOptions: ISelectOption[] = [];
@@ -48,6 +48,7 @@ export class ListInventoryComponent
     }
 
     ngOnInit(){
+        this.listInventory.changeStockpile(this.stockpiles[0].stockpileId ?? '')
         this.selectOptions = this.stockpiles.map(x => ({value: x.stockpileId, label: x.name}));
     }
 
