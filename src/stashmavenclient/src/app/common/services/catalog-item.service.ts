@@ -29,6 +29,22 @@ export class AddInventoryItemRequest {
     }
 }
 
+export class ChangeCatalogItemStockpileAvailabilityRequest {
+    constructor(
+        public catalogItemId: string,
+        public stockpileAvailabilities: StockpileAvailability[]
+    ) {
+    }
+}
+
+export class StockpileAvailability {
+    constructor(
+        public stockpileId: string,
+        public isAvailable: boolean
+    ) {
+    }
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -60,7 +76,7 @@ export class CatalogItemService {
             `${environment.apiUrl}/api/v1/catalogitem/${catalogItemId}/stockpiles`);
     }
 
-    public addInventoryItem(req: AddInventoryItemRequest){
-        return this.http.post(`${environment.apiUrl}/api/v1/inventoryitem`, req);
+    public changeCatalogItemStockpileAvailability(request: ChangeCatalogItemStockpileAvailabilityRequest): Observable<void> {
+        return this.http.patch<void>(`${environment.apiUrl}/api/v1/inventoryitem/availability`, request);
     }
 }

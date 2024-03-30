@@ -2,10 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {CatalogItemBasePropsComponent} from "./catalog-item-base-props/catalog-item-base-props.component";
 import {ActivatedRoute} from "@angular/router";
 import {
-    AddInventoryItemRequest,
-    CatalogItemService,
+    CatalogItemService, ChangeCatalogItemStockpileAvailabilityRequest,
     ICatalogItemDetails,
-    IGetCatalogItemStockpilesResponse
+    IGetCatalogItemStockpilesResponse, StockpileAvailability
 } from "../../../common/services/catalog-item.service";
 import {Observable} from "rxjs";
 import {AsyncPipe} from "@angular/common";
@@ -33,7 +32,7 @@ export class EditCatalogItemComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private catalogItemService: CatalogItemService,
+        private catalogItemService: CatalogItemService
     ) {
     }
 
@@ -57,14 +56,15 @@ export class EditCatalogItemComponent implements OnInit {
     }
 
     handleSubmitAvailability($event: CatalogItemAvailability[]) {
+        const availability: StockpileAvailability[] = [];
+
         for (let item of $event) {
-            if (item.available) {
-                this.catalogItemService.addInventoryItem(new AddInventoryItemRequest(
-                    this._id!,
-                    item.stockpileId
-                ))
-                    .subscribe()
-            }
+            availability.push(new StockpileAvailability(item.stockpileId, item.available));
         }
+
+        const req = new ChangeCatalogItemStockpileAvailabilityRequest(this._id!, availability);
+
+        this.catalogItemService.changeCatalogItemStockpileAvailability(req)
+            .subscribe();
     }
 }

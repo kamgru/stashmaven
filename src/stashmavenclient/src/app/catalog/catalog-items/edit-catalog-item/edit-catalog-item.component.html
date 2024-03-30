@@ -1,6 +1,6 @@
-<h2></h2>
-<hr/>
 @if (catalogItem$ | async; as catalogItem) {
+    <h2>{{ catalogItem.sku }} - {{ catalogItem.name }}</h2>
+    <hr/>
     <app-catalog-item-base-props [CatalogItemDetails]="catalogItem"
                                  (OnFormSubmit)="handleSubmitDetails($event)">
     </app-catalog-item-base-props>
