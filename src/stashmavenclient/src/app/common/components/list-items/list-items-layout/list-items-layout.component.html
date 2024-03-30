@@ -1,24 +1,30 @@
-<div class="flex">
+<div>
     <app-list-search-input [search]="listResponse.search" (OnSearch)="OnSearch.emit($event)"></app-list-search-input>
     <ng-container *ngTemplateOutlet="toolbarTemplate">
     </ng-container>
 </div>
 <app-list-paging-info [items]="listResponse"></app-list-paging-info>
 <div>
-    <app-list-page-size-select [pageSize]="listResponse.pageSize"
-                               (OnPageSizeChanged)="OnPageSizeChanged.emit($event)"></app-list-page-size-select>
 
-    <table class="table-auto grid border-collapse overflow-scroll max-h-full">
+    <table class="table table-responsive">
         <ng-container *ngTemplateOutlet="itemTemplate">
 
         </ng-container>
         <tfoot>
         <tr>
             <td>
-                <button type="button" (click)="OnPrevPage.emit()">Prev Page</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" (click)="OnPrevPage.emit()">Prev Page
+                </button>
             </td>
             <td>
-                <button type="button" (click)="OnNextPage.emit()">Next Page</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" (click)="OnNextPage.emit()">Next Page
+                </button>
+            </td>
+            <td>
+                <app-list-page-size-select [pageSize]="listResponse.pageSize"
+                                           (OnPageSizeChanged)="OnPageSizeChanged.emit($event)">
+
+                </app-list-page-size-select>
             </td>
         </tr>
         </tfoot>

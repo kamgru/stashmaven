@@ -10,7 +10,6 @@ import {ActivatedRoute, Router} from "@angular/router";
     standalone: true,
     imports: [CommonModule, AddCatalogItemComponent, ListCatalogComponent, ListCatalogComponent],
     templateUrl: './catalog-items.component.html',
-    styleUrls: ['./catalog-items.component.css']
 })
 export class CatalogItemsComponent {
 

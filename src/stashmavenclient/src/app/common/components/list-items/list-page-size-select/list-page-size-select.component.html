@@ -1,6 +1,6 @@
 <div>
     <select #pageSizeSelect
-            class="rounded border-gray-300 shadow-sm"
+            class="form-select"
             (keydown)="$event.preventDefault()"
             (change)="$event.preventDefault(); changePageSize(+pageSizeSelect.value)">
         @for (size of [5, 10, 20, 50]; track size) {

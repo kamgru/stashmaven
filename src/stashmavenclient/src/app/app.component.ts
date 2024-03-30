@@ -5,13 +5,14 @@ import {MSAL_GUARD_CONFIG, MsalBroadcastService, MsalGuardConfiguration, MsalSer
 import {filter, Subject, takeUntil} from "rxjs";
 import {EventMessage, EventType, InteractionStatus} from "@azure/msal-browser";
 import {SideNavComponent} from "./side-nav/side-nav.component";
+import {FaIconLibrary, FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {faCaretRight, faCoffee} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SideNavComponent],
+    imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SideNavComponent, FontAwesomeModule],
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
 
@@ -22,8 +23,10 @@ export class AppComponent implements OnInit, OnDestroy {
     constructor(
         @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
         private authService: MsalService,
-        private msalBroadcastService: MsalBroadcastService
+        private msalBroadcastService: MsalBroadcastService,
+        library: FaIconLibrary
     ) {
+        library.addIcons(faCoffee, faCaretRight)
     }
 
     ngOnInit(): void {

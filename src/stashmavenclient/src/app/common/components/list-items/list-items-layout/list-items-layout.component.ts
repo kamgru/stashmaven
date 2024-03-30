@@ -15,7 +15,6 @@ import {NgTemplateOutlet} from "@angular/common";
         NgTemplateOutlet
     ],
     templateUrl: './list-items-layout.component.html',
-    styleUrl: './list-items-layout.component.css'
 })
 export class ListItemsLayoutComponent {
 
