@@ -1,35 +1,34 @@
-<div class="">
-    @if (listResponse$ | async; as listResponse) {
-        <app-list-items-layout [listResponse]="listResponse"
-                               [itemTemplate]="itemsTemplate"
-                               (OnSearch)="search($event)"
-                               (OnPageSizeChanged)="changePageSize($event)"
-                               (OnPrevPage)="tryPrevPage()"
-                               (OnNextPage)="tryNextPage()">
-            <ng-template #itemsTemplate>
-                <thead>
-                <tr class="">
-                    <th>#</th>
-                    <th (click)="sortBy('sku')">Sku</th>
-                    <th (click)="sortBy('name')">Name</th>
-                    <th>Unit</th>
-                </tr>
-                </thead>
-                <tbody>
-                    @for (catalogItem of listResponse.items; track catalogItem.catalogItemId; let i = $index) {
-                        <tr [class.table-active]="i == currentIndex_$()"
-                            (click)="handleRowClick(catalogItem)"
-                            (dblclick)="handleRowDblClick(catalogItem)" class="">
-                            <td class="align-middle">{{ (listResponse.currentPage - 1) * listResponse.pageSize + i + 1 }}</td>
-                            <td class="align-middle">{{ catalogItem.sku }}</td>
-                            <td class="align-middle">{{ catalogItem.name }}</td>
-                            <td class="align-middle">{{ catalogItem.unitOfMeasure }}</td>
-                        </tr>
-                    }
-                </tbody>
-            </ng-template>
-        </app-list-items-layout>
-    } @else {
-        <div>Loading...</div>
-    }
-</div>
+@if (listResponse$ | async; as listResponse) {
+    <app-list-items-layout [listResponse]="listResponse"
+                           [itemTemplate]="itemsTemplate"
+                           (OnSearch)="search($event)"
+                           (OnPageSizeChanged)="changePageSize($event)"
+                           (OnPrevPage)="tryPrevPage()"
+                           (OnNextPage)="tryNextPage()">
+        <ng-template #itemsTemplate>
+            <thead>
+            <tr>
+                <th class="sort align-middle" scope="col" style="width:70px">#</th>
+                <th class="sort align-middle" scope="col" style="width:200px" (click)="sortBy('sku')">Sku</th>
+                <th class="sort align-middle" scope="col" style="width:350px" (click)="sortBy('name')">Name</th>
+                <th class="sort align-middle" scope="col">Unit</th>
+                <th class="sort text-end align-middle pe-0 ps-4"></th>
+            </tr>
+            </thead>
+            <tbody class="list" id="products-table-body">
+                @for (catalogItem of listResponse.items; track catalogItem.catalogItemId; let i = $index) {
+                    <tr [class.table-primary]="i == currentIndex_$()"
+                        (click)="handleRowClick(catalogItem)"
+                        (dblclick)="handleRowDblClick(catalogItem)" class="position-static">
+                        <td class="text-body-tertiary align-middle white-space-nowrap px-1">{{ (listResponse.currentPage - 1) * listResponse.pageSize + i + 1 }}</td>
+                        <td class="category align-middle">{{ catalogItem.sku }}</td>
+                        <td class="product ps-4 align-middle">{{ catalogItem.name }}</td>
+                        <td class="align-middle">{{ catalogItem.unitOfMeasure }}</td>
+                        <td class="align-middle text-end pe-0 ps-4 btn-reveal-trigger">
+                        <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger"></td>
+                    </tr>
+                }
+            </tbody>
+        </ng-template>
+    </app-list-items-layout>
+}

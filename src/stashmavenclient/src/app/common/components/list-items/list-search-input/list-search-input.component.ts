@@ -1,10 +1,12 @@
 import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
+import {FaIconLibrary, FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {faSearch} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
     selector: 'app-list-search-input',
     standalone: true,
-    imports: [],
+    imports: [FontAwesomeModule],
     templateUrl: './list-search-input.component.html',
     styleUrl: './list-search-input.component.css'
 })
@@ -29,7 +31,11 @@ export class ListSearchInputComponent {
         this._searchInput?.nativeElement.blur();
     }
 
-    constructor() {
+    constructor(
+        library: FaIconLibrary
+    ) {
+        library.addIcons(faSearch);
+
         this._search$
             .pipe(
                 debounceTime(300),

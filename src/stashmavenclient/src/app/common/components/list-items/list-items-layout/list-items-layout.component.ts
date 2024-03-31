@@ -4,6 +4,8 @@ import {ListPageSizeSelectComponent} from "../list-page-size-select/list-page-si
 import {ListPagingInfoComponent} from "../list-paging-info/list-paging-info.component";
 import {ListSearchInputComponent} from "../list-search-input/list-search-input.component";
 import {NgTemplateOutlet} from "@angular/common";
+import {FaIconLibrary, FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {faAngleLeft, faAngleRight} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
     selector: 'app-list-items-layout',
@@ -12,7 +14,8 @@ import {NgTemplateOutlet} from "@angular/common";
         ListPageSizeSelectComponent,
         ListPagingInfoComponent,
         ListSearchInputComponent,
-        NgTemplateOutlet
+        NgTemplateOutlet,
+        FontAwesomeModule
     ],
     templateUrl: './list-items-layout.component.html',
 })
@@ -41,4 +44,10 @@ export class ListItemsLayoutComponent {
 
     @Output()
     public OnNextPage = new EventEmitter<void>();
+
+    constructor(
+        library: FaIconLibrary
+    ) {
+        library.addIcons(faAngleLeft, faAngleRight);
+    }
 }

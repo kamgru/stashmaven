@@ -1,8 +1,9 @@
-<div>
+<form class="position-relative">
     <input #searchInput
-           type="text"
+           type="search"
            placeholder="Search"
-           class="form-control"
+           class="form-control search-input search"
            [value]="search"
            (input)="handleInput(searchInput.value)"/>
-</div>
+    <fa-icon icon="search" class="search-box-icon"></fa-icon>
+</form>

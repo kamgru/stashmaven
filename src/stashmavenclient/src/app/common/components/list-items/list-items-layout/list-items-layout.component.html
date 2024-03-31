@@ -1,32 +1,39 @@
 <div>
-    <app-list-search-input [search]="listResponse.search" (OnSearch)="OnSearch.emit($event)"></app-list-search-input>
     <ng-container *ngTemplateOutlet="toolbarTemplate">
     </ng-container>
 </div>
-<app-list-paging-info [items]="listResponse"></app-list-paging-info>
-<div>
+<!--<app-list-paging-info [items]="listResponse"></app-list-paging-info>-->
 
-    <table class="table table-responsive">
-        <ng-container *ngTemplateOutlet="itemTemplate">
-
-        </ng-container>
-        <tfoot>
-        <tr>
-            <td>
-                <button type="button" class="btn btn-outline-secondary btn-sm" (click)="OnPrevPage.emit()">Prev Page
-                </button>
-            </td>
-            <td>
-                <button type="button" class="btn btn-outline-secondary btn-sm" (click)="OnNextPage.emit()">Next Page
-                </button>
-            </td>
-            <td>
-                <app-list-page-size-select [pageSize]="listResponse.pageSize"
-                                           (OnPageSizeChanged)="OnPageSizeChanged.emit($event)">
-
-                </app-list-page-size-select>
-            </td>
-        </tr>
-        </tfoot>
-    </table>
+<div class="mb-4">
+    <div class="d-flex flex-wrap gap-3">
+        <div class="search-box">
+            <app-list-search-input [search]="listResponse.search"
+                                   (OnSearch)="OnSearch.emit($event)"></app-list-search-input>
+        </div>
+    </div>
+</div>
+<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1">
+    <div class="table-responsive scrollbar mx-n1 px-1">
+        <table class="table fs-9 mb-0">
+            <ng-container *ngTemplateOutlet="itemTemplate">
+            </ng-container>
+        </table>
+    </div>
+    <div class="row align-items-center justify-content-between py-2 pe-0 fs-9">
+        <div class="col-auto d-flex align-items-baseline gap-2">
+            <span class="fw-semibold">
+            showing
+            </span>
+            <app-list-page-size-select [pageSize]="listResponse.pageSize"
+                                       (OnPageSizeChanged)="OnPageSizeChanged.emit($event)">
+            </app-list-page-size-select>
+            <span class="fw-semibold">
+            items of {{ listResponse.totalCount }}
+            </span>
+        </div>
+        <div class="col-auto d-flex">
+            <button class="page-link"><fa-icon icon="angle-left"></fa-icon></button>
+            <button class="page-link"><fa-icon icon="angle-right"></fa-icon></button>
+        </div>
+    </div>
 </div>

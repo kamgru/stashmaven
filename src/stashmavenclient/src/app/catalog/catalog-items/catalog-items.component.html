@@ -1,10 +1,20 @@
-<div *ngIf="uiState == 'add'">
-    <app-add-catalog-item (onAdded)="uiState = 'list'" (onCancel)="uiState = 'list'"></app-add-catalog-item>
-</div>
-
-<div class="h-4/5 mr-2" *ngIf="uiState == 'list'">
-    <div>
-        <button (click)="uiState = 'add'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add</button>
+<div class="mb-9">
+    <div class="row g-3 mb-4">
+        <div class="col-auto">
+            <h2 class="mb-0">Catalog</h2>
+        </div>
     </div>
-    <app-list-catalog (OnItemConfirmed)="handleItemConfirmed($event)"></app-list-catalog>
+    <div id="products">
+        <app-list-catalog (OnItemConfirmed)="handleItemConfirmed($event)"></app-list-catalog>
+    </div>
 </div>
+<!--<div *ngIf="uiState == 'add'">-->
+<!--    <app-add-catalog-item (onAdded)="uiState = 'list'" (onCancel)="uiState = 'list'"></app-add-catalog-item>-->
+<!--</div>-->
+
+<!--<div class="h-4/5 mr-2" *ngIf="uiState == 'list'">-->
+<!--    <div>-->
+<!--        <button (click)="uiState = 'add'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add</button>-->
+<!--    </div>-->
+<!--    <app-list-catalog (OnItemConfirmed)="handleItemConfirmed($event)"></app-list-catalog>-->
+<!--</div>-->

@@ -1,10 +1,8 @@
-<div>
-    <select #pageSizeSelect
-            class="form-select"
-            (keydown)="$event.preventDefault()"
-            (change)="$event.preventDefault(); changePageSize(+pageSizeSelect.value)">
-        @for (size of [5, 10, 20, 50]; track size) {
-            <option [value]="size" [selected]="size == pageSize">{{ size }}</option>
-        }))
-    </select>
-</div>
+<select #pageSizeSelect
+        class="form-control"
+        (keydown)="$event.preventDefault()"
+        (change)="$event.preventDefault(); changePageSize(+pageSizeSelect.value)">
+    @for (size of [5, 10, 20, 50]; track size) {
+        <option [value]="size" [selected]="size == pageSize">{{ size }}</option>
+    }))
+</select>
