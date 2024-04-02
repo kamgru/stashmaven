@@ -1,10 +1,15 @@
 @if (listResponse$ | async; as listResponse) {
     <app-list-items-layout [listResponse]="listResponse"
+                           [toolbarTemplate]="toolbarOuter"
                            [itemTemplate]="itemsTemplate"
                            (OnSearch)="search($event)"
                            (OnPageSizeChanged)="changePageSize($event)"
                            (OnPrevPage)="tryPrevPage()"
                            (OnNextPage)="tryNextPage()">
+        <ng-template #toolbarOuter>
+            <ng-container *ngTemplateOutlet="toolbarTemplate">
+            </ng-container>
+        </ng-template>
         <ng-template #itemsTemplate>
             <thead>
             <tr>

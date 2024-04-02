@@ -1,23 +1,36 @@
-<div>
-    <form class="form-container" [formGroup]="addCatalogItemForm" (ngSubmit)="onSubmit()">
-        <div class="form-control">
-            <label for="item-name">Name</label>
-            <input type="text" id="item-name" formControlName="name">
+<form class="mb-9" [formGroup]="addCatalogItemForm" (ngSubmit)="handleSubmit()">
+    <div class="row g-3 flex-between-end mb-5">
+        <div class="col-auto">
+            <h2>Add a product</h2>
+            <h5 class="text-body-tertiary fw-semibold">Add a product to catalog</h5>
         </div>
-        <div class="form-control">
-            <label for="sku">SKU</label>
-            <input type="text" id="sku" formControlName="sku">
+    </div>
+    <div class="row g-5">
+        <div class="col-12 col-xl-6">
+            <h4 class="mb-3">Product Name</h4>
+            <input type="text" class="form-control mb-5" formControlName="name"/>
+            <div class="mb-6">
+                <h4 class="mb-3">SKU</h4>
+                <input type="text" class="form-control mb-5" formControlName="sku"/>
+            </div>
+            <div class="mb-6">
+                <h4 class="mb-3">Unit of Measure</h4>
+                <select class="form-select" formControlName="unitOfMeasure">
+                    @for (option of unitsOfMeasure; track option) {
+                        <option [value]="option">{{ option }}</option>
+                    }
+                </select>
+            </div>
         </div>
-        <div class="form-control">
-            <label for="unit">Unit</label>
-            <select id="unit" formControlName="unitOfMeasure">
-                <option *ngFor="let unit of unitsOfMeasure" [value]="unit">{{ unit }}</option>
-            </select>
-        </div>
+    </div>
 
-        <div class="">
-            <button class="mr-2" type="submit" [disabled]="!addCatalogItemForm.valid">Submit</button>
-            <button type="button" class="btn" (click)="onCancel.emit()">Cancel</button>
+    <div class="row">
+        <div class="col-auto">
+            <button class="btn btn-primary mb-2 mb-sm-0 me-2" type="submit">Save</button>
+            <button class="btn btn-phoenix-secondary mb-2 mb-sm-0"
+                    type="button"
+                    (click)="OnCancelled.emit()">Cancel
+            </button>
         </div>
-    </form>
-</div>
+    </div>
+</form>

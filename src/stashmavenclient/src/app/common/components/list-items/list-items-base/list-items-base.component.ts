@@ -38,6 +38,9 @@ export class ListItemsBaseComponent<TItem, TListRequest extends IListRequest,
     @Input()
     public itemsTemplate: TemplateRef<any> | null = null;
 
+    @Input()
+    public toolbarTemplate: TemplateRef<any> | null = null;
+
     @Output()
     public OnItemSelected = new EventEmitter<TItem>();
 

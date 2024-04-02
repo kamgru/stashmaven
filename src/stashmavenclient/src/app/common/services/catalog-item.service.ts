@@ -3,6 +3,15 @@ import {Injectable} from "@angular/core";
 import {map, Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
 
+export class AddCatalogItemRequest {
+    constructor(
+        public name: string,
+        public sku: string,
+        public unitOfMeasure: string,
+    ) {
+    }
+}
+
 export interface ICatalogItemDetails {
     catalogItemId: string;
     name: string;
@@ -78,5 +87,9 @@ export class CatalogItemService {
 
     public changeCatalogItemStockpileAvailability(request: ChangeCatalogItemStockpileAvailabilityRequest): Observable<void> {
         return this.http.patch<void>(`${environment.apiUrl}/api/v1/inventoryitem/availability`, request);
+    }
+
+    add(req: AddCatalogItemRequest): Observable<string> {
+        return this.http.post<string>(`${environment.apiUrl}/api/v1/catalogitem`, req);
     }
 }

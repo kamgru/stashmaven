@@ -1,20 +1,26 @@
-<div class="mb-9">
-    <div class="row g-3 mb-4">
-        <div class="col-auto">
-            <h2 class="mb-0">Catalog</h2>
+@if (uiState == 'list') {
+    <div class="mb-9">
+        <div class="row g-3 mb-4">
+            <div class="col-auto">
+                <h2 class="mb-0">Catalog</h2>
+            </div>
+        </div>
+        <div id="products">
+            <ng-template #toolbar>
+                <div class="ms-xxl-auto">
+                    <button class="btn btn-primary" (click)="uiState = 'add'">
+                        <fa-icon icon="plus" class="me-2"></fa-icon>
+                        <span>Add Product</span>
+                    </button>
+                </div>
+            </ng-template>
+            <app-list-catalog [toolbarTemplate]="toolbar"
+                              (OnItemConfirmed)="handleItemConfirmed($event)">
+            </app-list-catalog>
         </div>
     </div>
-    <div id="products">
-        <app-list-catalog (OnItemConfirmed)="handleItemConfirmed($event)"></app-list-catalog>
-    </div>
-</div>
-<!--<div *ngIf="uiState == 'add'">-->
-<!--    <app-add-catalog-item (onAdded)="uiState = 'list'" (onCancel)="uiState = 'list'"></app-add-catalog-item>-->
-<!--</div>-->
-
-<!--<div class="h-4/5 mr-2" *ngIf="uiState == 'list'">-->
-<!--    <div>-->
-<!--        <button (click)="uiState = 'add'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add</button>-->
-<!--    </div>-->
-<!--    <app-list-catalog (OnItemConfirmed)="handleItemConfirmed($event)"></app-list-catalog>-->
-<!--</div>-->
+} @else if (uiState == 'add') {
+    <app-add-catalog-item (OnCancelled)="uiState = 'list'"
+                          (OnProductAdded)="handleProductAdded($event)">
+    </app-add-catalog-item>
+}
