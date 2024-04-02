@@ -3,7 +3,7 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Options;
-using StashMaven.WebApi.Features.Catalog.CatalogItems;
+using StashMaven.WebApi.Features.Catalog.Products;
 using StashMaven.WebApi.Features.Common.Countries;
 using StashMaven.WebApi.Features.Common.TaxDefinitions;
 using StashMaven.WebApi.Features.Inventory.InventoryItems;
@@ -89,34 +89,34 @@ public abstract class TestFixture
         return addTaxDefinitionResponse?.TaxDefinitionId ?? string.Empty;
     }
 
-    public async Task<string> AddCatalogItem(
+    public async Task<string> AddProduct(
         string taxDefinitionId)
     {
         using HttpClient http = CreateClient();
         string name = Guid.NewGuid().ToString();
-        AddCatalogItemHandler.AddCatalogItemRequest request = new()
+        AddProductHandler.AddProductRequest request = new()
         {
             Name = name,
-            Sku = name[..CatalogItem.SkuMaxLength],
+            Sku = name[..Product.SkuMaxLength],
             UnitOfMeasure = UnitOfMeasure.Kg
         };
-        HttpResponseMessage response = await http.PostAsJsonAsync("api/v1/catalogitem", request);
+        HttpResponseMessage response = await http.PostAsJsonAsync("api/v1/Product", request);
         response.EnsureSuccessStatusCode();
 
-        AddCatalogItemHandler.AddCatalogItemResponse? addCatalogItemResponse =
-            await response.Content.ReadFromJsonAsync<AddCatalogItemHandler.AddCatalogItemResponse>();
+        AddProductHandler.AddProductResponse? addProductResponse =
+            await response.Content.ReadFromJsonAsync<AddProductHandler.AddProductResponse>();
 
-        return addCatalogItemResponse?.CatalogItemId ?? string.Empty;
+        return addProductResponse?.ProductId ?? string.Empty;
     }
 
     public async Task<string> AddInventoryItem(
-        string catalogItemId,
+        string ProductId,
         string stockpileId)
     {
         using HttpClient http = CreateClient();
         AddInventoryItemHandler.AddInventoryItemRequest request = new()
         {
-            CatalogItemId = catalogItemId,
+            ProductId = ProductId,
             StockpileId = stockpileId
         };
         HttpResponseMessage response = await http.PostAsJsonAsync("api/v1/inventoryitem", request);

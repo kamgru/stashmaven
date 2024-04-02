@@ -1,0 +1,13 @@
+@if (product$ | async; as product) {
+    <h2>{{ product.sku }} - {{ product.name }}</h2>
+    <hr/>
+    <app-product-base-props [ProductDetails]="product"
+                                 (OnFormSubmit)="handleSubmitDetails($event)">
+    </app-product-base-props>
+}
+<hr/>
+@if (stockpiles$ | async; as stockpiles) {
+    <app-product-stockpiles [stockpiles]="stockpiles.stockpiles"
+                                 (OnFormSubmit)="handleSubmitAvailability($event)">
+    </app-product-stockpiles>
+}

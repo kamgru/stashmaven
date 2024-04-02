@@ -26,7 +26,7 @@ public static class ErrorCodes
     public const ErrorCode ConcurrencyResolutionFailed = 200006;
     
     // Catalog
-    public const ErrorCode CatalogItemNotFound = 300000;
+    public const ErrorCode ProductNotFound = 300000;
     
     // Country
     public const ErrorCode CountryNotFound = 110000;
@@ -37,7 +37,6 @@ public static class ErrorCodes
     public const ErrorCode InventoryItemHasQuantity = 400001;
     public const ErrorCode InventoryItemAlreadyExists = 400002;
     public const ErrorCode InventoryItemHasRecords = 400003;
-    
     
     // Stockpile
     public const ErrorCode StockpileNotFound = 50000;

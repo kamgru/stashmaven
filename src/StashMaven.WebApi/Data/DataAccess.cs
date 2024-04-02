@@ -19,7 +19,7 @@ public class StashMavenContext : DbContext
         modelBuilder.ApplyConfiguration(new Address.TypeConfig());
         modelBuilder.ApplyConfiguration(new TaxIdentifier.TypeConfig());
 
-        modelBuilder.ApplyConfiguration(new CatalogItem.TypeConfig());
+        modelBuilder.ApplyConfiguration(new Product.TypeConfig());
         modelBuilder.ApplyConfiguration(new Brand.TypeConfig());
 
         modelBuilder.ApplyConfiguration(new TaxDefinition.TypeConfig());
@@ -45,7 +45,7 @@ public class StashMavenContext : DbContext
     public DbSet<CompanyOption> CompanyOptions => Set<CompanyOption>();
     public DbSet<StashMavenOption> StashMavenOptions => Set<StashMavenOption>();
 
-    public DbSet<CatalogItem> CatalogItems => Set<CatalogItem>();
+    public DbSet<Product> Products => Set<Product>();
     public DbSet<Brand> Brands => Set<Brand>();
 
     public DbSet<Shipment> Shipments => Set<Shipment>();
@@ -107,12 +107,12 @@ public class StashMavenRepository(StashMavenContext context)
         CompanyOption option) =>
         context.CompanyOptions.Add(option);
     
-    public async Task<CatalogItem?> GetCatalogItemAsync(
-        CatalogItemId catalogItemId) =>
-        await context.CatalogItems
+    public async Task<Product?> GetProductAsync(
+        ProductId productId) =>
+        await context.Products
             .AsTracking()
             .Include(x => x.Brand)
-            .FirstOrDefaultAsync(ci => ci.CatalogItemId.Value == catalogItemId.Value);
+            .FirstOrDefaultAsync(ci => ci.ProductId.Value == productId.Value);
     
     public void InsertStockpile(
         Stockpile stockpile) =>

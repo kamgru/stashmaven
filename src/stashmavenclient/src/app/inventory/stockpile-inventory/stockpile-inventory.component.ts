@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ListCatalogComponent} from "../../common/components/list-catalog/list-catalog.component";
+import {ListProductsComponent} from "../../common/components/list-products/list-products.component";
 import {AsyncPipe, NgIf} from "@angular/common";
 import {ListInventoryComponent} from "../../common/components/list-inventory/list-inventory.component";
 import {forkJoin, map} from "rxjs";
@@ -11,7 +11,7 @@ import {StockpileService} from "../../common/services/stockpile.service";
     selector: 'app-stockpile-inventory',
     standalone: true,
     imports: [
-        ListCatalogComponent,
+        ListProductsComponent,
         NgIf,
         ListInventoryComponent,
         AsyncPipe

@@ -30,7 +30,7 @@ public class AddInventoryItemHandler(
 {
     public class AddInventoryItemRequest
     {
-        public required string CatalogItemId { get; set; }
+        public required string ProductId { get; set; }
         public required string StockpileId { get; set; }
     }
 
@@ -42,11 +42,11 @@ public class AddInventoryItemHandler(
     public async Task<StashMavenResult<AddInventoryItemResponse>> AddInventoryItemAsync(
         AddInventoryItemRequest request)
     {
-        CatalogItem? catalogItem = await repository.GetCatalogItemAsync(new CatalogItemId(request.CatalogItemId));
+        Product? Product = await repository.GetProductAsync(new ProductId(request.ProductId));
 
-        if (catalogItem == null)
+        if (Product == null)
         {
-            return StashMavenResult<AddInventoryItemResponse>.Error($"Catalog item {request.CatalogItemId} not found");
+            return StashMavenResult<AddInventoryItemResponse>.Error($"Catalog item {request.ProductId} not found");
         }
 
         Stockpile? stockpile = await repository.GetStockpileAsync(new StockpileId(request.StockpileId));
@@ -57,23 +57,23 @@ public class AddInventoryItemHandler(
         }
 
         InventoryItem? existingItem = await context.InventoryItems
-            .FirstOrDefaultAsync(i => i.InventoryItemId.Value == request.CatalogItemId
+            .FirstOrDefaultAsync(i => i.InventoryItemId.Value == request.ProductId
                                       && i.Stockpile.Id == stockpile.Id);
 
         if (existingItem != null)
         {
             return StashMavenResult<AddInventoryItemResponse>.Error(
-                $"Inventory item {request.CatalogItemId} already exists in stockpile {request.StockpileId}");
+                $"Inventory item {request.ProductId} already exists in stockpile {request.StockpileId}");
         }
 
         InventoryItem inventoryItem = new()
         {
             InventoryItemId = new InventoryItemId(Guid.NewGuid().ToString()),
-            Sku = catalogItem.Sku,
-            Name = catalogItem.Name,
+            Sku = Product.Sku,
+            Name = Product.Name,
             Version = 0,
             Stockpile = stockpile,
-            CatalogItem = catalogItem,
+            Product = Product,
         };
 
         context.InventoryItems.Add(inventoryItem);

@@ -54,12 +54,12 @@ public class StashMavenClient(HttpClient client)
     }
 
     public async Task<string> AddInventoryItemAsync(
-        string catalogItemId,
+        string ProductId,
         string stockpileId)
     {
         HttpResponseMessage response = await client.PostAsJsonAsync("api/v1/InventoryItem", new
         {
-            catalogItemId,
+            ProductId,
             stockpileId
         });
 
@@ -70,19 +70,19 @@ public class StashMavenClient(HttpClient client)
                ?? throw new InvalidOperationException("Unable to deserialize inventory item");
     }
 
-    public class AddCatalogItemResponse
+    public class AddProductResponse
     {
-        public required string CatalogItemId { get; set; }
+        public required string ProductId { get; set; }
     }
 
-    public async Task<string> AddCatalogItemAsync(
+    public async Task<string> AddProductAsync(
         string sku,
         string name,
         string unitOfMeasure,
         string buyTaxDefinitionId,
         string sellTaxDefinitionId)
     {
-        HttpResponseMessage response = await client.PostAsJsonAsync("api/v1/CatalogItem", new
+        HttpResponseMessage response = await client.PostAsJsonAsync("api/v1/Product", new
         {
             sku,
             name,
@@ -93,8 +93,8 @@ public class StashMavenClient(HttpClient client)
 
         response.EnsureSuccessStatusCode();
 
-        AddCatalogItemResponse? result = await response.Content.ReadFromJsonAsync<AddCatalogItemResponse>();
-        return result?.CatalogItemId
+        AddProductResponse? result = await response.Content.ReadFromJsonAsync<AddProductResponse>();
+        return result?.ProductId
                ?? throw new InvalidOperationException("Unable to deserialize catalog item");
     }
 

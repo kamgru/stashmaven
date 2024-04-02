@@ -26,10 +26,10 @@ public class AcceptShipmentHandlerTests(
         string outShipmentKindId = await fixture.AddShipmentKind(ShipmentDirection.Out);
         string taxDefinitionId = await fixture.AddTaxDefinition();
         string partnerId = await fixture.AddPartner();
-        string catalogItem1Id = await fixture.AddCatalogItem(taxDefinitionId);
-        string catalogItem2Id = await fixture.AddCatalogItem(taxDefinitionId);
-        string inventoryItemId1 = await fixture.AddInventoryItem(catalogItem1Id, stockpileId);
-        string inventoryItemId2 = await fixture.AddInventoryItem(catalogItem2Id, stockpileId);
+        string Product1Id = await fixture.AddProduct(taxDefinitionId);
+        string Product2Id = await fixture.AddProduct(taxDefinitionId);
+        string inventoryItemId1 = await fixture.AddInventoryItem(Product1Id, stockpileId);
+        string inventoryItemId2 = await fixture.AddInventoryItem(Product2Id, stockpileId);
 
         const int numberOfConcurrentRequests = 20;
         List<string> shipmentIds = [];
@@ -75,8 +75,8 @@ public class AcceptShipmentHandlerTests(
         string stockpileId = await fixture.AddStockpile();
         string shipmentKindId = await fixture.AddShipmentKind();
         string taxDefinitionId = await fixture.AddTaxDefinition();
-        string catalogItemId = await fixture.AddCatalogItem(taxDefinitionId);
-        string inventoryItemId = await fixture.AddInventoryItem(catalogItemId, stockpileId);
+        string ProductId = await fixture.AddProduct(taxDefinitionId);
+        string inventoryItemId = await fixture.AddInventoryItem(ProductId, stockpileId);
         string partnerId = await fixture.AddPartner();
         string shipmentId = await fixture.AddShipment(stockpileId, shipmentKindId);
         await fixture.AddSourceReference(shipmentId, Guid.NewGuid().ToString());
@@ -97,8 +97,8 @@ public class AcceptShipmentHandlerTests(
         string stockpileId = await fixture.AddStockpile();
         string shipmentKindId = await fixture.AddShipmentKind();
         string taxDefinitionId = await fixture.AddTaxDefinition();
-        string catalogItemId = await fixture.AddCatalogItem(taxDefinitionId);
-        string inventoryItemId = await fixture.AddInventoryItem(catalogItemId, stockpileId);
+        string ProductId = await fixture.AddProduct(taxDefinitionId);
+        string inventoryItemId = await fixture.AddInventoryItem(ProductId, stockpileId);
         string partnerId = await fixture.AddPartner();
         string shipmentId = await fixture.AddShipment(stockpileId, shipmentKindId);
         await fixture.AddSourceReference(shipmentId, Guid.NewGuid().ToString());

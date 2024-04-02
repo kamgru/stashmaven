@@ -5,7 +5,7 @@ namespace StashMaven.WebApi.Data;
 public record BrandId(
     string Value);
 
-public record CatalogItemId(
+public record ProductId(
     string Value);
 
 public class Brand
@@ -14,7 +14,7 @@ public class Brand
     public required BrandId BrandId { get; set; }
     public required string Name { get; set; }
     public required string ShortCode { get; set; }
-    public List<CatalogItem> CatalogItems { get; set; } = [];
+    public List<Product> Products { get; set; } = [];
 
     public class TypeConfig : IEntityTypeConfiguration<Brand>
     {
@@ -28,20 +28,20 @@ public class Brand
     }
 }
 
-public class CatalogItemTaxReference
+public class ProductTaxReference
 {
     public required string Name { get; set; }
     public decimal Rate { get; set; }
     public required string TaxDefinitionIdValue { get; set; }
 }
 
-public class CatalogItem
+public class Product
 {
     public const int SkuMaxLength = 10;
     public const int NameMaxLength = 256;
 
     public int Id { get; set; }
-    public required CatalogItemId CatalogItemId { get; set; }
+    public required ProductId ProductId { get; set; }
     public required string Name { get; set; }
     public required string Sku { get; set; }
     public required UnitOfMeasure UnitOfMeasure { get; set; }
@@ -51,14 +51,14 @@ public class CatalogItem
     public DateTime UpdatedOn { get; set; }
     public ICollection<InventoryItem> InventoryItems { get; set; } = [];
 
-    public class TypeConfig : IEntityTypeConfiguration<CatalogItem>
+    public class TypeConfig : IEntityTypeConfiguration<Product>
     {
-        public void Configure(EntityTypeBuilder<CatalogItem> builder)
+        public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.ToTable("CatalogItem", "cat");
-            builder.OwnsOne(e => e.CatalogItemId)
+            builder.ToTable("Product", "cat");
+            builder.OwnsOne(e => e.ProductId)
                 .Property(e => e.Value)
-                .HasColumnName("CatalogItemId");
+                .HasColumnName("ProductId");
             builder.Property(e => e.Sku)
                 .HasMaxLength(SkuMaxLength);
             builder.HasIndex(e => e.Sku)

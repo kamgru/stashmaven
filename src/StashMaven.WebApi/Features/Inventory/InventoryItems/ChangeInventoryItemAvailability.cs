@@ -28,7 +28,7 @@ public class ChangeInventoryItemStockpileAvailabilityHandler(
 {
     public class ChangeInventoryItemStockpileAvailabilityRequest
     {
-        public required string CatalogItemId { get; init; }
+        public required string ProductId { get; init; }
         public required IReadOnlyList<StockpileAvailability> StockpileAvailabilities { get; init; } = [];
     }
 
@@ -41,20 +41,20 @@ public class ChangeInventoryItemStockpileAvailabilityHandler(
     public async Task<StashMavenResult> ChangeInventoryItemStockpileAvailabilityAsync(
         ChangeInventoryItemStockpileAvailabilityRequest request)
     {
-        CatalogItem? catalogItem = await context.CatalogItems
+        Product? Product = await context.Products
             .AsTracking()
-            .FirstOrDefaultAsync(c => c.CatalogItemId.Value == request.CatalogItemId);
+            .FirstOrDefaultAsync(c => c.ProductId.Value == request.ProductId);
 
-        if (catalogItem == null)
+        if (Product == null)
         {
-            return StashMavenResult.Error(ErrorCodes.CatalogItemNotFound);
+            return StashMavenResult.Error(ErrorCodes.ProductNotFound);
         }
 
         foreach (StockpileAvailability stockpileAvailability in request.StockpileAvailabilities)
         {
             InventoryItem? inventoryItem = await context.InventoryItems
                 .AsTracking()
-                .FirstOrDefaultAsync(i => i.CatalogItem.Id == catalogItem.Id
+                .FirstOrDefaultAsync(i => i.Product.Id == Product.Id
                                           && i.Stockpile.StockpileId.Value == stockpileAvailability.StockpileId);
 
             switch (inventoryItem)
@@ -76,11 +76,11 @@ public class ChangeInventoryItemStockpileAvailabilityHandler(
                     inventoryItem = new InventoryItem
                     {
                         InventoryItemId = new InventoryItemId(Guid.NewGuid().ToString()),
-                        Sku = catalogItem.Sku,
-                        Name = catalogItem.Name,
+                        Sku = Product.Sku,
+                        Name = Product.Name,
                         Version = 0,
                         Stockpile = stockpile,
-                        CatalogItem = catalogItem,
+                        Product = Product,
                     };
 
                     context.InventoryItems.Add(inventoryItem);

@@ -9,7 +9,7 @@ public class TaxDefinition
     public decimal Rate { get; set; }
 }
 
-public class CatalogItem
+public class Product
 {
     public string? Name { get; set; }
     public string? Sku { get; set; }
@@ -92,9 +92,9 @@ class Program
             taxDefinition.TaxDefinitionId = await client.AddTaxDefinitionAsync(taxDefinition.Name!, taxDefinition.Rate);
         }
 
-        string catalogItemsJson = await File.ReadAllTextAsync("fake_catalog_items.json");
+        string ProductsJson = await File.ReadAllTextAsync("fake_catalog_items.json");
 
-        List<CatalogItem> catalogItems = JsonSerializer.Deserialize<List<CatalogItem>>(catalogItemsJson,
+        List<Product> Products = JsonSerializer.Deserialize<List<Product>>(ProductsJson,
                                              new JsonSerializerOptions
                                              {
                                                  PropertyNameCaseInsensitive = true
@@ -104,22 +104,22 @@ class Program
 
         Random random = new();
         string[] units = ["Pc", "Kg", "L"];
-        List<string> catalogItemIds = [];
-        foreach (CatalogItem catalogItem in catalogItems)
+        List<string> ProductIds = [];
+        foreach (Product Product in Products)
         {
-            string catalogItemId = await client.AddCatalogItemAsync(
-                catalogItem.Sku!,
-                catalogItem.Name!,
+            string ProductId = await client.AddProductAsync(
+                Product.Sku!,
+                Product.Name!,
                 units[random.Next(0, 3)],
                 taxDefinitions[random.Next(0, taxDefinitions.Count)].TaxDefinitionId!,
                 taxDefinitions[random.Next(0, taxDefinitions.Count)].TaxDefinitionId!);
-            catalogItemIds.Add(catalogItemId);
+            ProductIds.Add(ProductId);
         }
 
         string stockpileId = await client.AddStockpileAsync("Default", "M1");
-        foreach (string catalogItemId in catalogItemIds)
+        foreach (string ProductId in ProductIds)
         {
-            await client.AddInventoryItemAsync(catalogItemId, stockpileId);
+            await client.AddInventoryItemAsync(ProductId, stockpileId);
         }
     }
 }

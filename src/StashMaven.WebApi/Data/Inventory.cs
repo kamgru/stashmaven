@@ -51,7 +51,7 @@ public class InventoryItem
     public decimal LastPurchasePrice { get; set; }
     public ICollection<ShipmentRecord> ShipmentRecords { get; set; } = new List<ShipmentRecord>();
     public Stockpile Stockpile { get; set; } = null!;
-    public CatalogItem CatalogItem { get; set; } = null!;
+    public Product Product { get; set; } = null!;
 
     [Timestamp]
     public uint Version { get; set; }

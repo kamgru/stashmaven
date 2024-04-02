@@ -2,35 +2,35 @@
 //
 // namespace StashMaven.Tests.WebApi.Catalog.Brands;
 //
-// public class AddCatalogItemToBrandTests(
-//     AddCatalogItemToBrandTestFixture fixture) : IClassFixture<AddCatalogItemToBrandTestFixture>
+// public class AddProductToBrandTests(
+//     AddProductToBrandTestFixture fixture) : IClassFixture<AddProductToBrandTestFixture>
 // {
 //     [Fact]
-//     public async Task WhenRequestValid_AddsCatalogItemToBrand()
+//     public async Task WhenRequestValid_AddsProductToBrand()
 //     {
 //         HttpClient client = fixture.CreateClient();
 //
 //         const string brandId = "brand-1";
-//         const string catalogItemId = "catalog-item-1";
+//         const string ProductId = "catalog-item-1";
 //
 //         HttpResponseMessage response = await client.PostAsJsonAsync(
 //             "/api/v1/brand/add-catalog-item",
-//             new AddCatalogItemToBrandHandler.AddCatalogItemToBrandRequest
+//             new AddProductToBrandHandler.AddProductToBrandRequest
 //             {
 //                 BrandId = brandId,
-//                 CatalogItemId = catalogItemId
+//                 ProductId = ProductId
 //             });
 //
 //         response.EnsureSuccessStatusCode();
 //
 //         await using StashMavenContext context = fixture.CreateDbContext();
 //         Brand? brand = await context.Brands
-//             .Include(b => b.CatalogItems)
+//             .Include(b => b.Products)
 //             .SingleOrDefaultAsync(b => b.BrandId.Value == brandId);
 //
 //         Assert.NotNull(brand);
-//         Assert.Single(brand.CatalogItems);
-//         Assert.Equal(catalogItemId, brand.CatalogItems.Single().CatalogItemId.Value);
+//         Assert.Single(brand.Products);
+//         Assert.Equal(ProductId, brand.Products.Single().ProductId.Value);
 //     }
 //
 //     [Fact]
@@ -39,48 +39,48 @@
 //         HttpClient client = fixture.CreateClient();
 //
 //         const string brandId = "brand-2";
-//         const string catalogItemId = "catalog-item-1";
+//         const string ProductId = "catalog-item-1";
 //
 //         HttpResponseMessage response = await client.PostAsJsonAsync(
 //             "/api/v1/brand/add-catalog-item",
-//             new AddCatalogItemToBrandHandler.AddCatalogItemToBrandRequest
+//             new AddProductToBrandHandler.AddProductToBrandRequest
 //             {
 //                 BrandId = brandId,
-//                 CatalogItemId = catalogItemId
+//                 ProductId = ProductId
 //             });
 //
 //         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 //     }
 //
 //     [Fact]
-//     public async Task WhenCatalogItemNotFound_ReturnsBadRequest()
+//     public async Task WhenProductNotFound_ReturnsBadRequest()
 //     {
 //         HttpClient client = fixture.CreateClient();
 //
 //         const string brandId = "brand-1";
-//         const string catalogItemId = "catalog-item-2";
+//         const string ProductId = "catalog-item-2";
 //
 //         HttpResponseMessage response = await client.PostAsJsonAsync(
 //             "/api/v1/brand/add-catalog-item",
-//             new AddCatalogItemToBrandHandler.AddCatalogItemToBrandRequest
+//             new AddProductToBrandHandler.AddProductToBrandRequest
 //             {
 //                 BrandId = brandId,
-//                 CatalogItemId = catalogItemId
+//                 ProductId = ProductId
 //             });
 //
 //         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 //     }
 // }
 //
-// public class AddCatalogItemToBrandTestFixture: TestFixture
+// public class AddProductToBrandTestFixture: TestFixture
 // {
-//     public AddCatalogItemToBrandTestFixture()
-//         : base("addcatalogitemtobrandtests")
+//     public AddProductToBrandTestFixture()
+//         : base("addProducttobrandtests")
 //     {
 //         using StashMavenContext context = CreateDbContext();
 //         context.Database.EnsureCreated();
 //         context.Brands.RemoveRange(context.Brands);
-//         context.CatalogItems.RemoveRange(context.CatalogItems);
+//         context.Products.RemoveRange(context.Products);
 //
 //         context.Brands.Add(new Brand
 //         {
@@ -97,9 +97,9 @@
 //         };
 //         context.TaxDefinitions.Add(taxDefinition);
 //
-//         context.CatalogItems.Add(new CatalogItem
+//         context.Products.Add(new Product
 //         {
-//             CatalogItemId = new CatalogItemId("catalog-item-1"),
+//             ProductId = new ProductId("catalog-item-1"),
 //             Name = "Catalog Item 1",
 //             Sku = "CI1A",
 //             TaxDefinitionId = taxDefinition.TaxDefinitionId,
