@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {UnitOfMeasure} from "../../../common/unitOfMeasure";
 
 export class ProductAddedEvent {
@@ -24,14 +24,27 @@ export class AddProductComponent {
 
     public addProductForm = this.formBuilder.group({
         name: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(3)]],
-        sku: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(3)]],
-        unitOfMeasure: [this.unitsOfMeasure, Validators.required],
+        sku: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
+        unitOfMeasure: [this.unitsOfMeasure[0], Validators.required],
     });
 
     @Output()
     public OnProductAdded = new EventEmitter<ProductAddedEvent>();
+
     @Output()
     public OnCancelled = new EventEmitter<void>();
+
+    public get name(): FormControl<string>{
+        return this.addProductForm.get('name') as FormControl<string>;
+    }
+
+    public get sku(): FormControl<string> {
+        return this.addProductForm.get('sku') as FormControl<string>;
+    }
+
+    public get unitOfMeasure(): FormControl<string> {
+        return this.addProductForm.get('unitOfMeasure') as FormControl<string>;
+    }
 
     constructor(
         private formBuilder: FormBuilder

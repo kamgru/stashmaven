@@ -16,7 +16,7 @@ import {AddProductRequest, ProductService} from "../../common/services/product.s
 })
 export class ProductsComponent {
 
-    public uiState: 'list' | 'add' = 'add';
+    public uiState: 'list' | 'add' = 'list';
 
     constructor(
         private route: ActivatedRoute,

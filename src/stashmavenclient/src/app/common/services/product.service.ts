@@ -90,6 +90,6 @@ export class ProductService {
     }
 
     add(req: AddProductRequest): Observable<string> {
-        return this.http.post<string>(`${environment.apiUrl}/api/v1/catalogitem`, req);
+        return this.http.post<string>(`${environment.apiUrl}/api/v1/product`, req);
     }
 }
