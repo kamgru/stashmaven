@@ -12,7 +12,7 @@ export class AddProductRequest {
     }
 }
 
-export interface IProductDetails {
+export interface IGetProductDetailsResponse {
     productId: string;
     name: string;
     sku: string;
@@ -64,11 +64,11 @@ export class ProductService {
     ) {
     }
 
-    public getProductDetails(catalogItemId: string): Observable<IProductDetails> {
-        return this.http.get<IProductDetails>(`${environment.apiUrl}/api/v1/catalogitem/${catalogItemId}`).pipe(
+    public getProductDetails(productId: string): Observable<IGetProductDetailsResponse> {
+        return this.http.get<IGetProductDetailsResponse>(`${environment.apiUrl}/api/v1/product/${productId}`).pipe(
             map((res: any) => {
                 return {
-                    productId: catalogItemId,
+                    productId: productId,
                     name: res.name,
                     sku: res.sku,
                     unitOfMeasure: res.unitOfMeasure
@@ -76,13 +76,13 @@ export class ProductService {
             }));
     }
 
-    public updateProductDetails(details: IProductDetails): Observable<void> {
+    public updateProductDetails(details: IGetProductDetailsResponse): Observable<void> {
         return this.http.patch<void>(`${environment.apiUrl}/api/v1/catalogitem`, details);
     }
 
-    public getProductStockpiles(catalogItemId: string): Observable<IGetProductStockpilesResponse> {
+    public getProductStockpiles(productId: string): Observable<IGetProductStockpilesResponse> {
         return this.http.get<IGetProductStockpilesResponse>(
-            `${environment.apiUrl}/api/v1/catalogitem/${catalogItemId}/stockpiles`);
+            `${environment.apiUrl}/api/v1/product/${productId}/stockpiles`);
     }
 
     public changeProductStockpileAvailability(request: ChangeProductStockpileAvailabilityRequest): Observable<void> {

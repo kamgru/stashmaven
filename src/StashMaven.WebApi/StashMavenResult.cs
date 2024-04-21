@@ -27,6 +27,7 @@ public static class ErrorCodes
     
     // Catalog
     public const ErrorCode ProductNotFound = 300000;
+    public const ErrorCode SkuAlreadyExists = 300001;
     
     // Country
     public const ErrorCode CountryNotFound = 110000;

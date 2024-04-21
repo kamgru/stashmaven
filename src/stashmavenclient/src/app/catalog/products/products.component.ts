@@ -7,6 +7,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FaIconLibrary, FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {AddProductRequest, ProductService} from "../../common/services/product.service";
+import {UnitOfMeasureService} from "../../common/services/unit-of-measure.service";
+import {tap} from "rxjs";
 
 @Component({
     selector: 'app-products',
@@ -16,12 +18,15 @@ import {AddProductRequest, ProductService} from "../../common/services/product.s
 })
 export class ProductsComponent {
 
-    public uiState: 'list' | 'add' = 'list';
+    public uiState: 'list' | 'add' | 'edit' = 'list';
+
+    public unitsOfMeasure$ = this.unitOfMeasureService.getUnitsOfMeasure();
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private productsService: ProductService,
+        private unitOfMeasureService: UnitOfMeasureService,
         faLibrary: FaIconLibrary
     ) {
         faLibrary.addIcons(faPlus);

@@ -1,13 +1,27 @@
-@if (product$ | async; as product) {
-    <h2>{{ product.sku }} - {{ product.name }}</h2>
-    <hr/>
-    <app-product-base-props [ProductDetails]="product"
-                                 (OnFormSubmit)="handleSubmitDetails($event)">
-    </app-product-base-props>
-}
-<hr/>
-@if (stockpiles$ | async; as stockpiles) {
-    <app-product-stockpiles [stockpiles]="stockpiles.stockpiles"
-                                 (OnFormSubmit)="handleSubmitAvailability($event)">
-    </app-product-stockpiles>
+@if (data$ | async; as data) {
+    <form class="mb-9" [formGroup]="editProductForm" (ngSubmit)="handleSubmit()">
+        <div class="row g-3 flex-between-end mb-5">
+            <div class="col-auto">
+                <h2>Edit Product</h2>
+                <h5 class="text-body-tertiary fw-semibold">Edit product details</h5>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-phoenix-danger me-2 mb-2 mb-sm-0" type="button">Delete</button>
+                <button class="btn btn-primary me-2 mb-2 mb-sm-0" type="button">Save</button>
+            </div>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-12 col-xl-8">
+                <app-edit-product-details [editProductForm]="editProductForm"
+                                          [product]="data!.details"
+                                          [unitsOfMeasure]="data!.unitsOfMeasure"></app-edit-product-details>
+
+                <app-edit-product-advanced [stockpiles]="data!.stockpiles"></app-edit-product-advanced>
+            </div>
+            <div class="col-12 col-xl-4">
+                <app-edit-product-organize></app-edit-product-organize>
+            </div>
+        </div>
+    </form>
 }

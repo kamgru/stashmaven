@@ -13,12 +13,12 @@ public partial class ProductController
         StashMavenResult<AddProductHandler.AddProductResponse> response =
             await handler.AddProductAsync(request);
 
-        if (!response.IsSuccess || response.Data is null)
+        if (!response.IsSuccess)
         {
-            return BadRequest(response.Message);
+            return BadRequest(response.ErrorCode);
         }
 
-        return Created($"api/v1/catalog/catalog-item/{response.Data.ProductId}", response.Data);
+        return Created($"api/v1/product/{response.Data?.ProductId}", response.Data);
     }
 }
 
@@ -67,8 +67,7 @@ public class AddProductHandler(
         {
             if (ex.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation })
             {
-                return StashMavenResult<AddProductResponse>.Error(
-                    $"Catalog item with SKU {request.Sku} already exists");
+                return StashMavenResult<AddProductResponse>.Error(ErrorCodes.SkuAlreadyExists);
             }
 
             throw;

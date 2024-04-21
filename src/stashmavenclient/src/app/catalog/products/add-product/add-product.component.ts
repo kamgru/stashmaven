@@ -1,7 +1,6 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
-import {UnitOfMeasure} from "../../../common/unitOfMeasure";
 
 export class ProductAddedEvent {
     constructor(
@@ -18,15 +17,16 @@ export class ProductAddedEvent {
     imports: [CommonModule, ReactiveFormsModule],
     templateUrl: './add-product.component.html',
 })
-export class AddProductComponent {
-
-    public unitsOfMeasure: string[] = Object.keys(UnitOfMeasure).filter(k => typeof UnitOfMeasure[k as any] === "number");
+export class AddProductComponent implements OnInit {
 
     public addProductForm = this.formBuilder.group({
         name: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(3)]],
         sku: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(5)]],
-        unitOfMeasure: [this.unitsOfMeasure[0], Validators.required],
+        unitOfMeasure: ['', Validators.required],
     });
+
+    @Input({required: true})
+    public unitsOfMeasure: string[] = [];
 
     @Output()
     public OnProductAdded = new EventEmitter<ProductAddedEvent>();
@@ -46,8 +46,12 @@ export class AddProductComponent {
         return this.addProductForm.get('unitOfMeasure') as FormControl<string>;
     }
 
+    public ngOnInit() {
+        this.addProductForm.get('unitOfMeasure')?.setValue(this.unitsOfMeasure[0]);
+    }
+
     constructor(
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
     ) {
     }
 

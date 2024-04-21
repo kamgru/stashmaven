@@ -1,0 +1,25 @@
+<ng-container [formGroup]="productDetailsForm">
+    <h4 class="mb-3">Product Name</h4>
+    <input type="text"
+           class="form-control"
+           formControlName="name"
+           [class.is-invalid]="name.invalid && name.touched"/>
+    <div class="invalid-feedback">Name needs to between 3 and 100 characters</div>
+    <div class="mb-6 mt-6">
+        <h4 class="mb-3">SKU</h4>
+        <input type="text"
+               class="form-control"
+               formControlName="sku"
+               [class.is-invalid]="sku.invalid && sku.touched"/>
+        <div class="invalid-feedback">SKU needs to between 5 and 100 characters</div>
+    </div>
+    <div class="mb-6 mt-5">
+        <h4 class="mb-3">Unit of Measure</h4>
+        <select class="form-select"
+                formControlName="unitOfMeasure">
+            @for (option of unitsOfMeasure; track option) {
+                <option [value]="option">{{ option }}</option>
+            }
+        </select>
+    </div>
+</ng-container>
