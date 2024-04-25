@@ -1,7 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import * as li from "../list-items";
 import * as br from "./list-brands.service";
-import {AsyncPipe} from "@angular/common";
+import {AsyncPipe, NgTemplateOutlet} from "@angular/common";
 import {ListItemsLayoutComponent} from "../list-items";
 
 @Component({
@@ -9,7 +9,8 @@ import {ListItemsLayoutComponent} from "../list-items";
     standalone: true,
     imports: [
         AsyncPipe,
-        ListItemsLayoutComponent
+        ListItemsLayoutComponent,
+        NgTemplateOutlet
     ],
     templateUrl: './list-brands.component.html',
     styleUrl: './list-brands.component.css'

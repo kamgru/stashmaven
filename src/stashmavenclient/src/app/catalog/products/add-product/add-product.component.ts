@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 
@@ -34,6 +34,9 @@ export class AddProductComponent implements OnInit {
     @Output()
     public OnCancelled = new EventEmitter<void>();
 
+    @ViewChild('nameInput', {static: true})
+    public nameInput!: ElementRef<HTMLInputElement>;
+
     public get name(): FormControl<string>{
         return this.addProductForm.get('name') as FormControl<string>;
     }
@@ -48,6 +51,7 @@ export class AddProductComponent implements OnInit {
 
     public ngOnInit() {
         this.addProductForm.get('unitOfMeasure')?.setValue(this.unitsOfMeasure[0]);
+        this.nameInput!.nativeElement.focus();
     }
 
     constructor(

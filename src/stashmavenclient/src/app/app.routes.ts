@@ -5,7 +5,6 @@ import {MsalGuard, MsalRedirectComponent} from "@azure/msal-angular";
 import {AddBrandComponent} from "./catalog/add-brand/add-brand.component";
 import {TaxDefinitionsComponent} from "./common/tax-definitions/tax-definitions.component";
 import {ProductsComponent} from "./catalog/products/products.component";
-import {StockpileInventoryComponent} from "./inventory/stockpile-inventory/stockpile-inventory.component";
 import {BrandsComponent} from "./catalog/brands/brands.component";
 import {CountriesComponent} from "./common/countries/countries.component";
 import {EditProductComponent} from "./catalog/products/edit-product/edit-product.component";
@@ -22,7 +21,6 @@ export const routes: Routes = [
     {path: 'catalog/brands/add', component: AddBrandComponent, canActivate: [MsalGuard]},
     {path: 'common/tax-definitions', component: TaxDefinitionsComponent, canActivate: [MsalGuard]},
     {path: 'auth', component: MsalRedirectComponent},
-    {path: 'inventory/stockpile', component: StockpileInventoryComponent, canActivate: [MsalGuard]},
     {path: 'inventory/stockpiles', component: StockpilesComponent, canActivate: [MsalGuard]},
     {path: 'inventory/shipments', component: ShipmentsComponent, canActivate: [MsalGuard]},
     {path: 'inventory/shipments/:shipmentId', component: EditShipmentComponent, canActivate: [MsalGuard]},

@@ -16,17 +16,19 @@
                 <th class="sort align-middle" scope="col" style="width:70px">#</th>
                 <th class="sort align-middle" scope="col" style="width:200px" (click)="sortBy('shortcode')">Short Code</th>
                 <th class="sort align-middle" scope="col" style="width:350px" (click)="sortBy('name')">Name</th>
+                <th class="sort align-middle" scope="col">Is Default</th>
                 <th class="sort text-end align-middle pe-0 ps-4"></th>
             </tr>
             </thead>
-            <tbody class="list" id="brands-table-body">
-                @for (brand of listResponse.items; track brand.brandId; let i = $index) {
+            <tbody class="list" id="products-table-body">
+                @for (stockpile of listResponse.items; track stockpile.stockpileId; let i = $index) {
                     <tr [class.table-primary]="i == currentIndex_$()"
-                        (click)="handleRowClick(brand)"
-                        (dblclick)="handleRowDblClick(brand)" class="position-static">
+                        (click)="handleRowClick(stockpile)"
+                        (dblclick)="handleRowDblClick(stockpile)" class="position-static">
                         <td class="text-body-tertiary align-middle white-space-nowrap px-1">{{ (listResponse.currentPage - 1) * listResponse.pageSize + i + 1 }}</td>
-                        <td class="category align-middle">{{ brand.shortCode }}</td>
-                        <td class="brand ps-4 align-middle">{{ brand.name }}</td>
+                        <td class="category align-middle">{{ stockpile.shortCode }}</td>
+                        <td class="product ps-4 align-middle">{{ stockpile.name }}</td>
+                        <td class="align-middle">{{ stockpile.isDefault }}</td>
                         <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger"></td>
                     </tr>
                 }

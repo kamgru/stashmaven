@@ -1,6 +1,26 @@
-<h1>Brands</h1>
-<hr/>
 @if (uiState == 'list') {
-    <a routerLink="add" class="btn btn-primary">Add</a>
-    <app-list-brands></app-list-brands>
+    <div class="mb-9">
+        <div class="row g-3 mb-4">
+            <div class="col-auto">
+                <h2 class="mb-0">Brands</h2>
+            </div>
+        </div>
+        <div id="products">
+            <ng-template #toolbar>
+                <div class="ms-xxl-auto">
+                    <button class="btn btn-primary" (click)="uiState = 'add'">
+                        <fa-icon icon="plus" class="me-2"></fa-icon>
+                        <span>Add Brand</span>
+                    </button>
+                </div>
+            </ng-template>
+            <app-list-brands [toolbarTemplate]="toolbar"
+                             (OnItemConfirmed)="handleItemConfirmed($event)">
+            </app-list-brands>
+        </div>
+    </div>
+} @else if (uiState == 'add') {
+    <app-add-brand (OnCancelled)="uiState = 'list'"
+                   (OnBrandAdded)="handleBrandAdded($event)">
+    </app-add-brand>
 }

@@ -4,6 +4,8 @@ public partial class BrandController
 {
     [HttpGet]
     [Route("{brandId}")]
+    [ProducesResponseType<GetBrandByIdHandler.GetBrandByIdResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetBrandByIdAsync(
         string brandId,
         [FromServices]
@@ -14,7 +16,7 @@ public partial class BrandController
 
         if (!response.IsSuccess)
         {
-            return BadRequest(response.Message);
+            return BadRequest(response.ErrorCode);
         }
 
         return Ok(response.Data);
@@ -38,7 +40,7 @@ public class GetBrandByIdHandler(
 
         if (brand == null)
         {
-            return StashMavenResult<GetBrandByIdResponse>.Error("Brand not found");
+            return StashMavenResult<GetBrandByIdResponse>.Error(ErrorCodes.BrandNotFound);
         }
 
         return StashMavenResult<GetBrandByIdResponse>.Success(new GetBrandByIdResponse

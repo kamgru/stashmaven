@@ -47,7 +47,13 @@ export class ProductsComponent {
             $event.unitOfMeasure
         ))
             .subscribe(
-                res => this.uiState = 'list'
+                res => {
+                    this.router.navigate([res.productId], {relativeTo: this.route})
+                        .catch(err => console.error('Failed to navigate', err))
+                        .then(x => {
+                            console.log('Navigated', x);
+                        });
+                }
             );
     }
 }

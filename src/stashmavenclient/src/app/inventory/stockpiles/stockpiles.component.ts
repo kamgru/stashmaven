@@ -1,53 +1,29 @@
 import {Component} from '@angular/core';
-import {
-    AddStockpileRequest,
-    IStockpile,
-    StockpileService,
-    UpdateStockpileRequest
-} from "../../common/services/stockpile.service";
-import {AsyncPipe} from "@angular/common";
-import {EditStockpileComponent} from "./edit-stockpile/edit-stockpile.component";
+import {FaIconComponent, FaIconLibrary} from "@fortawesome/angular-fontawesome";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import {ListStockpilesComponent} from "../../common/components/list-stockpiles/list-stockpiles.component";
+import {IStockpile} from "../../common/components/list-stockpiles/list-stockpiles.service";
 
 @Component({
     selector: 'app-stockpiles',
     standalone: true,
     imports: [
-        AsyncPipe,
-        EditStockpileComponent
+        FaIconComponent,
+        ListStockpilesComponent
     ],
-    templateUrl: './stockpiles.component.html',
-    styleUrl: './stockpiles.component.css'
+    templateUrl: './stockpiles.component.html'
 })
 export class StockpilesComponent {
 
-    public stockpiles$ = this.stockpileService.listStockpiles();
-    public uiState: 'list' | 'edit' = 'list';
-    public selectedStockpile: IStockpile | null = null;
+    public uiState: 'list' | 'add' = 'list';
 
     constructor(
-        private stockpileService: StockpileService,
+        fa: FaIconLibrary,
     ) {
+        fa.addIcons(faPlus);
     }
 
-    handleStockpileClicked(stockpile: IStockpile) {
-        this.selectedStockpile = stockpile;
-        this.uiState = 'edit';
-    }
+    handleItemConfirmed($event: IStockpile) {
 
-    handleEditCompleted($event: IStockpile) {
-        if ($event.stockpileId === ''){
-            const req = new AddStockpileRequest($event.name, $event.shortCode, $event.isDefault);
-            this.stockpileService.addStockpile(req).subscribe(() => {
-                this.stockpiles$ = this.stockpileService.listStockpiles();
-                this.uiState = 'list';
-            });
-        }
-        else {
-            const req = new UpdateStockpileRequest($event.name, $event.shortCode, $event.isDefault);
-            this.stockpileService.updateStockpile($event.stockpileId, req).subscribe(() => {
-                this.stockpiles$ = this.stockpileService.listStockpiles();
-                this.uiState = 'list';
-            });
-        }
     }
 }

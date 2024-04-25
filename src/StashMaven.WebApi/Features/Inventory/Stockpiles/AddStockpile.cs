@@ -21,7 +21,7 @@ public partial class StockpileController
             return BadRequest(result.ErrorCode);
         }
 
-        return Created($"api/v1/inventory/stockpile/{result.Data.StockpileId}", result.Data);
+        return Created($"api/v1/stockpile/{result.Data.StockpileId}", result.Data);
     }
 }
 
@@ -63,6 +63,7 @@ public class AddStockpileHandler(
         {
             await unitOfWork.SaveChangesAsync();
             cacheReader.InvalidateKey(CacheReader.Keys.Stockpiles);
+            cacheReader.InvalidateKey(CacheReader.Keys.DefaultStockpile);
 
             return StashMavenResult<AddStockpileResponse>.Success(
                 new AddStockpileResponse(stockpile.StockpileId.Value));

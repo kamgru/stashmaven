@@ -13,7 +13,7 @@ public class CreateBrandTests(
         string name = Guid.NewGuid().ToString();
         string shortCode = Guid.NewGuid().ToString();
         HttpResponseMessage response = await client.PostAsJsonAsync("/api/v1/brand",
-            new CreateBrandHandler.CreateBrandRequest
+            new AddBrandHandler.AddBrandRequest
             {
                 Name = name,
                 ShortCode = shortCode
@@ -45,7 +45,7 @@ public class CreateBrandTests(
         HttpClient client = fixture.CreateClient();
 
         HttpResponseMessage response = await client.PostAsJsonAsync("/api/v1/brand",
-            new CreateBrandHandler.CreateBrandRequest
+            new AddBrandHandler.AddBrandRequest
             {
                 Name = "Te",
                 ShortCode = Guid.NewGuid().ToString()
@@ -67,7 +67,7 @@ public class CreateBrandTests(
         HttpClient client = fixture.CreateClient();
 
         HttpResponseMessage response = await client.PostAsJsonAsync("/api/v1/brand",
-            new CreateBrandHandler.CreateBrandRequest
+            new AddBrandHandler.AddBrandRequest
             {
                 Name = "Test Brand",
                 ShortCode = "T"
@@ -90,7 +90,7 @@ public class CreateBrandTests(
 
         string shortCode = Guid.NewGuid().ToString();
         HttpResponseMessage response = await client.PostAsJsonAsync("/api/v1/brand",
-            new CreateBrandHandler.CreateBrandRequest
+            new AddBrandHandler.AddBrandRequest
             {
                 Name = "Test Brand",
                 ShortCode = shortCode
@@ -99,7 +99,7 @@ public class CreateBrandTests(
         response.EnsureSuccessStatusCode();
 
         response = await client.PostAsJsonAsync("/api/v1/brand",
-            new CreateBrandHandler.CreateBrandRequest
+            new AddBrandHandler.AddBrandRequest
             {
                 Name = "Test Brand 2",
                 ShortCode = shortCode

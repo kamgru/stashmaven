@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef} from '@angular/core';
-import {IShipment, ListShipmentsService} from "./list-shipments.service";
 import {AsyncPipe, NgTemplateOutlet} from "@angular/common";
 import * as li from "../list-items";
 import * as ls from "./list-shipments.service";
@@ -21,7 +20,7 @@ import {ListItemsLayoutComponent} from "../list-items";
     styleUrl: './list-shipments.component.css'
 })
 export class ListShipmentsComponent
-    extends li.ListItemsBaseComponent<IShipment, ls.ListShipmentsRequest, ls.IListShipmentsResponse, ListShipmentsService>
+    extends li.ListItemsBaseComponent<ls.IShipment, ls.ListShipmentsRequest, ls.IListShipmentsResponse, ls.ListShipmentsService>
     implements OnInit, OnDestroy {
 
     @Input()

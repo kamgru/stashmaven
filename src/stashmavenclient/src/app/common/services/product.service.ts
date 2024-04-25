@@ -12,6 +12,10 @@ export class AddProductRequest {
     }
 }
 
+export interface IAddProductResponse {
+    productId: string;
+}
+
 export interface IGetProductDetailsResponse {
     productId: string;
     name: string;
@@ -89,7 +93,7 @@ export class ProductService {
         return this.http.patch<void>(`${environment.apiUrl}/api/v1/inventoryitem/availability`, request);
     }
 
-    add(req: AddProductRequest): Observable<string> {
-        return this.http.post<string>(`${environment.apiUrl}/api/v1/product`, req);
+    add(req: AddProductRequest): Observable<IAddProductResponse> {
+        return this.http.post<IAddProductResponse>(`${environment.apiUrl}/api/v1/product`, req);
     }
 }

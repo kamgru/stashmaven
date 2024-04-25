@@ -28,8 +28,8 @@
             </span>
         </div>
         <div class="col-auto d-flex">
-            <button class="page-link"><fa-icon icon="angle-left"></fa-icon></button>
-            <button class="page-link"><fa-icon icon="angle-right"></fa-icon></button>
+            <button class="page-link" (click)="OnPrevPage.emit()"><fa-icon icon="angle-left"></fa-icon></button>
+            <button class="page-link" (click)="OnNextPage.emit()"><fa-icon icon="angle-right"></fa-icon></button>
         </div>
     </div>
 </div>

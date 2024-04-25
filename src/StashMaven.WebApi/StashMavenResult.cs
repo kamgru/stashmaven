@@ -25,9 +25,13 @@ public static class ErrorCodes
     public const ErrorCode ShipmentKindSequenceGeneratorNotFound = 200005;
     public const ErrorCode ConcurrencyResolutionFailed = 200006;
     
-    // Catalog
+    // Product
     public const ErrorCode ProductNotFound = 300000;
     public const ErrorCode SkuAlreadyExists = 300001;
+    
+    // Brand
+    public const ErrorCode BrandNotFound = 400000;
+    public const ErrorCode BrandAlreadyExists = 400001;
     
     // Country
     public const ErrorCode CountryNotFound = 110000;
