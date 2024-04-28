@@ -33,7 +33,7 @@ public class GetBrandByIdHandler(
         public required string ShortCode { get; set; }
     }
 
-    public async Task<StashMavenResult<GetBrandByIdResponse>> GetBrandByIdAsync(
+    public async Task<StashMavenResult<GetBrandByIdHandler.GetBrandByIdResponse>> GetBrandByIdAsync(
         string brandId)
     {
         Brand? brand = await context.Brands.FirstOrDefaultAsync(x => x.BrandId.Value == brandId);

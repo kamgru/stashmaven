@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {ListBrandsComponent} from "../../common/components/list-brands/list-brands.component";
-import {RouterLink} from "@angular/router";
-import {AddBrandComponent, BrandAddedEvent} from "../add-brand/add-brand.component";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {AddBrandComponent, BrandAddedEvent} from "./add-brand/add-brand.component";
 import {IBrandItem} from "../../common/components/list-brands/list-brands.service";
 import {FaIconComponent, FaIconLibrary} from "@fortawesome/angular-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
@@ -17,7 +17,6 @@ import {AddBrandRequest, BrandService} from "../../common/services/brand.service
         FaIconComponent
     ],
     templateUrl: './brands.component.html',
-    styleUrl: './brands.component.css'
 })
 export class BrandsComponent {
 
@@ -25,13 +24,16 @@ export class BrandsComponent {
 
     constructor(
         faLibrary: FaIconLibrary,
-        private brandService: BrandService
+        private brandService: BrandService,
+        private route: ActivatedRoute,
+        private router: Router
     ) {
         faLibrary.addIcons(faPlus);
     }
 
     handleItemConfirmed($event: IBrandItem) {
-
+        this.router.navigate([$event.brandId], {relativeTo: this.route})
+            .then(_ => {});
     }
 
     handleBrandAdded($event: BrandAddedEvent) {

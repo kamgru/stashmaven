@@ -27,7 +27,7 @@ public class PatchBrandTests(
         string newShortCode = Guid.NewGuid().ToString();
 
         HttpResponseMessage response = await client.PatchAsJsonAsync($"/api/v1/brand/{brandId.Value}",
-            new PatchBrandHandler.PatchBrandRequest
+            new UpdateBrandHandler.UpdateBrandRequest
             {
                 Name = newName,
                 ShortCode = newShortCode
@@ -60,7 +60,7 @@ public class PatchBrandTests(
         HttpClient client = fixture.CreateClient();
 
         HttpResponseMessage response = await client.PatchAsJsonAsync($"/api/v1/brand/{brandId.Value}",
-            new PatchBrandHandler.PatchBrandRequest
+            new UpdateBrandHandler.UpdateBrandRequest
             {
                 Name = "Te",
                 ShortCode = "TB2"
@@ -87,7 +87,7 @@ public class PatchBrandTests(
         HttpClient client = fixture.CreateClient();
 
         HttpResponseMessage response = await client.PatchAsJsonAsync($"/api/v1/brand/{brandId.Value}",
-            new PatchBrandHandler.PatchBrandRequest
+            new UpdateBrandHandler.UpdateBrandRequest
             {
                 Name = "Test Brand 2",
                 ShortCode = "T"

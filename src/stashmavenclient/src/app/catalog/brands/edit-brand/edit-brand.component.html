@@ -1,0 +1,41 @@
+<form class="mb-9" [formGroup]="editBrandForm" (ngSubmit)="handleSubmit()">
+    <input type="hidden" formControlName="brandId"/>
+    <div class="row g-3 flex-between-end mb-5">
+        <div class="col-auto">
+            <h2>Add a brand</h2>
+            <h5 class="text-body-tertiary fw-semibold">Add a brand to catalog</h5>
+        </div>
+    </div>
+    <div class="row g-5">
+        <div class="col-12 col-xl-6">
+            <h4 class="mb-3">Brand Name</h4>
+            <input #nameInput
+                   type="text"
+                   class="form-control"
+                   formControlName="name"
+                   [class.is-invalid]="name.invalid && name.touched"/>
+            <div class="invalid-feedback">Name needs to between 3 and 100 characters</div>
+            <div class="mb-6 mt-6">
+                <h4 class="mb-3">Short Code</h4>
+                <input type="text"
+                       class="form-control"
+                       formControlName="shortCode"
+                       [class.is-invalid]="shortCode.invalid && shortCode.touched"/>
+                <div class="invalid-feedback">SKU needs to between 2 and 100 characters</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-auto">
+            <button class="btn btn-primary mb-2 mb-sm-0 me-2"
+                    type="submit"
+                    [disabled]="editBrandForm.invalid">Save
+            </button>
+            <button class="btn btn-phoenix-secondary mb-2 mb-sm-0"
+                    type="button"
+                    (click)="handleCancelled()">Cancel
+            </button>
+        </div>
+    </div>
+</form>

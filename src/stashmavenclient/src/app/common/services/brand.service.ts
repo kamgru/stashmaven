@@ -11,6 +11,20 @@ export class AddBrandRequest{
     }
 }
 
+export interface IGetBrandResponse {
+    name: string;
+    shortCode: string;
+}
+
+export class UpdateBrandRequest {
+    constructor(
+        public readonly brandId: string,
+        public readonly name: string,
+        public readonly shortCode: string
+    ) {
+    }
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -21,7 +35,15 @@ export class BrandService {
     ) {
     }
 
-    public addBrand(request: AddBrandRequest): Observable<string> {
-        return this.http.post<string>(`${environment.apiUrl}/api/v1/brand`, request);
+    public addBrand(req: AddBrandRequest): Observable<string> {
+        return this.http.post<string>(`${environment.apiUrl}/api/v1/brand`, req);
+    }
+
+    public getBrand(brandId: string): Observable<IGetBrandResponse> {
+        return this.http.get<IGetBrandResponse>(`${environment.apiUrl}/api/v1/brand/${brandId}`);
+    }
+
+    public updateBrand(req: UpdateBrandRequest) {
+        return this.http.put(`${environment.apiUrl}/api/v1/brand/${req.brandId}`, req);
     }
 }
