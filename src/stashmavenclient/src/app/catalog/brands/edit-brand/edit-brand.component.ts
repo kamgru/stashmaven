@@ -1,22 +1,27 @@
-import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
-import {switchMap} from "rxjs";
+import {catchError, switchMap} from "rxjs";
 import {BrandService, UpdateBrandRequest} from "../../../common/services/brand.service";
 import {JsonPipe} from "@angular/common";
+import {Notification, NotificationComponent} from "../../../common/components/notification/notification.component";
+import {ErrorCodeTranslatorService} from "../../../common/services/error-code-translator.service";
 
 @Component({
     selector: 'app-edit-brand',
     standalone: true,
     imports: [
         ReactiveFormsModule,
-        JsonPipe
+        JsonPipe,
+        NotificationComponent
     ],
     templateUrl: './edit-brand.component.html',
 })
 export class EditBrandComponent implements OnInit {
 
     private _brandId!: string;
+
+    public notification: Notification | null = null;
 
     public editBrandForm = this.fb.group({
         brandId: ['', [Validators.required]],
@@ -43,6 +48,7 @@ export class EditBrandComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private brandService: BrandService,
+        private errorCodeTranslator: ErrorCodeTranslatorService,
         private fb: FormBuilder
     ) {
     }
@@ -70,16 +76,20 @@ export class EditBrandComponent implements OnInit {
             new UpdateBrandRequest(
                 this.brandId.value,
                 this.name.value,
-                this.shortCode.value
-            )
-        )
+                this.shortCode.value))
+            .pipe(
+                catchError(err => {
+                    this.notification = Notification.error(err.error);
+                    return [];
+                }))
             .subscribe(res => {
-
+                this.notification = Notification.success('Brand updated successfully');
             });
     }
 
     handleCancelled() {
         this.router.navigate(['../'], {relativeTo: this.route})
-            .then(() => {});
+            .then(() => {
+            });
     }
 }

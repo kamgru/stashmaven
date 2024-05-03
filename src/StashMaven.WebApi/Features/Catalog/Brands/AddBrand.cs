@@ -60,7 +60,7 @@ public class AddBrandHandler(
         {
             if (ex.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation })
             {
-                return StashMavenResult<AddBrandResponse>.Error(ErrorCodes.BrandAlreadyExists);
+                return StashMavenResult<AddBrandResponse>.Error(ErrorCodes.BrandShortCodeNotUnique);
             }
             
             throw;

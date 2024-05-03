@@ -20,6 +20,10 @@
         </div>
     </div>
 } @else if (uiState == 'add') {
+    <div class="col-12 col-xl-6 mb-5">
+        <app-notification [notification]="notification"></app-notification>
+    </div>
+
     <app-add-brand (OnCancelled)="uiState = 'list'"
                    (OnBrandAdded)="handleBrandAdded($event)">
     </app-add-brand>

@@ -1,9 +1,13 @@
+using Npgsql;
+
 namespace StashMaven.WebApi.Features.Catalog.Brands;
 
 public partial class BrandController
 {
     [HttpPut]
     [Route("{brandId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<int>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateBrandAsync(
         string brandId,
         UpdateBrandHandler.UpdateBrandRequest request,
@@ -14,7 +18,7 @@ public partial class BrandController
 
         if (!response.IsSuccess)
         {
-            return BadRequest(response.Message);
+            return BadRequest(response.ErrorCode);
         }
 
         return Ok();
@@ -49,7 +53,21 @@ public class UpdateBrandHandler(
 
         brand.Name = request.Name;
         brand.ShortCode = request.ShortCode;
-        await context.SaveChangesAsync();
+        
+            
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            if (ex.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation })
+            {
+                return StashMavenResult.Error(ErrorCodes.BrandShortCodeNotUnique);
+            }
+            
+            throw;
+        }
         
         return StashMavenResult.Success();
     }

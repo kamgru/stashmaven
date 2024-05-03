@@ -1,0 +1,9 @@
+@if (notificationMessage != null) {
+    <div class="alert d-flex align-items-center"
+         role="alert" [class]="alertClass">
+        <p class="mb-0 flex-1">
+            {{ notificationMessage }}
+        </p>
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}

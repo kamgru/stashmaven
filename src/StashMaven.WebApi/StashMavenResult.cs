@@ -31,7 +31,7 @@ public static class ErrorCodes
     
     // Brand
     public const ErrorCode BrandNotFound = 400000;
-    public const ErrorCode BrandAlreadyExists = 400001;
+    public const ErrorCode BrandShortCodeNotUnique = 400001;
     
     // Country
     public const ErrorCode CountryNotFound = 110000;
