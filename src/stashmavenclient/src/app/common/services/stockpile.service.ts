@@ -33,10 +33,6 @@ export interface IListStockpilesResponse {
     items: IStockpile[];
 }
 
-interface IAddStockpileResponse {
-    stockpileId: string;
-}
-
 @Injectable({
     providedIn: 'root'
 })
@@ -60,10 +56,7 @@ export class StockpileService {
     }
 
     public addStockpile(request: AddStockpileRequest): Observable<string> {
-        return this.http.post<IAddStockpileResponse>(`${environment.apiUrl}/api/v1/stockpile`, request)
-            .pipe(
-                map(x => x.stockpileId)
-            )
+        return this.http.post<string>(`${environment.apiUrl}/api/v1/stockpile`, request);
     }
 
     public updateStockpile(stockpileId: string, request: UpdateStockpileRequest): Observable<void> {

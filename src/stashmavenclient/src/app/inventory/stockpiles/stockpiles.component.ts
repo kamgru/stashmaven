@@ -3,13 +3,19 @@ import {FaIconComponent, FaIconLibrary} from "@fortawesome/angular-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {ListStockpilesComponent} from "../../common/components/list-stockpiles/list-stockpiles.component";
 import {IStockpile} from "../../common/components/list-stockpiles/list-stockpiles.service";
+import {AddStockpileComponent, StockpileAddedEvent} from "./add-stockpile/add-stockpile.component";
+import {AddStockpileRequest, StockpileService} from "../../common/services/stockpile.service";
+import {catchError} from "rxjs";
+import {NotificationComponent, Notification} from "../../common/components/notification/notification.component";
 
 @Component({
     selector: 'app-stockpiles',
     standalone: true,
     imports: [
         FaIconComponent,
-        ListStockpilesComponent
+        ListStockpilesComponent,
+        AddStockpileComponent,
+        NotificationComponent
     ],
     templateUrl: './stockpiles.component.html'
 })
@@ -17,13 +23,29 @@ export class StockpilesComponent {
 
     public uiState: 'list' | 'add' = 'list';
 
+    public notification: Notification | null = null;
+
     constructor(
         fa: FaIconLibrary,
+        private stockpileService: StockpileService
     ) {
         fa.addIcons(faPlus);
     }
 
     handleItemConfirmed($event: IStockpile) {
 
+    }
+
+    handleStockpileAdded($event: StockpileAddedEvent) {
+        const req = new AddStockpileRequest($event.name, $event.shortCode, $event.isDefault);
+        this.stockpileService.addStockpile(req)
+            .pipe(
+                catchError(err => {
+                    this.notification = Notification.error(err.error);
+                    return [];
+                })
+            ).subscribe(() => {
+            this.uiState = 'list';
+        });
     }
 }

@@ -5,14 +5,15 @@ import {Injectable} from '@angular/core';
 })
 export class ErrorCodeTranslatorService {
 
+    private _map = new Map<number, string>([
+        [400000, 'Brand not found'],
+        [400001, 'Brand short code is already in use'],
+        [500000, 'Stockpile not found'],
+        [500001, 'Stockpile has shipments'],
+        [500002, 'Stockpile short code is not unique'],
+    ]);
+
     public translateErrorCode(code: number): string {
-        switch (code) {
-            case 400000:
-                return 'Brand not found';
-            case 400001:
-                return 'Brand short code is already in use';
-            default:
-                return 'Unknown error';
-        }
+        return this._map.get(code) || 'Unknown error';
     }
 }

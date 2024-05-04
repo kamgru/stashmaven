@@ -44,8 +44,8 @@ public static class ErrorCodes
     public const ErrorCode InventoryItemHasRecords = 400003;
     
     // Stockpile
-    public const ErrorCode StockpileNotFound = 50000;
-    public const ErrorCode StockpileHasShipments = 50001;
+    public const ErrorCode StockpileNotFound = 500000;
+    public const ErrorCode StockpileHasShipments = 500001;
     public const ErrorCode StockpileShortCodeNotUnique = 500002;
 }
 
