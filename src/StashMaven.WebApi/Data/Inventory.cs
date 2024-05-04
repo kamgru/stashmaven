@@ -42,6 +42,9 @@ public class InventoryItemTaxReference
 
 public class InventoryItem
 {
+    public const int SkuMaxLength = 10;
+    public const int NameMaxLength = 256;
+    
     public int Id { get; set; }
     public required InventoryItemId InventoryItemId { get; set; }
     public required string Sku { get; set; }
@@ -67,6 +70,12 @@ public class InventoryItem
                 .HasColumnName("InventoryItemId");
             builder.Property(e => e.Version)
                 .IsRowVersion();
+            
+            builder.Property(e => e.Sku)
+                .HasMaxLength(SkuMaxLength);
+            
+            builder.Property(e => e.Name)
+                .HasMaxLength(NameMaxLength);
         }
     }
 }

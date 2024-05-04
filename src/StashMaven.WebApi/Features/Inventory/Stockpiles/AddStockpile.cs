@@ -51,7 +51,24 @@ public class AddStockpileHandler(
         };
 
         repository.InsertStockpile(stockpile);
+        
+        List<Product> products = await repository.GetAllProductsAsync();
+        
+        foreach (Product product in products)
+        {
+            InventoryItem inventoryItem = new()
+            {
+                InventoryItemId = new InventoryItemId(Guid.NewGuid().ToString()),
+                Product = product,
+                Stockpile = stockpile,
+                Quantity = 0,
+                Name = product.Name,
+                Sku = product.Sku
+            };
 
+            repository.InsertInventoryItem(inventoryItem);
+        }
+        
         if (request.IsDefault)
         {
             await optionService.UpsertStashMavenOptionAsync(

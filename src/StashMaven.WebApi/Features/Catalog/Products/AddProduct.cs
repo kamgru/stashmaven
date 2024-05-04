@@ -57,6 +57,24 @@ public class AddProductHandler(
         };
 
         context.Products.Add(product);
+        
+        List<Stockpile> stockpiles = await context.Stockpiles
+            .AsTracking()
+            .ToListAsync();
+        
+        foreach (Stockpile stockpile in stockpiles)
+        {
+            InventoryItem inventoryItem = new()
+            {
+                InventoryItemId = new InventoryItemId(Guid.NewGuid().ToString()),
+                Sku = product.Sku,
+                Name = product.Name,
+                Product = product,
+                Stockpile = stockpile,
+            };
+
+            context.InventoryItems.Add(inventoryItem);
+        }
 
         try
         {
