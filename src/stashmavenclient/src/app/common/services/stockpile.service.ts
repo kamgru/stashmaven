@@ -13,6 +13,12 @@ export class AddStockpileRequest {
     }
 }
 
+export interface IGetStockpileResponse {
+    name: string;
+    shortCode: string;
+    isDefault: boolean;
+}
+
 export class UpdateStockpileRequest {
     constructor(
         public name: string,
@@ -45,6 +51,10 @@ export class StockpileService {
 
     public listStockpiles(): Observable<IListStockpilesResponse> {
         return this.http.get<IListStockpilesResponse>(`${environment.apiUrl}/api/v1/stockpile/list`);
+    }
+
+    public getStockpile(stockpileId: string): Observable<IGetStockpileResponse> {
+        return this.http.get<IGetStockpileResponse>(`${environment.apiUrl}/api/v1/stockpile/${stockpileId}`);
     }
 
     public getDefaultStockpileId(): Observable<IGetDefaultStockpileIdResponse> {

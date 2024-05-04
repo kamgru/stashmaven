@@ -48,7 +48,6 @@ export class EditBrandComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private brandService: BrandService,
-        private errorCodeTranslator: ErrorCodeTranslatorService,
         private fb: FormBuilder
     ) {
     }
