@@ -46,6 +46,7 @@ export class StockpilesComponent {
                 })
             ).subscribe(() => {
             this.uiState = 'list';
+            this.notification = null;
         });
     }
 }

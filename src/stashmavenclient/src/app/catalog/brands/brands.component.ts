@@ -53,6 +53,7 @@ export class BrandsComponent {
             )
             .subscribe(() => {
                 this.uiState = 'list';
+                this.notification = null;
             });
 
     }
