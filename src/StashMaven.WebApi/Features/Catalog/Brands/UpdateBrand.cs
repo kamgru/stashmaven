@@ -54,7 +54,6 @@ public class UpdateBrandHandler(
         brand.Name = request.Name;
         brand.ShortCode = request.ShortCode;
         
-            
         try
         {
             await context.SaveChangesAsync();

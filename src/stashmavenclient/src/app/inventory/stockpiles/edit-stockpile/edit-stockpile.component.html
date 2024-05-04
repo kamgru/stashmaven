@@ -1,4 +1,9 @@
+<div class="col-12 col-xl-6 mb-5">
+    <app-notification [notification]="notification"></app-notification>
+</div>
+
 <form class="mb-9" [formGroup]="editStockpileForm" (ngSubmit)="handleSubmit()">
+    <input type="hidden" formControlName="stockpileId"/>
     <div class="row g-3 flex-between-end mb-5">
         <div class="col-auto">
             <h2>Edit a stockpile</h2>

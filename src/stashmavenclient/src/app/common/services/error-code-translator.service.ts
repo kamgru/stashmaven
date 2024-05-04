@@ -11,6 +11,7 @@ export class ErrorCodeTranslatorService {
         [500000, 'Stockpile not found'],
         [500001, 'Stockpile has shipments'],
         [500002, 'Stockpile short code is not unique'],
+        [500003, 'A default stockpile is required']
     ]);
 
     public translateErrorCode(code: number): string {

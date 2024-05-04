@@ -7,6 +7,7 @@ import {AddStockpileComponent, StockpileAddedEvent} from "./add-stockpile/add-st
 import {AddStockpileRequest, StockpileService} from "../../common/services/stockpile.service";
 import {catchError} from "rxjs";
 import {NotificationComponent, Notification} from "../../common/components/notification/notification.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: 'app-stockpiles',
@@ -27,13 +28,15 @@ export class StockpilesComponent {
 
     constructor(
         fa: FaIconLibrary,
+        private route: ActivatedRoute,
+        private router: Router,
         private stockpileService: StockpileService
     ) {
         fa.addIcons(faPlus);
     }
 
     handleItemConfirmed($event: IStockpile) {
-
+        this.router.navigate([$event.stockpileId], {relativeTo: this.route});
     }
 
     handleStockpileAdded($event: StockpileAddedEvent) {

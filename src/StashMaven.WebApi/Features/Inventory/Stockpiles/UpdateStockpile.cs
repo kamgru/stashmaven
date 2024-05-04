@@ -17,7 +17,7 @@ public partial class StockpileController
         [FromServices]
         UpdateStockpileHandler handler)
     {
-        StashMavenResult result = await handler.PatchStockpileAsync(new StockpileId(stockpileId), request);
+        StashMavenResult result = await handler.UpdateStockpileAsync(new StockpileId(stockpileId), request);
 
         if (!result.IsSuccess)
         {
@@ -41,7 +41,7 @@ public class UpdateStockpileHandler(
         string Name,
         bool IsDefault);
 
-    public async Task<StashMavenResult> PatchStockpileAsync(
+    public async Task<StashMavenResult> UpdateStockpileAsync(
         StockpileId stockpileId,
         UpdateStockpileRequest request)
     {
@@ -63,14 +63,19 @@ public class UpdateStockpileHandler(
         }
 
         stockpile.Name = request.Name;
+        
+        Stockpile? defaultStockpile = await cacheReader.GetDefaultStockpileAsync();
 
-        if (request.IsDefault)
+        if (stockpile.StockpileId != defaultStockpile?.StockpileId && request.IsDefault)
         {
             await optionService.UpsertStashMavenOptionAsync(
                 StashMavenOption.Keys.DefaultStockpileShortCode,
                 stockpile.ShortCode);
-
             cacheReader.InvalidateKey(CacheReader.Keys.DefaultStockpile);
+        }
+        else if (stockpile.StockpileId == defaultStockpile?.StockpileId && !request.IsDefault)
+        {
+            return StashMavenResult.Error(ErrorCodes.DefaultStockpileRequired);
         }
 
         try

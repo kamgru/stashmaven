@@ -47,6 +47,7 @@ public static class ErrorCodes
     public const ErrorCode StockpileNotFound = 500000;
     public const ErrorCode StockpileHasShipments = 500001;
     public const ErrorCode StockpileShortCodeNotUnique = 500002;
+    public const ErrorCode DefaultStockpileRequired = 500003;
 }
 
 public class StashMavenResult

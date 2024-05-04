@@ -1,21 +1,26 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
-import {StockpileService} from "../../../common/services/stockpile.service";
+import {StockpileService, UpdateStockpileRequest} from "../../../common/services/stockpile.service";
 import {catchError, throwError} from "rxjs";
+import {Notification, NotificationComponent} from "../../../common/components/notification/notification.component";
 
 @Component({
     selector: 'app-edit-stockpile',
     standalone: true,
     imports: [
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NotificationComponent
     ],
     templateUrl: './edit-stockpile.component.html'
 })
-export class EditStockpileComponent {
+export class EditStockpileComponent implements OnInit {
+
+    public notification: Notification | null = null;
 
     public editStockpileForm = this.fb.group({
+        stockpileId: ['', [Validators.required]],
         name: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(3)]],
         shortCode: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(2)]],
         isDefault: [false]
@@ -48,28 +53,52 @@ export class EditStockpileComponent {
         let stockpileId = this.route.snapshot.params['id'];
 
         this.stockpileService.getStockpile(stockpileId)
-            .pipe(
-                catchError(error => {
-                    this.router.navigate(['/inventory/stockpiles']);
-                    return throwError(error);
-                })
-            )
             .subscribe(stockpile => {
+                this.editStockpileForm.get('stockpileId')?.setValue(stockpileId);
                 this.name.setValue(stockpile.name);
                 this.shortCode.setValue(stockpile.shortCode);
                 this.isDefault.setValue(stockpile.isDefault);
                 this.nameInput.nativeElement.focus();
-            });
 
+                if (this.isDefault.value) {
+                    this.isDefault.disable();
+                }
+
+                this.editStockpileForm.markAsPristine();
+            });
     }
 
     public handleSubmit() {
         if (!this.editStockpileForm.valid) {
             return;
         }
+
+        const stockpileId = this.editStockpileForm.get('stockpileId')?.value;
+
+        const req = new UpdateStockpileRequest(
+            this.name.value,
+            this.shortCode.value,
+            this.isDefault.value
+        );
+
+        this.stockpileService.updateStockpile(stockpileId!, req)
+            .pipe(
+                catchError(err => {
+                    this.notification = Notification.error(err.error);
+                    return [];
+                })
+            )
+            .subscribe(() => {
+                this.notification = Notification.success('Stockpile updated successfully');
+
+                if (this.isDefault.value) {
+                    this.isDefault.disable();
+                }
+                this.editStockpileForm.markAsPristine();
+            });
     }
 
     handleCancelled() {
-
+        this.router.navigate(['../'], {relativeTo: this.route});
     }
 }
