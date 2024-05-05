@@ -1,4 +1,4 @@
-<select class="rounded border-gray-300 shadow-sm"
+<select class="form-select"
         (keydown)="$event.preventDefault()"
         (change)="$event.preventDefault(); handleChange($event)">
     @for (option of options; track option) {
