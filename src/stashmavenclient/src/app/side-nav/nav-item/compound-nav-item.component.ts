@@ -16,10 +16,6 @@ export class CompoundNavItemComponent implements OnInit {
     @Input({required: true})
     public name!: string;
 
-    @Input({required: true})
-    public routerLink!: string | string[];
-
-
     public ngOnInit() {
         this.navId = encodeURIComponent(this.name.toLowerCase());
     }

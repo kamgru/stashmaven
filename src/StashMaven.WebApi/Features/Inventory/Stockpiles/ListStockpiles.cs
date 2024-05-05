@@ -61,7 +61,7 @@ public class ListStockpilesHandler(CacheReader cacheReader)
         
         IEnumerable<Stockpile> result = stockpiles.AsEnumerable();
         
-        if (request.Search is not null)
+        if (request.Search is not null && request.Search.Length >= MinSearchLength)
         {
             result = result.Where(x => x.Name.Contains(request.Search, StringComparison.InvariantCultureIgnoreCase));
         }
@@ -80,6 +80,8 @@ public class ListStockpilesHandler(CacheReader cacheReader)
             };
         }
         
+        int totalCount = result.Count();
+        
         List<StockpileItem> stockpileItems = result.Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
             .Select(x => new StockpileItem
@@ -94,7 +96,7 @@ public class ListStockpilesHandler(CacheReader cacheReader)
         return new ListStockpilesResponse
         {
             Items = stockpileItems,
-            TotalCount = stockpiles.Count
+            TotalCount = totalCount
         };
     }
 }

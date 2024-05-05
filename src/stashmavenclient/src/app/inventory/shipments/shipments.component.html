@@ -1,18 +1,22 @@
 @if (data$ | async; as data) {
-    <div>
-        <app-dropdown [items]="data.shipmentKinds" (OnItemSelected)="handleShipmentKindSelected($event)">
-            Add Shipment
-        </app-dropdown>
-    </div>
-    <div class="h-4/5 mr-2">
-        <app-list-shipments [stockpiles]="data.stockpiles"
-                            [controlsTemplate]="controlsTemplate"
-                            (OnStockpileChanged)="handleStockpileChanged($event)"
-                            (OnItemSelected)="handleShipmentSelected($event)"
-                            (OnItemConfirmed)="handlerShipmentConfirmed($event)">
-            <ng-template #controlsTemplate>
-                <button class="btn btn-primary" (click)="deleteShipment($event)">Edit</button>
+    <div class="mb-9">
+        <div class="row g-3 mb-4">
+            <div class="col-auto">
+                <h2 class="mb-0">Inventory Items</h2>
+            </div>
+        </div>
+        <div id="stockpiles">
+            <ng-template #toolbar>
+                <div class="ms-xxl-auto">
+<!--                    <button class="btn btn-primary" (click)="uiState = 'add'">-->
+<!--                        <fa-icon icon="plus" class="me-2"></fa-icon>-->
+<!--                        <span>Add Product</span>-->
+<!--                    </button>-->
+                </div>
             </ng-template>
-        </app-list-shipments>
+            <app-list-shipments [stockpiles]="data.stockpiles"
+                                (OnItemConfirmed)="handleItemConfirmed($event)">
+            </app-list-shipments>
+        </div>
     </div>
 }

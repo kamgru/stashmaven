@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 
 export class StockpileAddedEvent {
@@ -19,11 +19,11 @@ export class StockpileAddedEvent {
     ],
     templateUrl: './add-stockpile.component.html'
 })
-export class AddStockpileComponent {
+export class AddStockpileComponent implements OnInit {
 
     public addStockpileForm = this.fb.group({
         name: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(3)]],
-        shortCode: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(2)]],
+        shortCode: ['', [Validators.required, Validators.maxLength(8), Validators.minLength(2)]],
         isDefault: [false]
     });
 

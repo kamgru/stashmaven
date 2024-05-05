@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {combineLatest, map, Observable} from "rxjs";
 import {IStockpileListItem} from "../../common/IStockpileListItem";
 import {IShipment} from "../../common/components/list-shipments/list-shipments.service";
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
     selector: 'app-shipments',
@@ -16,9 +17,9 @@ import {IShipment} from "../../common/components/list-shipments/list-shipments.s
         AsyncPipe,
         DropdownComponent,
         ListShipmentsComponent,
+        FaIconComponent,
     ],
     templateUrl: './shipments.component.html',
-    styleUrl: './shipments.component.css'
 })
 export class ShipmentsComponent {
 
@@ -55,11 +56,11 @@ export class ShipmentsComponent {
     handleShipmentSelected($event: IShipment) {
     }
 
-    handlerShipmentConfirmed($event: IShipment) {
-        this.router.navigate([`./${$event.shipmentId}`], {relativeTo: this.route});
-    }
-
     deleteShipment($event: MouseEvent) {
 
+    }
+
+    handleItemConfirmed($event: IShipment) {
+        this.router.navigate([`./${$event.shipmentId}`], {relativeTo: this.route});
     }
 }

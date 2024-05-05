@@ -13,6 +13,7 @@ import {EditShipmentComponent} from "./inventory/shipments/edit-shipment/edit-sh
 import {EditBrandComponent} from "./catalog/brands/edit-brand/edit-brand.component";
 import {EditStockpileComponent} from "./inventory/stockpiles/edit-stockpile/edit-stockpile.component";
 import {InventoryItemsComponent} from "./inventory/inventory-items/inventory-items.component";
+import {ShipmentKindsComponent} from "./inventory/shipment-kinds/shipment-kinds.component";
 
 export const routes: Routes = [
     {path: 'partners/create', component: AddPartnerComponent, canActivate: [MsalGuard]},
@@ -28,5 +29,6 @@ export const routes: Routes = [
     {path: 'inventory/shipments', component: ShipmentsComponent, canActivate: [MsalGuard]},
     {path: 'inventory/shipments/:shipmentId', component: EditShipmentComponent, canActivate: [MsalGuard]},
     {path: 'inventory/items', component: InventoryItemsComponent, canActivate: [MsalGuard]},
+    {path: 'inventory/shipment-kinds', component: ShipmentKindsComponent, canActivate: [MsalGuard]},
     {path: 'countries', component: CountriesComponent, canActivate: [MsalGuard]}
 ];

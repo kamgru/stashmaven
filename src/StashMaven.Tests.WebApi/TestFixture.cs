@@ -7,6 +7,7 @@ using StashMaven.WebApi.Features.Catalog.Products;
 using StashMaven.WebApi.Features.Common.Countries;
 using StashMaven.WebApi.Features.Common.TaxDefinitions;
 using StashMaven.WebApi.Features.Inventory.InventoryItems;
+using StashMaven.WebApi.Features.Inventory.ShipmentKinds;
 using StashMaven.WebApi.Features.Inventory.Shipments;
 using StashMaven.WebApi.Features.Inventory.Stockpiles;
 using StashMaven.WebApi.Features.Partners;

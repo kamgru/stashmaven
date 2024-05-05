@@ -1,3 +1,4 @@
+/*
 using StashMaven.WebApi.Data.Services;
 
 namespace StashMaven.WebApi.Features.Inventory.Shipments;
@@ -52,3 +53,4 @@ public class ListShipmentKinds(CacheReader cacheReader)
         });
     }
 }
+*/

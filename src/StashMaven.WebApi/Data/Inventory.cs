@@ -110,6 +110,7 @@ public class ShipmentRecord
 public class ShipmentKind
 {
     public const int ShortCodeMaxLength = 8;
+    public const int NameMaxLength = 256;
 
     public int Id { get; set; }
     public required ShipmentKindId ShipmentKindId { get; set; }
@@ -132,6 +133,8 @@ public class ShipmentKind
                 .IsUnique();
             builder.Property(e => e.ShortCode)
                 .HasMaxLength(ShortCodeMaxLength);
+            builder.Property(e => e.Name)
+                .HasMaxLength(NameMaxLength);
         }
     }
 }

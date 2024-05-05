@@ -23,7 +23,7 @@ export class ListShipmentsComponent
     extends li.ListItemsBaseComponent<ls.IShipment, ls.ListShipmentsRequest, ls.IListShipmentsResponse, ls.ListShipmentsService>
     implements OnInit, OnDestroy {
 
-    @Input()
+    @Input({required: true})
     public stockpiles: IStockpileListItem[] = [];
 
     @Output()
@@ -31,9 +31,6 @@ export class ListShipmentsComponent
 
     public selectOptions: ISelectOption[] = [];
     public selectedOption: ISelectOption | null = null;
-
-    @Input()
-    public controlsTemplate: TemplateRef<any> | null = null;
 
     constructor(
         private listShipments: ls.ListShipmentsService,
@@ -59,6 +56,4 @@ export class ListShipmentsComponent
         this.listShipments.changeStockpile(stockpile?.stockpileId ?? '');
         this.OnStockpileChanged.emit(stockpile);
     }
-
-
 }

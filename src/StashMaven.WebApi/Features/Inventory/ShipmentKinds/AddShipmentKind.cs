@@ -1,12 +1,11 @@
 using Npgsql;
 using StashMaven.WebApi.Data.Services;
 
-namespace StashMaven.WebApi.Features.Inventory.Shipments;
+namespace StashMaven.WebApi.Features.Inventory.ShipmentKinds;
 
-public partial class ShipmentController
+public partial class ShipmentKindController
 {
     [HttpPost]
-    [Route("shipment-kind")]
     [ProducesResponseType<AddShipmentKindHandler.AddShipmentKindResponse>(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddShipmentKindAsync(
@@ -33,8 +32,14 @@ public class AddShipmentKindHandler(
 {
     public class AddShipmentKindRequest
     {
+        [MinLength(5)]
+        [MaxLength(256)]
         public required string Name { get; set; }
+        
+        [MinLength(2)]
+        [MaxLength(8)]
         public required string ShortCode { get; set; }
+        
         public ShipmentDirection Direction { get; set; }
     }
 
@@ -84,8 +89,7 @@ public class AddShipmentKindHandler(
         {
             if (e.InnerException is PostgresException { SqlState: StashMavenContext.PostgresUniqueViolation })
             {
-                return StashMavenResult<AddShipmentKindResponse>.Error(
-                    $"Shipment kind {request.ShortCode} already exists.");
+                return StashMavenResult<AddShipmentKindResponse>.Error(ErrorCodes.ShipmentKindShortCodeNotUnique);
             }
 
             throw;

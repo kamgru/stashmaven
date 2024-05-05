@@ -1,0 +1,35 @@
+@if (uiState == 'list') {
+    <div class="mb-9">
+        <div class="row g-3 mb-4">
+            <div class="col-auto">
+                <h2 class="mb-0">Shipment kinds</h2>
+            </div>
+        </div>
+        <div id="shipment-kinds">
+            <ng-template #toolbar>
+                <div class="ms-xxl-auto">
+                    <button class="btn btn-primary" (click)="uiState = 'add'">
+                        <fa-icon icon="plus" class="me-2"></fa-icon>
+                        <span>Add Shipment Kind</span>
+                    </button>
+                </div>
+            </ng-template>
+
+            <app-list-shipment-kinds [toolbarTemplate]="toolbar"
+                                     (OnItemConfirmed)="handleItemConfirmed($event)">
+            </app-list-shipment-kinds>
+        </div>
+    </div>
+} @else if (uiState == 'add') {
+    <div class="col-12 col-xl-6 mb-5">
+        <app-notification [notification]="notification"></app-notification>
+    </div>
+
+    @if (directions$ | async; as directions) {
+
+        <app-add-shipment-kind (OnShipmentKindAdded)="handleShipmentKindAdded($event)"
+                               [directions]="directions"
+                               (OnCancelled)="uiState = 'list'">
+        </app-add-shipment-kind>
+    }
+}

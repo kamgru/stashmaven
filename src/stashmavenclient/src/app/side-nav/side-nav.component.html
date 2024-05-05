@@ -3,13 +3,14 @@
         <!-- scrollbar removed-->
         <div class="navbar-vertical-content">
             <ul class="navbar-nav flex-column">
-                <app-nav-item routerLink="catalog" name="Catalog">
+                <app-nav-item name="Catalog">
                     <app-nav-item-child routerLink="catalog/products" name="Products"></app-nav-item-child>
                     <app-nav-item-child routerLink="catalog/brands" name="Brands"></app-nav-item-child>
                 </app-nav-item>
-                <app-nav-item routerLink="inventory" name="Inventory">
+                <app-nav-item name="Inventory">
                     <app-nav-item-child routerLink="inventory/items" name="Items"></app-nav-item-child>
                     <app-nav-item-child routerLink="inventory/stockpiles" name="Stockpiles"></app-nav-item-child>
+                    <app-nav-item-child routerLink="inventory/shipment-kinds" name="Shipment Kinds"></app-nav-item-child>
                 </app-nav-item>
 <!--                <li class="nav-item">-->
 <!--                    &lt;!&ndash; parent pages&ndash;&gt;-->

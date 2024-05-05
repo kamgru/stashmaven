@@ -13,7 +13,6 @@ import {ListItemsLayoutComponent} from "../list-items";
         NgTemplateOutlet
     ],
     templateUrl: './list-brands.component.html',
-    styleUrl: './list-brands.component.css'
 })
 export class ListBrandsComponent
     extends li.ListItemsBaseComponent<br.IBrandItem, br.ListBrandsRequest, br.IListBrandsResponse, br.ListBrandsService>
