@@ -52,6 +52,10 @@ public static class ErrorCodes
     // Shipment Kinds
     public const ErrorCode ShipmentKindNotFound = 600000;
     public const ErrorCode ShipmentKindShortCodeNotUnique = 600001;
+    
+    // Business Identifiers
+    public const ErrorCode BusinessIdentifierNotFound = 700000;
+    public const ErrorCode BusinessIdentifierShortCodeNotUnique = 700001;
 }
 
 public class StashMavenResult

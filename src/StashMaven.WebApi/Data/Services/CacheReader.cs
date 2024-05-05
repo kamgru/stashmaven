@@ -11,6 +11,7 @@ public class CacheReader(StashMavenContext context, IMemoryCache cache, CountryS
         public const string ShipmentKinds = "ShipmentKinds";
         public const string AvailableCountries = "AvailableCountries";
         public const string TaxDefinitions = "TaxDefinitions";
+        public const string BusinessIdentifiers = "BusinessIdentifiers";
     }
 
     public void InvalidateKey(
@@ -103,5 +104,20 @@ public class CacheReader(StashMavenContext context, IMemoryCache cache, CountryS
         cache.Set(Keys.TaxDefinitions, taxDefinitions, TimeSpan.FromMinutes(60));
         
         return taxDefinitions;
+    }
+    
+    public async Task<IReadOnlyList<BusinessIdentifier>> GetBusinessIdentifiersAsync()
+    {
+        cache.TryGetValue(Keys.BusinessIdentifiers, out IReadOnlyList<BusinessIdentifier>? businessIdentifiers);
+
+        if (businessIdentifiers != null)
+        {
+            return businessIdentifiers;
+        }
+        
+        businessIdentifiers = await context.BusinessIdentifiers.ToListAsync();
+        cache.Set(Keys.BusinessIdentifiers, businessIdentifiers, TimeSpan.FromMinutes(60));
+        
+        return businessIdentifiers;
     }
 }

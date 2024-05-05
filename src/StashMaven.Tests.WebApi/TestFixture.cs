@@ -10,7 +10,7 @@ using StashMaven.WebApi.Features.Inventory.InventoryItems;
 using StashMaven.WebApi.Features.Inventory.ShipmentKinds;
 using StashMaven.WebApi.Features.Inventory.Shipments;
 using StashMaven.WebApi.Features.Inventory.Stockpiles;
-using StashMaven.WebApi.Features.Partners;
+using StashMaven.WebApi.Features.Partnership.Partners;
 
 namespace StashMaven.Tests.WebApi;
 

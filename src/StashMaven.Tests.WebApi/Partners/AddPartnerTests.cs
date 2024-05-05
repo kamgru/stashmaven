@@ -1,4 +1,4 @@
-using StashMaven.WebApi.Features.Partners;
+using StashMaven.WebApi.Features.Partnership.Partners;
 
 namespace StashMaven.Tests.WebApi.Partners;
 

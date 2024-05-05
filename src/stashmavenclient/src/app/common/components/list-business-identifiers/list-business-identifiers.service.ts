@@ -4,9 +4,9 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {Injectable} from "@angular/core";
 
-export * from "./list-stockpiles.service";
+export * from "./list-business-identifiers.service";
 
-export class ListStockpilesRequest implements li.IListRequest {
+export class ListBusinessIdentifiersRequest implements li.IListRequest {
     page: number = 1;
     pageSize: number = 10;
     search: string = '';
@@ -14,31 +14,30 @@ export class ListStockpilesRequest implements li.IListRequest {
     isAscending: boolean = true;
 }
 
-export interface IStockpile {
-    stockpileId: string;
+export interface IBusinessIdentifier {
+    businessIdentifierId: string;
     shortCode: string;
     name: string;
-    isDefault: boolean;
 }
 
-export interface IListStockpilesResponse extends li.IListResponse<IStockpile> {
+export interface IListBusinessIdentifiersResponse extends li.IListResponse<IBusinessIdentifier> {
 }
 
 @Injectable({
     providedIn: 'root'
 })
-export class ListStockpilesService extends li.ListServiceBase<IStockpile, ListStockpilesRequest, IListStockpilesResponse> {
+export class ListBusinessIdentifiersService extends li.ListServiceBase<IBusinessIdentifier, ListBusinessIdentifiersRequest, IListBusinessIdentifiersResponse> {
 
     constructor(
         private http: HttpClient
     ) {
         super();
-        this._request$ = new BehaviorSubject(new ListStockpilesRequest());
+        this._request$ = new BehaviorSubject(new ListBusinessIdentifiersRequest());
         this.bootstrap();
     }
 
-    protected override listItems(request: ListStockpilesRequest): Observable<IListStockpilesResponse> {
-        return this.http.get<IListStockpilesResponse>(`${environment.apiUrl}/api/v1/stockpile/list`, {
+    protected override listItems(request: ListBusinessIdentifiersRequest): Observable<IListBusinessIdentifiersResponse> {
+        return this.http.get<IListBusinessIdentifiersResponse>(`${environment.apiUrl}/api/v1/businessidentifier/list`, {
             params: {
                 page: request.page.toString(),
                 pageSize: request.pageSize.toString(),

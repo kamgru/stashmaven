@@ -16,15 +16,16 @@ public class Address
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
     public Partner Partner { get; set; } = null!;
-
+    
     public class TypeConfig : IEntityTypeConfiguration<Address>
     {
-        public void Configure(EntityTypeBuilder<Address> builder)
+        public void Configure(
+            EntityTypeBuilder<Address> builder)
         {
-            builder.ToTable("Address", "prt");
+            builder.ToTable("Address", "partnership");
         }
     }
-
+    
     public override string ToString()
     {
         StringBuilder sb = new();
@@ -34,6 +35,7 @@ public class Address
             sb.Append(' ');
             sb.Append(StreetAdditional);
         }
+        
         sb.Append(", ");
         sb.Append(PostalCode);
         sb.Append(", ");
@@ -43,6 +45,7 @@ public class Address
             sb.Append(", ");
             sb.Append(State);
         }
+        
         sb.Append(", ");
         sb.Append(CountryCode);
         return sb.ToString();
@@ -68,12 +71,13 @@ public class Partner
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
     public List<Shipment> Shipments { get; set; } = [];
-
+    
     public class TypeConfig : IEntityTypeConfiguration<Partner>
     {
-        public void Configure(EntityTypeBuilder<Partner> builder)
+        public void Configure(
+            EntityTypeBuilder<Partner> builder)
         {
-            builder.ToTable("Partner", "prt");
+            builder.ToTable("Partner", "partnership");
             builder.OwnsOne(e => e.PartnerId)
                 .Property(e => e.Value)
                 .HasColumnName("PartnerId");
@@ -95,12 +99,13 @@ public class TaxIdentifier
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
     public Partner Partner { get; set; } = null!;
-
+    
     public class TypeConfig : IEntityTypeConfiguration<TaxIdentifier>
     {
-        public void Configure(EntityTypeBuilder<TaxIdentifier> builder)
+        public void Configure(
+            EntityTypeBuilder<TaxIdentifier> builder)
         {
-            builder.ToTable("TaxIdentifier", "prt");
+            builder.ToTable("TaxIdentifier", "partnership");
         }
     }
 }
@@ -110,4 +115,35 @@ public enum TaxIdentifierType
     Nip = 0,
     Regon = 1,
     Krs = 2
+}
+
+public record BusinessIdentifierId(string Value);
+
+public class BusinessIdentifier
+{
+    public const int NameMaxLength = 256;
+    public const int ShortCodeMaxLength = 10;
+    
+    public int Id { get; set; }
+    public BusinessIdentifierId BusinessIdentifierId { get; set; }
+    public required string Name { get; set; }
+    public required string ShortCode { get; set; }
+    
+    public class TypeConfig : IEntityTypeConfiguration<BusinessIdentifier>
+    {
+        public void Configure(
+            EntityTypeBuilder<BusinessIdentifier> builder)
+        {
+            builder.ToTable("BusinessIdentifier", "partnership");
+            builder.OwnsOne(e => e.BusinessIdentifierId)
+                .Property(e => e.Value)
+                .HasColumnName("BusinessIdentifierId");
+            builder.Property(e => e.Name)
+                .HasMaxLength(NameMaxLength);
+            builder.Property(e => e.ShortCode)
+                .HasMaxLength(ShortCodeMaxLength);
+            builder.HasIndex(e => e.ShortCode)
+                .IsUnique();
+        }
+    }
 }

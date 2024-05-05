@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 
-namespace StashMaven.WebApi.Features.Partners;
+namespace StashMaven.WebApi.Features.Partnership.Partners;
 
 [Authorize]
 [ApiController]

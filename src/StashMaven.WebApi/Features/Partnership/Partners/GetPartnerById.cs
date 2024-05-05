@@ -1,4 +1,4 @@
-namespace StashMaven.WebApi.Features.Partners;
+namespace StashMaven.WebApi.Features.Partnership.Partners;
 
 public partial class PartnerController
 {
