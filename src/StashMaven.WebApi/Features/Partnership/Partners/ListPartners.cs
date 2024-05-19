@@ -1,4 +1,4 @@
-namespace StashMaven.WebApi.Features.Partners;
+namespace StashMaven.WebApi.Features.Partnership.Partners;
 
 public partial class PartnerController
 {
@@ -24,7 +24,7 @@ public class ListPartnersHandler(
     private const int MaxPageSize = 100;
     private const int MinPage = 1;
     private const int MinSearchLength = 3;
-
+    
     public class Partner
     {
         public required string PartnerId { get; set; }
@@ -33,12 +33,12 @@ public class ListPartnersHandler(
         public required string Street { get; set; }
         public required string City { get; set; }
         public required string PostalCode { get; set; }
-        public required string PrimaryTaxIdentifierType { get; set; }
-        public required string PrimaryTaxIdentifierValue { get; set; }
+        public required string BusinessIdentifierType { get; set; }
+        public required string BusinessIdentifierValue { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime UpdatedOn { get; set; }
     }
-
+    
     public class ListPartnerRequest
     {
         public int Page { get; set; }
@@ -47,22 +47,22 @@ public class ListPartnersHandler(
         public bool IsAscending { get; set; }
         public string? SortBy { get; set; }
     }
-
+    
     public class ListPartnerResponse
     {
         public List<Partner> Items { get; set; } = [];
         public int TotalCount { get; set; }
     }
-
+    
     public async Task<ListPartnerResponse> ListPartnersAsync(
         ListPartnerRequest request)
     {
         request.PageSize = Math.Clamp(request.PageSize, MinPageSize, MaxPageSize);
         request.Page = Math.Max(request.Page, MinPage);
-
+        
         IQueryable<Partner> partners = context.Partners
             .Include(p => p.Address)
-            .Include(p => p.TaxIdentifiers)
+            .Include(p => p.BusinessIdentifiers)
             .Select(p => new Partner
             {
                 PartnerId = p.PartnerId.Value,
@@ -71,25 +71,21 @@ public class ListPartnersHandler(
                 Street = p.Address!.Street,
                 City = p.Address.City,
                 PostalCode = p.Address.PostalCode,
-                PrimaryTaxIdentifierType = p.TaxIdentifiers
-                    .First(ti => ti.IsPrimary)
-                    .Type.ToString(),
-                PrimaryTaxIdentifierValue = p.TaxIdentifiers
-                    .First(ti => ti.IsPrimary)
-                    .Value,
+                BusinessIdentifierType = p.BusinessIdentifiers.First(x => x.IsPrimary).Type,
+                BusinessIdentifierValue = p.BusinessIdentifiers.First(x => x.IsPrimary).Value,
                 CreatedOn = p.CreatedOn,
                 UpdatedOn = p.UpdatedOn
             });
-
+        
         if (!string.IsNullOrWhiteSpace(request.Search) && request.Search.Length >= MinSearchLength)
         {
             string search = $"%{request.Search}%";
             partners = partners.Where(p =>
                 EF.Functions.ILike(p.CustomIdentifier, search)
                 || EF.Functions.ILike(p.LegalName, search)
-                || EF.Functions.ILike(p.PrimaryTaxIdentifierValue, search));
+                || EF.Functions.ILike(p.BusinessIdentifierValue, search));
         }
-
+        
         if (!string.IsNullOrWhiteSpace(request.SortBy))
         {
             if (request.SortBy.Equals("customIdentifier", StringComparison.OrdinalIgnoreCase))
@@ -111,13 +107,13 @@ public class ListPartnersHandler(
                     : partners.OrderByDescending(p => p.CreatedOn);
             }
         }
-
+        
         int totalCount = await partners.CountAsync();
         List<Partner> partnersList = await partners
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
             .ToListAsync();
-
+        
         return new ListPartnerResponse
         {
             Items = partnersList,

@@ -1,4 +1,4 @@
-using StashMaven.WebApi.Features.Partners;
+using StashMaven.WebApi.Features.Partnership.Partners;
 
 namespace StashMaven.Tests.WebApi.Partners;
 
@@ -15,16 +15,15 @@ public class AddPartnerTests(DefaultTestFixture fixture) : IClassFixture<Default
         {
             CustomIdentifier = Guid.NewGuid().ToString().Substring(0, 10),
             LegalName = Guid.NewGuid().ToString().Substring(0, 10),
-            TaxIdentifiers =
+            BusinessIdentifiers =
             [
-                new AddPartnerHandler.AddPartnerRequest.TaxIdentifier
+                new AddPartnerHandler.AddPartnerRequest.AddPartnerBusinessIdentifier
                 {
-                    IsPrimary = true,
-                    Type = TaxIdentifierType.Nip,
+                    Type = "nip",
                     Value = Guid.NewGuid().ToString().Substring(0, 11)
                 }
             ],
-            Address = new AddPartnerHandler.AddPartnerRequest.PartnerAddress
+            Address = new AddPartnerHandler.AddPartnerRequest.AddPartnerAddress
             {
                 City = "Warsaw",
                 CountryCode = "PL",
@@ -48,7 +47,7 @@ public class AddPartnerTests(DefaultTestFixture fixture) : IClassFixture<Default
 
         Partner? partner = await context.Partners.
             Include(partner => partner.Address)
-            .Include(partner => partner.TaxIdentifiers)
+            .Include(partner => partner.BusinessIdentifiers)
             .FirstOrDefaultAsync(x => x.PartnerId.Value == response.PartnerId);
 
         Assert.NotNull(partner);
@@ -61,8 +60,7 @@ public class AddPartnerTests(DefaultTestFixture fixture) : IClassFixture<Default
         Assert.Equal(request.Address.State, partner.Address?.State);
         Assert.Equal(request.Address.Street, partner.Address?.Street);
         Assert.Equal(request.Address.StreetAdditional, partner.Address?.StreetAdditional);
-        Assert.Equal(request.TaxIdentifiers[0].Type, partner.TaxIdentifiers[0].Type);
-        Assert.Equal(request.TaxIdentifiers[0].Value, partner.TaxIdentifiers[0].Value);
-        Assert.Equal(request.TaxIdentifiers[0].IsPrimary, partner.TaxIdentifiers[0].IsPrimary);
+        Assert.Equal(request.BusinessIdentifiers[0].Type, partner.BusinessIdentifiers[0].Type);
+        Assert.Equal(request.BusinessIdentifiers[0].Value, partner.BusinessIdentifiers[0].Value);
     }
 }

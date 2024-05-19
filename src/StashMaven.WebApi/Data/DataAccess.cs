@@ -17,7 +17,7 @@ public class StashMavenContext : DbContext
         
         modelBuilder.ApplyConfiguration(new Partner.TypeConfig());
         modelBuilder.ApplyConfiguration(new Address.TypeConfig());
-        modelBuilder.ApplyConfiguration(new TaxIdentifier.TypeConfig());
+        modelBuilder.ApplyConfiguration(new BusinessIdentifier.TypeConfig());
         
         modelBuilder.ApplyConfiguration(new Product.TypeConfig());
         modelBuilder.ApplyConfiguration(new Brand.TypeConfig());
@@ -39,7 +39,7 @@ public class StashMavenContext : DbContext
     
     public DbSet<Partner> Partners => Set<Partner>();
     public DbSet<Address> Addresses => Set<Address>();
-    public DbSet<TaxIdentifier> TaxIdentifiers => Set<TaxIdentifier>();
+    public DbSet<BusinessIdentifier> BusinessIdentifiers => Set<BusinessIdentifier>();
     
     public DbSet<TaxDefinition> TaxDefinitions => Set<TaxDefinition>();
     public DbSet<CompanyOption> CompanyOptions => Set<CompanyOption>();

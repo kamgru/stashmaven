@@ -10,7 +10,7 @@ using StashMaven.WebApi.Features.Inventory.InventoryItems;
 using StashMaven.WebApi.Features.Inventory.ShipmentKinds;
 using StashMaven.WebApi.Features.Inventory.Shipments;
 using StashMaven.WebApi.Features.Inventory.Stockpiles;
-using StashMaven.WebApi.Features.Partners;
+using StashMaven.WebApi.Features.Partnership.Partners;
 
 namespace StashMaven.Tests.WebApi;
 
@@ -134,7 +134,7 @@ public abstract class TestFixture
         using HttpClient http = CreateClient();
         AddPartnerHandler.AddPartnerRequest request = new()
         {
-            Address = new AddPartnerHandler.AddPartnerRequest.PartnerAddress
+            Address = new AddPartnerHandler.AddPartnerRequest.AddPartnerAddress
             {
                 City = "Test City",
                 Street = "Test Street",
@@ -144,12 +144,11 @@ public abstract class TestFixture
             },
             CustomIdentifier = Guid.NewGuid().ToString(),
             LegalName = Guid.NewGuid().ToString(),
-            TaxIdentifiers =
+            BusinessIdentifiers =
             [
-                new AddPartnerHandler.AddPartnerRequest.TaxIdentifier
+                new AddPartnerHandler.AddPartnerRequest.AddPartnerBusinessIdentifier
                 {
-                    IsPrimary = true,
-                    Type = TaxIdentifierType.Nip,
+                    Type = "nip",
                     Value = Guid.NewGuid().ToString()[..10]
                 }
             ]

@@ -140,7 +140,7 @@ export class EditShipmentComponent implements OnInit {
     public handlePartnerChanged($event: IPartner) {
         console.log($event);
 
-        const taxId = `${$event.primaryTaxIdentifierType}: ${$event.primaryTaxIdentifierValue}`;
+        const taxId = `${$event.businessIdentifierType}: ${$event.businessIdentifierValue}`;
         const address = `${$event.street}, ${$event.postalCode}, ${$event.city}`;
 
         this.partner.patchValue({

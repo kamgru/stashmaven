@@ -1,0 +1,34 @@
+@if (data$ | async; as data) {
+
+    @if (uiState == 'list') {
+        <div class="mb-9">
+            <div class="row g-3 mb-4">
+                <div class="col-auto">
+                    <h2 class="mb-0">Partners</h2>
+                </div>
+            </div>
+            <div id="partners">
+                <ng-template #toolbar>
+                    <div class="ms-xxl-auto">
+                        <button class="btn btn-primary" (click)="handleAddClicked()">
+                            <fa-icon icon="plus" class="me-2"></fa-icon>
+                            <span>Add Partner</span>
+                        </button>
+                    </div>
+                </ng-template>
+                <app-list-partners [toolbarTemplate]="toolbar"
+                                   (OnItemConfirmed)="handleItemConfirmed($event)">
+                </app-list-partners>
+            </div>
+        </div>
+    } @else if (uiState == 'add') {
+        <div class="col-12 col-xl-6 mb-5">
+            <app-notification [notification]="notification"></app-notification>
+        </div>
+        <app-add-partner (OnCancelled)="uiState = 'list'"
+                         (OnPartnerAdded)="handlePartnerAdded($event)"
+                         [countries]="data.countries"
+                         [businessIdentifierTypes]="data.businessIdentifiers">
+        </app-add-partner>
+    }
+}

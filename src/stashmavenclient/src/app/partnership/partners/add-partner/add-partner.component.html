@@ -1,0 +1,106 @@
+<form [formGroup]="addPartnerForm" (ngSubmit)="handleSubmit()">
+    <div class="row g-3 flex-between-end mb-5">
+        <div class="col-auto">
+            <h2>Add a partner</h2>
+            <h5 class="text-body-tertiary fw-semibold">Add a partner to the system</h5>
+        </div>
+    </div>
+    <div class="row g-5">
+        <div class="col-12 col-xl-6">
+            <h4 class="mb-3">Custom Identifier</h4>
+            <input #nameInput
+                   type="text"
+                   class="form-control"
+                   formControlName="customIdentifier"
+                   [class.is-invalid]="customIdentifier.invalid && customIdentifier.touched"/>
+            <div class="invalid-feedback">Custom Identifier needs to between 3 and 50 characters</div>
+            <div class="mb-6 mt-6">
+                <h4 class="mb-3">Legal Name</h4>
+                <textarea formControlName="legalName"
+                          [class.is-invalid]="legalName.invalid && legalName.touched"
+                          class="form-control"
+                          rows="6">
+                </textarea>
+                <div class="invalid-feedback">Legal Name needs to between 3 and 2048 characters</div>
+            </div>
+            <div class="mb-6 mt-5">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" formControlName="isConsumer" />
+                    <label class="form-check-label">Consumer partner (B2C)</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3" [hidden]="isConsumer.value">
+        <h4>Business Identifiers</h4>
+        <div class="border rounded col-12 col-xl-6">
+            <div formArrayName="businessIdentifiers">
+                @for (bi of businessIdentifiers.controls; track bi) {
+                    <div class="my-4" formGroupName="{{$index}}">
+                        <h5 class="mb-3">{{ bi.get('typeName')?.value }}</h5>
+                        <input type="hidden" formControlName="typeId"/>
+                        <input type="text"
+                               formControlName="value"
+                               [class.is-invalid]="bi.get('value')?.invalid && bi.get('value')?.touched"
+                               class="form-control"/>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row g-3 mt-4">
+        <h4>Address</h4>
+        <div class="border rounded col-12 col-xl-6">
+            <div class="my-4">
+                <h5 class="mb-3">Street Address</h5>
+                <input type="text"
+                       formControlName="street"
+                       [class.is-invalid]="street.invalid && street.touched"
+                       class="form-control"/>
+            </div>
+            <div class="my-4">
+                <h5 class="mb-3">Street Address Line 2</h5>
+                <input type="text"
+                       formControlName="streetAdditional"
+                       [class.is-invalid]="streetAdditional.invalid && streetAdditional.touched"
+                       class="form-control"/>
+            </div>
+            <div class="my-4">
+                <h5 class="mb-3">Postal Code</h5>
+                <input type="text"
+                       formControlName="postalCode"
+                       [class.is-invalid]="postalCode.invalid && postalCode.touched"
+                       class="form-control"/>
+            </div>
+            <div class="my-4">
+                <h5 class="mb-3">City</h5>
+                <input type="text"
+                       formControlName="city"
+                       [class.is-invalid]="city.invalid && city.touched"
+                       class="form-control"/>
+            </div>
+            <div class="my-4">
+                <h5 class="mb-3">Country</h5>
+                <select formControlName="country"
+                        [class.is-invalid]="country.invalid && country.touched"
+                        class="form-select">
+                    @for (country of countries; track country) {
+                        <option [value]="country.code">{{ country.name }}</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-auto">
+            <button class="btn btn-primary mb-2 mb-sm-0 me-2"
+                    type="submit"
+                    [disabled]="addPartnerForm.invalid">Save
+            </button>
+            <button class="btn btn-phoenix-secondary mb-2 mb-sm-0"
+                    type="button"
+                    (click)="OnCancelled.emit()">Cancel
+            </button>
+        </div>
+    </div>
+</form>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StashMaven.WebApi.Data;
@@ -12,9 +13,11 @@ using StashMaven.WebApi.Data;
 namespace StashMaven.WebApi.Data.Migrations
 {
     [DbContext(typeof(StashMavenContext))]
-    partial class StashMavenContextModelSnapshot : ModelSnapshot
+    [Migration("20240513181508_RenameTaxIdentifiers")]
+    partial class RenameTaxIdentifiers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,25 +116,19 @@ namespace StashMaven.WebApi.Data.Migrations
                     b.Property<int>("PartnerId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("character varying(16)");
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PartnerId");
-
-                    b.HasIndex("Type", "Value")
-                        .IsUnique();
 
                     b.ToTable("BusinessIdentifier", "partnership");
                 });
@@ -230,9 +227,6 @@ namespace StashMaven.WebApi.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomIdentifier")
-                        .IsUnique();
 
                     b.ToTable("Partner", "partnership");
                 });
@@ -635,7 +629,7 @@ namespace StashMaven.WebApi.Data.Migrations
             modelBuilder.Entity("StashMaven.WebApi.Data.BusinessIdentifier", b =>
                 {
                     b.HasOne("StashMaven.WebApi.Data.Partner", "Partner")
-                        .WithMany("BusinessIdentifiers")
+                        .WithMany("TaxIdentifiers")
                         .HasForeignKey("PartnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -955,9 +949,9 @@ namespace StashMaven.WebApi.Data.Migrations
                 {
                     b.Navigation("Address");
 
-                    b.Navigation("BusinessIdentifiers");
-
                     b.Navigation("Shipments");
+
+                    b.Navigation("TaxIdentifiers");
                 });
 
             modelBuilder.Entity("StashMaven.WebApi.Data.Product", b =>

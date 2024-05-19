@@ -49,7 +49,7 @@ public class ChangeShipmentPartnerHandler(
         Partner? partner = await context.Partners
             .AsTracking()
             .Include(partner => partner.Address)
-            .Include(partner => partner.TaxIdentifiers)
+            .Include(partner => partner.BusinessIdentifiers)
             .SingleOrDefaultAsync(p => p.PartnerId.Value == request.PartnerId);
 
         if (partner is null)
@@ -62,7 +62,7 @@ public class ChangeShipmentPartnerHandler(
             return StashMavenResult.Error($"Partner {request.PartnerId} has no address");
         }
         
-        TaxIdentifier? primaryTaxIdentifier = partner.TaxIdentifiers.FirstOrDefault(x => x.IsPrimary);
+        BusinessIdentifier? primaryTaxIdentifier = partner.BusinessIdentifiers.FirstOrDefault(x => x.IsPrimary);
         
         if (shipment.PartnerRefSnapshot is not null)
         {

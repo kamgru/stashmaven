@@ -1,4 +1,4 @@
-namespace StashMaven.WebApi.Features.Partners;
+namespace StashMaven.WebApi.Features.Partnership.Partners;
 
 public partial class PartnerController
 {
@@ -37,18 +37,17 @@ public class UpdatePartnerHandler(
         public required string CountryCode { get; set; }
     }
 
-    public class TaxIdentifierPatch
+    public class BusinessIdentifier
     {
-        public required TaxIdentifierType Type { get; set; }
+        public required string Type { get; set; }
         public required string Value { get; set; }
-        public bool IsPrimary { get; set; }
     }
 
     public class PatchPartnerRequest
     {
         public string? CustomIdentifier { get; set; }
         public string? LegalName { get; set; }
-        public List<TaxIdentifierPatch>? TaxIdentifiers { get; set; }
+        public List<BusinessIdentifier>? BusinessIdentifiers { get; set; }
         public AddressPatch? Address { get; set; }
     }
 
@@ -58,7 +57,7 @@ public class UpdatePartnerHandler(
     {
         Partner? partner = await context.Partners
             .Include(p => p.Address)
-            .Include(p => p.TaxIdentifiers)
+            .Include(p => p.BusinessIdentifiers)
             .FirstOrDefaultAsync(p => p.PartnerId.Value == partnerId);
 
         if (partner is null)
@@ -89,14 +88,14 @@ public class UpdatePartnerHandler(
             };
         }
 
-        if (request.TaxIdentifiers is not null)
+        if (request.BusinessIdentifiers is not null)
         {
-            partner.TaxIdentifiers = request.TaxIdentifiers
-                .Select(bi => new TaxIdentifier
+            partner.BusinessIdentifiers = request.BusinessIdentifiers
+                .Select(bi => new Data.BusinessIdentifier
                 {
                     Type = bi.Type,
                     Value = bi.Value,
-                    IsPrimary = bi.IsPrimary,
+                    IsPrimary = BusinessIdType.FromId(bi.Type).IsPrimary,
                     CreatedOn = DateTime.UtcNow,
                     UpdatedOn = DateTime.UtcNow
                 })

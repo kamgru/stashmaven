@@ -26,8 +26,8 @@ export interface IPartner {
     street: string;
     city: string;
     postalCode: string;
-    primaryTaxIdentifierType: string;
-    primaryTaxIdentifierValue: string;
+    businessIdentifierType: string;
+    businessIdentifierValue: string;
 }
 
 @Injectable({
@@ -54,5 +54,4 @@ export class ListPartnersService extends li.ListServiceBase<IPartner, ListPartne
             }
         });
     }
-
 }

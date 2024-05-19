@@ -1,5 +1,5 @@
 import {Component, OnDestroy} from '@angular/core';
-import {AsyncPipe} from "@angular/common";
+import {AsyncPipe, NgTemplateOutlet} from "@angular/common";
 import * as pa from "./list-partners.service";
 import * as li from "../list-items";
 
@@ -8,7 +8,8 @@ import * as li from "../list-items";
     standalone: true,
     imports: [
         AsyncPipe,
-        li.ListItemsLayoutComponent
+        li.ListItemsLayoutComponent,
+        NgTemplateOutlet
     ],
     templateUrl: './list-partners.component.html',
     styleUrl: './list-partners.component.css'

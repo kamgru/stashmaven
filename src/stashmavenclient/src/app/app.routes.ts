@@ -1,6 +1,5 @@
 import {Routes} from '@angular/router';
-import {PartnersComponent} from "./partners/partners.component";
-import {AddPartnerComponent} from "./partners/add-partner/add-partner.component";
+import {PartnersComponent} from "./partnership/partners/partners.component";
 import {MsalGuard, MsalRedirectComponent} from "@azure/msal-angular";
 import {TaxDefinitionsComponent} from "./common/tax-definitions/tax-definitions.component";
 import {ProductsComponent} from "./catalog/products/products.component";
@@ -16,8 +15,6 @@ import {InventoryItemsComponent} from "./inventory/inventory-items/inventory-ite
 import {ShipmentKindsComponent} from "./inventory/shipment-kinds/shipment-kinds.component";
 
 export const routes: Routes = [
-    {path: 'partners/create', component: AddPartnerComponent, canActivate: [MsalGuard]},
-    {path: 'partners', component: PartnersComponent, canActivate: [MsalGuard]},
     {path: 'catalog/products', component: ProductsComponent, canActivate: [MsalGuard]},
     {path: 'catalog/products/:id', component: EditProductComponent, canActivate: [MsalGuard]},
     {path: 'catalog/brands', component: BrandsComponent, canActivate: [MsalGuard]},
@@ -30,5 +27,6 @@ export const routes: Routes = [
     {path: 'inventory/shipments/:shipmentId', component: EditShipmentComponent, canActivate: [MsalGuard]},
     {path: 'inventory/items', component: InventoryItemsComponent, canActivate: [MsalGuard]},
     {path: 'inventory/shipment-kinds', component: ShipmentKindsComponent, canActivate: [MsalGuard]},
+    {path: 'partnership/partners', component: PartnersComponent, canActivate: [MsalGuard]},
     {path: 'countries', component: CountriesComponent, canActivate: [MsalGuard]}
 ];

@@ -11,10 +11,6 @@ public static class ErrorCodes
     public const ErrorCode PartnerNotFound = 100000;
     public const ErrorCode CustomIdentifierNotUnique = 100001;
     public const ErrorCode PartnerHasShipments = 100002;
-    public const ErrorCode OnlyOnePrimaryTaxIdentifier = 100003;
-    public const ErrorCode TaxIdentifierTypeNotSupported = 100004;
-    public const ErrorCode TaxIdentifierTypeNotUnique = 100005;
-    public const ErrorCode TaxIdentifierValueNotUnique = 100006;
     public const ErrorCode CountryCodeNotSupported = 100007;
     
     // Shipment
@@ -52,6 +48,11 @@ public static class ErrorCodes
     // Shipment Kinds
     public const ErrorCode ShipmentKindNotFound = 600000;
     public const ErrorCode ShipmentKindShortCodeNotUnique = 600001;
+    
+    // Business Identifiers
+    public const ErrorCode UnknownBusinessIdentifierType = 700000;
+    public const ErrorCode NoPrimaryBusinessIdentifier = 700001;
+    public const ErrorCode BusinessIdentifierNotUnique = 700002;
 }
 
 public class StashMavenResult

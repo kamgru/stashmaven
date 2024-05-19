@@ -1,4 +1,4 @@
-namespace StashMaven.WebApi.Features.Partners;
+namespace StashMaven.WebApi.Features.Partnership.Partners;
 
 public partial class PartnerController
 {
@@ -56,7 +56,7 @@ public class GetPartnerByIdHandler(StashMavenContext context)
     {
         Partner? partner = await context.Partners
             .Include(p => p.Address)
-            .Include(p => p.TaxIdentifiers)
+            .Include(p => p.BusinessIdentifiers)
             .FirstOrDefaultAsync(p => p.PartnerId.Value == partnerId);
 
         if (partner == null)
@@ -68,11 +68,10 @@ public class GetPartnerByIdHandler(StashMavenContext context)
         {
             LegalName = partner.LegalName,
             CustomIdentifier = partner.CustomIdentifier,
-            TaxIdentifiers = partner.TaxIdentifiers.Select(ti => new GetPartnerResponse.TaxIdentifier
+            TaxIdentifiers = partner.BusinessIdentifiers.Select(ti => new GetPartnerResponse.TaxIdentifier
                 {
                     Type = ti.Type.ToString(),
                     Value = ti.Value,
-                    IsPrimary = ti.IsPrimary
                 })
                 .ToList(),
             Address = new GetPartnerResponse.PartnerAddress

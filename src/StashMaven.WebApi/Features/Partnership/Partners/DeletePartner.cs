@@ -1,4 +1,4 @@
-namespace StashMaven.WebApi.Features.Partners;
+namespace StashMaven.WebApi.Features.Partnership.Partners;
 
 public partial class PartnerController
 {
@@ -30,7 +30,7 @@ public class DeletePartnerHandler(StashMavenContext context)
     {
         Partner? partner = await context.Partners
             .Include(p => p.Address)
-            .Include(p => p.TaxIdentifiers)
+            .Include(p => p.BusinessIdentifiers)
             .Include(p => p.Shipments)
             .FirstOrDefaultAsync(p => p.PartnerId.Value == partnerId);
 
