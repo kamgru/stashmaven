@@ -90,7 +90,7 @@ export class EditShipmentComponent implements OnInit {
             direction: 'In'
         },
         {
-            stockpileId: '15bbae2c-395f-4bd2-91f9-594fdf920ae4',
+            stockpileId: 'eabbbda9-12bb-43d5-b9bf-1f3ae90e5456',
             name: 'Magazyn Główny',
             shortCode: 'M1',
             isDefault: true

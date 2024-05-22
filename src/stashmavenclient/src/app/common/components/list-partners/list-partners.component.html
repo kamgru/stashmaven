@@ -14,9 +14,9 @@
             <thead>
             <tr>
                 <th class="sort align-middle" scope="col" style="width:70px">#</th>
-                <th class="sort align-middle" scope="col" style="width:200px" (click)="sortBy('customIdentifier')">Sku</th>
+                <th class="sort align-middle" scope="col" style="width:200px" (click)="sortBy('customIdentifier')">Custom Id</th>
                 <th class="sort align-middle" scope="col" style="width:350px" (click)="sortBy('legalName')">Name</th>
-                <th class="sort align-middle" scope="col">Business id</th>
+                <th class="sort align-middle" scope="col">Business Id</th>
                 <th class="sort text-end align-middle pe-0 ps-4"></th>
             </tr>
             </thead>
@@ -29,8 +29,6 @@
                         <td class="category align-middle">{{ product.customIdentifier }}</td>
                         <td class="product ps-4 align-middle">{{ product.legalName }}</td>
                         <td class="align-middle">{{ '(' + product.businessIdentifierType + ') ' + product.businessIdentifierValue }}</td>
-                        <td class="align-middle text-end pe-0 ps-4 btn-reveal-trigger">
-                        <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger"></td>
                     </tr>
                 }
             </tbody>

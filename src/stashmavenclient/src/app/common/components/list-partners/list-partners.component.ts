@@ -12,7 +12,6 @@ import * as li from "../list-items";
         NgTemplateOutlet
     ],
     templateUrl: './list-partners.component.html',
-    styleUrl: './list-partners.component.css'
 })
 export class ListPartnersComponent
     extends li.ListItemsBaseComponent<pa.IPartner, pa.ListPartnersRequest, pa.IListPartnersResponse, pa.ListPartnersService>

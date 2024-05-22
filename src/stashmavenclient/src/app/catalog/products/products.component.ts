@@ -8,7 +8,6 @@ import {FaIconLibrary, FontAwesomeModule} from "@fortawesome/angular-fontawesome
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {AddProductRequest, ProductService} from "../../common/services/product.service";
 import {UnitOfMeasureService} from "../../common/services/unit-of-measure.service";
-import {tap} from "rxjs";
 
 @Component({
     selector: 'app-products',

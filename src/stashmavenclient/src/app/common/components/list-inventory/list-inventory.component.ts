@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {tap} from "rxjs";
 import * as inv from "./list-inventory.service";
-import {AsyncPipe} from "@angular/common";
+import {AsyncPipe, NgTemplateOutlet} from "@angular/common";
 import {IStockpileListItem} from "../../IStockpileListItem";
 import {FormsModule} from "@angular/forms";
 import * as li from "../list-items";
@@ -16,10 +16,10 @@ import {ISelectOption, SelectComponent} from "../select/select.component";
         FormsModule,
         li.ListItemsLayoutComponent,
         DropdownComponent,
-        SelectComponent
+        SelectComponent,
+        NgTemplateOutlet
     ],
     templateUrl: './list-inventory.component.html',
-    styleUrl: './list-inventory.component.css',
 })
 export class ListInventoryComponent
     extends li.ListItemsBaseComponent<inv.IInventoryItem, inv.ListInventoryItemsRequest, inv.IListInventoryItemsResponse, inv.ListInventoryService>
@@ -44,7 +44,6 @@ export class ListInventoryComponent
                     this.selectedOption = {value: x.stockpileId, label: selectedStockpile?.name ?? ''};
                 })
             );
-
     }
 
     ngOnInit(){

@@ -1,45 +1,42 @@
-<div class="pt-2">
-    @if (listResponse$ | async; as listResponse) {
-        <app-list-items-layout [listResponse]="listResponse"
-                               [itemTemplate]="itemsTemplate"
-                               [toolbarTemplate]="toolbarTemplate"
-                               (OnSearch)="search($event)"
-                               (OnPageSizeChanged)="changePageSize($event)"
-                               (OnPrevPage)="tryPrevPage()"
-                               (OnNextPage)="tryNextPage()">
-            <ng-template #toolbarTemplate>
-                <app-select [options]="selectOptions"
-                            [selectedOption]="selectedOption"
-                            (OnSelect)="handleStockpileChanged($event)">
-                </app-select>
-            </ng-template>
-            <ng-template #itemsTemplate>
-                <thead>
-                <tr class="grid grid-cols-inventory-items text-left bg-slate-900 text-gray-200 p-2 sticky top-0 max-h-[40px]">
-                    <th>#</th>
-                    <th (click)="sortBy('sku')">Sku</th>
-                    <th (click)="sortBy('name')">Name</th>
-                    <th>Quantity</th>
-                    <th>Unit</th>
-                </tr>
-                </thead>
-                <tbody>
-                    @for (inventoryItem of listResponse.items; track inventoryItem.inventoryItemId; let i = $index) {
-                        <tr [class.idx]="i == currentIndex_$()"
-                            (click)="handleRowClick(inventoryItem)"
-                            (dblclick)="handleRowDblClick(inventoryItem)"
-                            class="grid grid-cols-inventory-items text-base">
-                            <td>{{ (listResponse.currentPage - 1) * listResponse.pageSize + i + 1 }}</td>
-                            <td>{{ inventoryItem.sku }}</td>
-                            <td>{{ inventoryItem.name }}</td>
-                            <td>{{ inventoryItem.quantity}}</td>
-                            <td>{{ inventoryItem.unitOfMeasure }}</td>
-                        </tr>
-                    }
-                </tbody>
-            </ng-template>
-        </app-list-items-layout>
-    } @else {
-        <div>Loading...</div>
-    }
-</div>
+@if (listResponse$ | async; as listResponse) {
+    <app-list-items-layout [listResponse]="listResponse"
+                           [toolbarTemplate]="toolbarOuter"
+                           [itemTemplate]="itemsTemplate"
+                           (OnSearch)="search($event)"
+                           (OnPageSizeChanged)="changePageSize($event)"
+                           (OnPrevPage)="tryPrevPage()"
+                           (OnNextPage)="tryNextPage()">
+        <ng-template #toolbarOuter>
+            <app-select [options]="selectOptions"
+                        [selectedOption]="selectedOption"
+                        (OnSelect)="handleStockpileChanged($event)">
+            </app-select>
+            <ng-container *ngTemplateOutlet="toolbarTemplate">
+            </ng-container>
+        </ng-template>
+        <ng-template #itemsTemplate>
+            <thead>
+            <tr>
+                <th class="sort align-middle" scope="col" style="width:70px">#</th>
+                <th class="sort align-middle" scope="col" style="width:200px" (click)="sortBy('sku')">Sku</th>
+                <th class="sort align-middle" scope="col" style="width:350px" (click)="sortBy('name')">Name</th>
+                <th class="sort align-middle" scope="col">Quantity</th>
+                <th class="sort align-middle" scope="col">Unit</th>
+            </tr>
+            </thead>
+            <tbody class="list" id="items-table-body">
+                @for (item of listResponse.items; track item.inventoryItemId; let i = $index) {
+                    <tr [class.table-primary]="i == currentIndex_$()"
+                        (click)="handleRowClick(item)"
+                        (dblclick)="handleRowDblClick(item)" class="position-static">
+                        <td class="text-body-tertiary align-middle white-space-nowrap px-1">{{ (listResponse.currentPage - 1) * listResponse.pageSize + i + 1 }}</td>
+                        <td class="category align-middle">{{ item.sku }}</td>
+                        <td class="item ps-4 align-middle">{{ item.name }}</td>
+                        <td class="align-middle">{{ item.quantity }}</td>
+                        <td class="align-middle">{{ item.unitOfMeasure }}</td>
+                    </tr>
+                }
+            </tbody>
+        </ng-template>
+    </app-list-items-layout>
+}
