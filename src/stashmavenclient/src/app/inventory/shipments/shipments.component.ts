@@ -9,6 +9,8 @@ import {combineLatest, map, Observable} from "rxjs";
 import {IStockpileListItem} from "../../common/IStockpileListItem";
 import {IShipment} from "../../common/components/list-shipments/list-shipments.service";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {ShipmentKindService} from "../../common/services/shipment-kind.service";
+import {EditShipmentComponent} from "./edit-shipment/edit-shipment.component";
 
 @Component({
     selector: 'app-shipments',
@@ -18,12 +20,13 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
         DropdownComponent,
         ListShipmentsComponent,
         FaIconComponent,
+        EditShipmentComponent,
     ],
     templateUrl: './shipments.component.html',
 })
 export class ShipmentsComponent {
 
-    private _shipmentKinds: Observable<IDropdownItem[]> = this.shipmentService.listShipmentKinds()
+    private _shipmentKinds: Observable<IDropdownItem[]> = this.shipmentKindService.listShipmentKinds()
         .pipe(map(response => response.items.map(item => <IDropdownItem>{id: item.shipmentKindId, name: item.name})));
 
     private _stockpiles$: Observable<IStockpileListItem[]> = this.stockpileService.listStockpiles()
@@ -40,6 +43,7 @@ export class ShipmentsComponent {
     constructor(
         private shipmentService: ShipmentService,
         private stockpileService: StockpileService,
+        private shipmentKindService: ShipmentKindService,
         private router: Router,
         private route: ActivatedRoute
     ) {

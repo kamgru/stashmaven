@@ -16,7 +16,7 @@ import {IInventoryItemDetails, InventoryItemService} from "../../../common/servi
 import {ListRecordsComponent} from "./list-records/list-records.component";
 
 @Component({
-    selector: 'app-edit-shipment',
+    selector: 'app-old-edit-shipment',
     standalone: true,
     imports: [
         JsonPipe,

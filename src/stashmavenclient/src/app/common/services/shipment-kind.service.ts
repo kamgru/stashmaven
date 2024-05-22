@@ -12,10 +12,21 @@ export class AddShipmentKindRequest {
     }
 }
 
+export interface IListShipmentKindsResponse {
+    items: IShipmentKind[];
+}
+
+export interface IShipmentKind {
+    shipmentKindId: string;
+    name: string;
+    shortCode: string;
+    direction: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
-export class ShipmentKindsService {
+export class ShipmentKindService {
 
     constructor(
         private http: HttpClient
@@ -29,4 +40,8 @@ export class ShipmentKindsService {
     public addShipmentKind(req: AddShipmentKindRequest): Observable<string> {
         return this.http.post<string>(`${environment.apiUrl}/api/v1/shipmentkind`, req);
     }
+
+    public listShipmentKinds(): Observable<IListShipmentKindsResponse> {
+       return this.http.get<IListShipmentKindsResponse>(`${environment.apiUrl}/api/v1/shipmentkind/list`);
+    };
 }

@@ -6,7 +6,7 @@ import {Notification, NotificationComponent} from "../../common/components/notif
 import {ListShipmentKindsComponent} from "../../common/components/list-shipment-kinds/list-shipment-kinds.component";
 import {IShipmentKindItem} from "../../common/components/list-shipment-kinds/list-shipment-kinds.service";
 import {AddShipmentKindComponent, ShipmentKindAddedEvent} from "./add-shipment-kind/add-shipment-kind.component";
-import {AddShipmentKindRequest, ShipmentKindsService} from "../../common/services/shipment-kinds.service";
+import {AddShipmentKindRequest, ShipmentKindService} from "../../common/services/shipment-kind.service";
 import {AsyncPipe} from "@angular/common";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 
@@ -33,7 +33,7 @@ export class ShipmentKindsComponent {
     public directions$ = this.shipmentKindsService.getDirections();
 
     constructor(
-        private shipmentKindsService: ShipmentKindsService,
+        private shipmentKindsService: ShipmentKindService,
         fa: FaIconLibrary
     ) {
         fa.addIcons(faPlus);
