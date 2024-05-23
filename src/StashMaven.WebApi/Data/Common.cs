@@ -21,27 +21,23 @@ public record TaxDefinitionId(
 public class TaxDefinition
 {
     public const int NameMaxLength = 100;
-    public const int CountryCodeMaxLength = 2;
     
     public int Id { get; set; }
     public required TaxDefinitionId TaxDefinitionId { get; set; }
     public required string Name { get; set; }
     public required decimal Rate { get; set; }
-    public required string CountryCode { get; set; }
 
     public class TypeConfig : IEntityTypeConfiguration<TaxDefinition>
     {
         public void Configure(
             EntityTypeBuilder<TaxDefinition> builder)
         {
-            builder.ToTable("TaxDefinition", "com");
+            builder.ToTable("TaxDefinition", "common");
             builder.OwnsOne(e => e.TaxDefinitionId)
                 .Property(e => e.Value)
                 .HasColumnName("TaxDefinitionId");
             builder.Property(e => e.Name)
                 .HasMaxLength(NameMaxLength);
-            builder.Property(e => e.CountryCode)
-                .HasMaxLength(CountryCodeMaxLength);
         }
     }
 }
@@ -56,7 +52,7 @@ public class SourceReference
         public void Configure(
             EntityTypeBuilder<SourceReference> builder)
         {
-            builder.ToTable("SourceReference", "com");
+            builder.ToTable("SourceReference", "common");
         }
     }
 }
@@ -72,7 +68,7 @@ public class CompanyOption
         public void Configure(
             EntityTypeBuilder<CompanyOption> builder)
         {
-            builder.ToTable("CompanyOption", "com");
+            builder.ToTable("CompanyOption", "common");
         }
     }
 }
@@ -94,7 +90,7 @@ public class StashMavenOption
         public void Configure(
             EntityTypeBuilder<StashMavenOption> builder)
         {
-            builder.ToTable("StashMavenOption", "com");
+            builder.ToTable("StashMavenOption", "common");
         }
     }
 }

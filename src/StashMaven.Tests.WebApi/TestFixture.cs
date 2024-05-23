@@ -79,7 +79,6 @@ public abstract class TestFixture
         {
             Name = name,
             Rate = 0.1m,
-            CountryCode = "PL"
         };
         HttpResponseMessage response = await http.PostAsJsonAsync("api/v1/taxdefinition", request);
         response.EnsureSuccessStatusCode();

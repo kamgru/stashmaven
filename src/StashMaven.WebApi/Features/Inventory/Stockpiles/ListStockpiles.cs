@@ -15,7 +15,7 @@ public partial class StockpileController
     {
         ListStockpilesHandler.ListStockpilesResponse response =
             await handler.ListStockpilesAsync(request);
-
+        
         return Ok(response);
     }
 }
@@ -30,12 +30,13 @@ public class ListStockpilesHandler(CacheReader cacheReader)
     
     public class ListStockpilesRequest
     {
-        public int Page { get; set; }
-        public int PageSize { get; set; }
+        public int? Page { get; set; }
+        public int? PageSize { get; set; }
         public string? Search { get; set; }
         public bool IsAscending { get; set; }
         public string? SortBy { get; set; }
     }
+    
     public class StockpileItem
     {
         public required string StockpileId { get; set; }
@@ -43,56 +44,63 @@ public class ListStockpilesHandler(CacheReader cacheReader)
         public required string ShortCode { get; set; }
         public bool IsDefault { get; set; }
     }
-
+    
     public class ListStockpilesResponse
     {
         public List<StockpileItem> Items { get; set; } = [];
         public int TotalCount { get; set; }
     }
-
-    public async Task<ListStockpilesResponse> ListStockpilesAsync(ListStockpilesRequest request)
+    
+    public async Task<ListStockpilesResponse> ListStockpilesAsync(
+        ListStockpilesRequest request)
     {
-        request.PageSize = Math.Clamp(request.PageSize, MinPageSize, MaxPageSize);
-        request.Page = Math.Max(request.Page, MinPage);
-        
         IReadOnlyList<Stockpile> stockpiles = await cacheReader.GetStockpilesAsync();
         
         Stockpile? defaultStockpile = await cacheReader.GetDefaultStockpileAsync();
         
-        IEnumerable<Stockpile> result = stockpiles.AsEnumerable();
-        
         if (request.Search is not null && request.Search.Length >= MinSearchLength)
         {
-            result = result.Where(x => x.Name.Contains(request.Search, StringComparison.InvariantCultureIgnoreCase));
+            stockpiles = stockpiles
+                .Where(x => x.Name.Contains(request.Search, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
         }
         
         if (request.SortBy is not null)
         {
-            result = request.SortBy.ToLowerInvariant() switch
+            stockpiles = request.SortBy.ToLowerInvariant() switch
             {
                 "name" => request.IsAscending
-                    ? result.OrderBy(x => x.Name)
-                    : result.OrderByDescending(x => x.Name),
+                    ? stockpiles.OrderBy(x => x.Name).ToList()
+                    : stockpiles.OrderByDescending(x => x.Name).ToList(),
                 "shortcode" => request.IsAscending
-                    ? result.OrderBy(x => x.ShortCode)
-                    : result.OrderByDescending(x => x.ShortCode),
-                _ => result
+                    ? stockpiles.OrderBy(x => x.ShortCode).ToList()
+                    : stockpiles.OrderByDescending(x => x.ShortCode).ToList(),
+                _ => stockpiles
             };
         }
         
-        int totalCount = result.Count();
+        int totalCount = stockpiles.Count;
         
-        List<StockpileItem> stockpileItems = result.Skip((request.Page - 1) * request.PageSize)
-            .Take(request.PageSize)
+        if (request is { Page: { } page, PageSize: { } pageSize })
+        {
+            request.Page = Math.Max(page, MinPage);
+            request.PageSize = Math.Clamp(pageSize, MinPageSize, MaxPageSize);
+            
+            stockpiles = stockpiles.Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+        }
+        
+        List<StockpileItem> stockpileItems = stockpiles
             .Select(x => new StockpileItem
-                {
-                    StockpileId = x.StockpileId.Value,
-                    Name = x.Name,
-                    ShortCode = x.ShortCode,
-                    IsDefault = defaultStockpile?.StockpileId == x.StockpileId
-                })
+            {
+                StockpileId = x.StockpileId.Value,
+                Name = x.Name,
+                ShortCode = x.ShortCode,
+                IsDefault = defaultStockpile?.StockpileId == x.StockpileId
+            })
             .ToList();
-
+        
         return new ListStockpilesResponse
         {
             Items = stockpileItems,
