@@ -1,0 +1,37 @@
+@if (listResponse$ | async; as listResponse) {
+    <app-list-items-layout [listResponse]="listResponse"
+                           [toolbarTemplate]="toolbarOuter"
+                           [itemTemplate]="itemsTemplate"
+                           (OnSearch)="search($event)"
+                           (OnPageSizeChanged)="changePageSize($event)"
+                           (OnPrevPage)="tryPrevPage()"
+                           (OnNextPage)="tryNextPage()">
+        <ng-template #toolbarOuter>
+            <ng-container *ngTemplateOutlet="toolbarTemplate">
+            </ng-container>
+        </ng-template>
+        <ng-template #itemsTemplate>
+            <thead>
+            <tr>
+                <th class="sort align-middle" scope="col" style="width:70px">#</th>
+                <th class="sort align-middle" scope="col" style="width:200px" (click)="sortBy('name')">
+                    Name
+                </th>
+                <th class="sort align-middle" scope="col" style="width:350px" (click)="sortBy('rate')">Rate</th>
+                <th class="sort text-end align-middle pe-0 ps-4"></th>
+            </tr>
+            </thead>
+            <tbody class="list" id="products-table-body">
+                @for (taxDefinition of listResponse.items; track taxDefinition.taxDefinitionId; let i = $index) {
+                    <tr [class.table-primary]="i == currentIndex_$()"
+                        (click)="handleRowClick(taxDefinition)"
+                        (dblclick)="handleRowDblClick(taxDefinition)" class="position-static">
+                        <td class="text-body-tertiary align-middle white-space-nowrap px-1">{{ i + 1 }}</td>
+                        <td class="category align-middle">{{ taxDefinition.name }}</td>
+                        <td class="category align-middle">{{ taxDefinition.rate }}</td>
+                    </tr>
+                }
+            </tbody>
+        </ng-template>
+    </app-list-items-layout>
+}

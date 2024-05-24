@@ -19,7 +19,6 @@ export class AddTaxDefinitionRequest {
     constructor(
         public name: string,
         public rate: number,
-        public countryCode: string
     ) {
     }
 }

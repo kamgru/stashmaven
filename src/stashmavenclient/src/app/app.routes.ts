@@ -1,7 +1,6 @@
 import {Routes} from '@angular/router';
 import {PartnersComponent} from "./partnership/partners/partners.component";
 import {MsalGuard, MsalRedirectComponent} from "@azure/msal-angular";
-import {TaxDefinitionsComponent} from "./common/tax-definitions/tax-definitions.component";
 import {ProductsComponent} from "./catalog/products/products.component";
 import {BrandsComponent} from "./catalog/brands/brands.component";
 import {CountriesComponent} from "./common/countries/countries.component";
@@ -13,13 +12,14 @@ import {EditBrandComponent} from "./catalog/brands/edit-brand/edit-brand.compone
 import {EditStockpileComponent} from "./inventory/stockpiles/edit-stockpile/edit-stockpile.component";
 import {InventoryItemsComponent} from "./inventory/inventory-items/inventory-items.component";
 import {ShipmentKindsComponent} from "./inventory/shipment-kinds/shipment-kinds.component";
+import {TaxesComponent} from "./common/taxes/taxes.component";
 
 export const routes: Routes = [
     {path: 'catalog/products', component: ProductsComponent, canActivate: [MsalGuard]},
     {path: 'catalog/products/:id', component: EditProductComponent, canActivate: [MsalGuard]},
     {path: 'catalog/brands', component: BrandsComponent, canActivate: [MsalGuard]},
     {path: 'catalog/brands/:id', component: EditBrandComponent, canActivate: [MsalGuard]},
-    {path: 'common/tax-definitions', component: TaxDefinitionsComponent, canActivate: [MsalGuard]},
+    {path: 'common/taxes', component: TaxesComponent, canActivate: [MsalGuard]},
     {path: 'auth', component: MsalRedirectComponent},
     {path: 'inventory/stockpiles', component: StockpilesComponent, canActivate: [MsalGuard]},
     {path: 'inventory/stockpiles/:id', component: EditStockpileComponent, canActivate: [MsalGuard]},

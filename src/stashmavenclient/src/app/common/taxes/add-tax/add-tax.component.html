@@ -1,0 +1,40 @@
+<form class="mb-9" [formGroup]="addTaxForm" (ngSubmit)="handleSubmit()">
+    <div class="row g-3 flex-between-end mb-5">
+        <div class="col-auto">
+            <h2>Add a tax definition</h2>
+            <h5 class="text-body-tertiary fw-semibold">Add a tax definition to the system</h5>
+        </div>
+    </div>
+    <div class="row g-5">
+        <div class="col-12 col-xl-6">
+            <h4 class="mb-3">Name</h4>
+            <input #nameInput
+                   type="text"
+                   class="form-control"
+                   formControlName="name"
+                   [class.is-invalid]="name.invalid && name.touched"/>
+            <div class="invalid-feedback">Name needs to between 3 and 100 characters</div>
+            <div class="mb-6 mt-6">
+                <h4 class="mb-3">Rate</h4>
+                <input type="number"
+                       class="form-control"
+                       formControlName="rate"
+                       [class.is-invalid]="rate.invalid && rate.touched"/>
+                <div class="invalid-feedback">Rate needs to be between 0 and 1</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-auto">
+            <button class="btn btn-primary mb-2 mb-sm-0 me-2"
+                    type="submit"
+                    [disabled]="addTaxForm.invalid">Save
+            </button>
+            <button class="btn btn-phoenix-secondary mb-2 mb-sm-0"
+                    type="button"
+                    (click)="OnCancelled.emit()">Cancel
+            </button>
+        </div>
+    </div>
+</form>
