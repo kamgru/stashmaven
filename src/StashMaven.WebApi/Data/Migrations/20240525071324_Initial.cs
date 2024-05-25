@@ -13,13 +13,13 @@ namespace StashMaven.WebApi.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "prt");
+                name: "partnership");
 
             migrationBuilder.EnsureSchema(
                 name: "cat");
 
             migrationBuilder.EnsureSchema(
-                name: "com");
+                name: "common");
 
             migrationBuilder.EnsureSchema(
                 name: "inv");
@@ -32,8 +32,8 @@ namespace StashMaven.WebApi.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     BrandId = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    ShortCode = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    ShortCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,7 +42,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "CompanyOption",
-                schema: "com",
+                schema: "common",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -57,7 +57,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Partner",
-                schema: "prt",
+                schema: "partnership",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -97,7 +97,7 @@ namespace StashMaven.WebApi.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ShipmentKindId = table.Column<string>(type: "text", nullable: false),
                     SequenceGeneratorId = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     ShortCode = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
                     Direction = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -125,7 +125,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "SourceReference",
-                schema: "com",
+                schema: "common",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -139,7 +139,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "StashMavenOption",
-                schema: "com",
+                schema: "common",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -170,15 +170,14 @@ namespace StashMaven.WebApi.Data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "TaxDefinition",
-                schema: "com",
+                schema: "common",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     TaxDefinitionId = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Rate = table.Column<decimal>(type: "numeric", nullable: false),
-                    CountryCode = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false)
+                    Rate = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,35 +185,8 @@ namespace StashMaven.WebApi.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Product",
-                schema: "cat",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProductId = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    Sku = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    UnitOfMeasure = table.Column<int>(type: "integer", nullable: false),
-                    BarCode = table.Column<string>(type: "text", nullable: true),
-                    BrandId = table.Column<int>(type: "integer", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Product", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Product_Brand_BrandId",
-                        column: x => x.BrandId,
-                        principalSchema: "cat",
-                        principalTable: "Brand",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Address",
-                schema: "prt",
+                schema: "partnership",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -235,33 +207,33 @@ namespace StashMaven.WebApi.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Address_Partner_PartnerId",
                         column: x => x.PartnerId,
-                        principalSchema: "prt",
+                        principalSchema: "partnership",
                         principalTable: "Partner",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TaxIdentifier",
-                schema: "prt",
+                name: "BusinessIdentifier",
+                schema: "partnership",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PartnerId = table.Column<int>(type: "integer", nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
+                    Value = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     IsPrimary = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TaxIdentifier", x => x.Id);
+                    table.PrimaryKey("PK_BusinessIdentifier", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TaxIdentifier_Partner_PartnerId",
+                        name: "FK_BusinessIdentifier_Partner_PartnerId",
                         column: x => x.PartnerId,
-                        principalSchema: "prt",
+                        principalSchema: "partnership",
                         principalTable: "Partner",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -319,7 +291,7 @@ namespace StashMaven.WebApi.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Shipment_Partner_PartnerId",
                         column: x => x.PartnerId,
-                        principalSchema: "prt",
+                        principalSchema: "partnership",
                         principalTable: "Partner",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -338,7 +310,7 @@ namespace StashMaven.WebApi.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Shipment_SourceReference_SourceReferenceId",
                         column: x => x.SourceReferenceId,
-                        principalSchema: "com",
+                        principalSchema: "common",
                         principalTable: "SourceReference",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -351,6 +323,48 @@ namespace StashMaven.WebApi.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Product",
+                schema: "cat",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ProductId = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Sku = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    UnitOfMeasure = table.Column<int>(type: "integer", nullable: false),
+                    BarCode = table.Column<string>(type: "text", nullable: true),
+                    BrandId = table.Column<int>(type: "integer", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DefaultTaxDefinitionId = table.Column<int>(type: "integer", nullable: false),
+                    TaxDefinitionId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Product_Brand_BrandId",
+                        column: x => x.BrandId,
+                        principalSchema: "cat",
+                        principalTable: "Brand",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Product_TaxDefinition_DefaultTaxDefinitionId",
+                        column: x => x.DefaultTaxDefinitionId,
+                        principalSchema: "common",
+                        principalTable: "TaxDefinition",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Product_TaxDefinition_TaxDefinitionId",
+                        column: x => x.TaxDefinitionId,
+                        principalSchema: "common",
+                        principalTable: "TaxDefinition",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InventoryItem",
                 schema: "inv",
                 columns: table => new
@@ -358,8 +372,8 @@ namespace StashMaven.WebApi.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     InventoryItemId = table.Column<string>(type: "text", nullable: false),
-                    Sku = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
+                    Sku = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     Quantity = table.Column<decimal>(type: "numeric", nullable: false),
                     UnitOfMeasure = table.Column<int>(type: "integer", nullable: false),
                     LastPurchasePrice = table.Column<decimal>(type: "numeric", nullable: false),
@@ -398,9 +412,7 @@ namespace StashMaven.WebApi.Data.Migrations
                     UnitPrice = table.Column<decimal>(type: "numeric", nullable: false),
                     InventoryItemId = table.Column<int>(type: "integer", nullable: false),
                     ShipmentId = table.Column<int>(type: "integer", nullable: false),
-                    Tax_Name = table.Column<string>(type: "text", nullable: false),
-                    Tax_Rate = table.Column<decimal>(type: "numeric", nullable: false),
-                    Tax_TaxDefinitionId = table.Column<string>(type: "text", nullable: false)
+                    TaxDefinitionId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -419,13 +431,40 @@ namespace StashMaven.WebApi.Data.Migrations
                         principalTable: "Shipment",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ShipmentRecord_TaxDefinition_TaxDefinitionId",
+                        column: x => x.TaxDefinitionId,
+                        principalSchema: "common",
+                        principalTable: "TaxDefinition",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Address_PartnerId",
-                schema: "prt",
+                schema: "partnership",
                 table: "Address",
                 column: "PartnerId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Brand_ShortCode",
+                schema: "cat",
+                table: "Brand",
+                column: "ShortCode",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BusinessIdentifier_PartnerId",
+                schema: "partnership",
+                table: "BusinessIdentifier",
+                column: "PartnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BusinessIdentifier_Type_Value",
+                schema: "partnership",
+                table: "BusinessIdentifier",
+                columns: new[] { "Type", "Value" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -441,10 +480,23 @@ namespace StashMaven.WebApi.Data.Migrations
                 column: "StockpileId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Partner_CustomIdentifier",
+                schema: "partnership",
+                table: "Partner",
+                column: "CustomIdentifier",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Product_BrandId",
                 schema: "cat",
                 table: "Product",
                 column: "BrandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_DefaultTaxDefinitionId",
+                schema: "cat",
+                table: "Product",
+                column: "DefaultTaxDefinitionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_Sku",
@@ -452,6 +504,12 @@ namespace StashMaven.WebApi.Data.Migrations
                 table: "Product",
                 column: "Sku",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_TaxDefinitionId",
+                schema: "cat",
+                table: "Product",
+                column: "TaxDefinitionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SequenceEntry_Group_Delimiter",
@@ -516,17 +574,17 @@ namespace StashMaven.WebApi.Data.Migrations
                 column: "ShipmentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ShipmentRecord_TaxDefinitionId",
+                schema: "inv",
+                table: "ShipmentRecord",
+                column: "TaxDefinitionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Stockpile_ShortCode",
                 schema: "inv",
                 table: "Stockpile",
                 column: "ShortCode",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TaxIdentifier_PartnerId",
-                schema: "prt",
-                table: "TaxIdentifier",
-                column: "PartnerId");
         }
 
         /// <inheritdoc />
@@ -534,11 +592,15 @@ namespace StashMaven.WebApi.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Address",
-                schema: "prt");
+                schema: "partnership");
+
+            migrationBuilder.DropTable(
+                name: "BusinessIdentifier",
+                schema: "partnership");
 
             migrationBuilder.DropTable(
                 name: "CompanyOption",
-                schema: "com");
+                schema: "common");
 
             migrationBuilder.DropTable(
                 name: "SequenceEntry",
@@ -550,15 +612,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "StashMavenOption",
-                schema: "com");
-
-            migrationBuilder.DropTable(
-                name: "TaxDefinition",
-                schema: "com");
-
-            migrationBuilder.DropTable(
-                name: "TaxIdentifier",
-                schema: "prt");
+                schema: "common");
 
             migrationBuilder.DropTable(
                 name: "SequenceGenerator",
@@ -578,7 +632,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Partner",
-                schema: "prt");
+                schema: "partnership");
 
             migrationBuilder.DropTable(
                 name: "ShipmentKind",
@@ -590,7 +644,7 @@ namespace StashMaven.WebApi.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "SourceReference",
-                schema: "com");
+                schema: "common");
 
             migrationBuilder.DropTable(
                 name: "Stockpile",
@@ -599,6 +653,10 @@ namespace StashMaven.WebApi.Data.Migrations
             migrationBuilder.DropTable(
                 name: "Brand",
                 schema: "cat");
+
+            migrationBuilder.DropTable(
+                name: "TaxDefinition",
+                schema: "common");
         }
     }
 }

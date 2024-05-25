@@ -100,7 +100,7 @@ public class GetShipmentByIdHandler(
             .Include(s => s.SourceReference)
             .Include(s => s.Stockpile)
             .Include(shipment => shipment.Records)
-            .ThenInclude(shipmentRecord => shipmentRecord.Tax)
+            .ThenInclude(shipmentRecord => shipmentRecord.TaxDefinition)
             .SingleOrDefaultAsync(s => s.ShipmentId.Value == request.ShipmentId);
 
         if (shipment == null)
@@ -147,9 +147,9 @@ public class GetShipmentByIdHandler(
                     UnitPrice = r.UnitPrice,
                     Sku = r.InventoryItem.Sku,
                     Name = r.InventoryItem.Name,
-                    TaxRate = r.Tax.Rate,
-                    TaxDefinitionId = r.Tax.TaxDefinitionId,
-                    TaxName = r.Tax.Name,
+                    TaxRate = r.TaxDefinition.Rate,
+                    TaxDefinitionId = r.TaxDefinition.TaxDefinitionId.Value,
+                    TaxName = r.TaxDefinition.Name,
                 })
                 .ToList(),
         });

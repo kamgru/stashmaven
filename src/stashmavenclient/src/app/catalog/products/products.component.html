@@ -1,4 +1,4 @@
-@if (unitsOfMeasure$ | async; as unitsOfMeasure) {
+@if (data$ | async; as data) {
     @if (uiState == 'list') {
         <div class="mb-9">
             <div class="row g-3 mb-4">
@@ -23,7 +23,8 @@
     } @else if (uiState == 'add') {
         <app-add-product (OnCancelled)="uiState = 'list'"
                          (OnProductAdded)="handleProductAdded($event)"
-                         [unitsOfMeasure]="unitsOfMeasure">
+                         [taxDefinitions]="data.taxes"
+                         [unitsOfMeasure]="data.units">
         </app-add-product>
     }
 }

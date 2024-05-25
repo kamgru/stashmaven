@@ -53,6 +53,9 @@ public static class ErrorCodes
     public const ErrorCode UnknownBusinessIdentifierType = 700000;
     public const ErrorCode NoPrimaryBusinessIdentifier = 700001;
     public const ErrorCode BusinessIdentifierNotUnique = 700002;
+    
+    // Tax Definitions
+    public const ErrorCode TaxDefinitionNotFound = 800000;
 }
 
 public class StashMavenResult

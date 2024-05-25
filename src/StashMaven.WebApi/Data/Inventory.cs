@@ -79,13 +79,6 @@ public class InventoryItem
         }
     }
 }
-public class ShipmentRecordTax
-{
-    public required string Name { get; set; }
-    public decimal Rate { get; set; }
-    public required string TaxDefinitionId { get; set; }
-}
-
 public class ShipmentRecord
 {
     public int Id { get; set; }
@@ -94,7 +87,7 @@ public class ShipmentRecord
     public decimal UnitPrice { get; set; }
     public InventoryItem InventoryItem { get; set; } = null!;
     public Shipment Shipment { get; set; } = null!;
-    public required ShipmentRecordTax Tax { get; set; }
+    public TaxDefinition TaxDefinition { get; set; } = null!;
 
     public class TypeConfig : IEntityTypeConfiguration<ShipmentRecord>
     {
@@ -102,7 +95,6 @@ public class ShipmentRecord
             EntityTypeBuilder<ShipmentRecord> builder)
         {
             builder.ToTable("ShipmentRecord", "inv");
-            builder.ComplexProperty(e => e.Tax);
         }
     }
 }

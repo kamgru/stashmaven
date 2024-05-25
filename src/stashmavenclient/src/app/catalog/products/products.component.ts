@@ -8,6 +8,8 @@ import {FaIconLibrary, FontAwesomeModule} from "@fortawesome/angular-fontawesome
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {AddProductRequest, ProductService} from "../../common/services/product.service";
 import {UnitOfMeasureService} from "../../common/services/unit-of-measure.service";
+import {TaxDefinition, TaxDefinitionService} from "../../common/services/tax-definition.service";
+import {combineLatest, map} from "rxjs";
 
 @Component({
     selector: 'app-products',
@@ -19,13 +21,21 @@ export class ProductsComponent {
 
     public uiState: 'list' | 'add' | 'edit' = 'list';
 
-    public unitsOfMeasure$ = this.unitOfMeasureService.getUnitsOfMeasure();
+    private _unitsOfMeasure$ = this.unitOfMeasureService.getUnitsOfMeasure()
+    private _taxes$ = this.taxesService.listAll()
+        .pipe(map(x => x.items));
+
+    public data$ = combineLatest([this._unitsOfMeasure$, this._taxes$])
+        .pipe(map(([units, taxes]) => (
+            <{ units: string[], taxes: TaxDefinition[] }>{units, taxes})));
+
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private productsService: ProductService,
         private unitOfMeasureService: UnitOfMeasureService,
+        private taxesService: TaxDefinitionService,
         faLibrary: FaIconLibrary
     ) {
         faLibrary.addIcons(faPlus);
@@ -43,7 +53,8 @@ export class ProductsComponent {
         this.productsService.add(new AddProductRequest(
             $event.name,
             $event.sku,
-            $event.unitOfMeasure
+            $event.unitOfMeasure,
+            $event.taxDefinitionId
         ))
             .subscribe(
                 res => {

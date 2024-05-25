@@ -42,7 +42,7 @@ public class ProductTaxReference
 {
     public required string Name { get; set; }
     public decimal Rate { get; set; }
-    public required string TaxDefinitionIdValue { get; set; }
+    public required string TaxDefinitionId { get; set; }
 }
 
 public class Product
@@ -60,6 +60,8 @@ public class Product
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
     public ICollection<InventoryItem> InventoryItems { get; set; } = [];
+    public TaxDefinition DefaultTaxDefinition { get; set; } = null!;
+    
     
     public class TypeConfig : IEntityTypeConfiguration<Product>
     {
@@ -76,6 +78,8 @@ public class Product
                 .IsUnique();
             builder.Property(e => e.Name)
                 .HasMaxLength(NameMaxLength);
+            builder.HasOne(e => e.DefaultTaxDefinition)
+                .WithMany();
         }
     }
 }

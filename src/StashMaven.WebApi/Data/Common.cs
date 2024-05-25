@@ -26,7 +26,9 @@ public class TaxDefinition
     public required TaxDefinitionId TaxDefinitionId { get; set; }
     public required string Name { get; set; }
     public required decimal Rate { get; set; }
-
+    public ICollection<Product> Products { get; set; } = [];
+    public ICollection<ShipmentRecord> Records { get; set; } = [];
+    
     public class TypeConfig : IEntityTypeConfiguration<TaxDefinition>
     {
         public void Configure(

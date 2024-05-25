@@ -31,6 +31,15 @@
                     }
                 </select>
             </div>
+            <div class="mb-6 mt-5">
+                <h4 class="mb-3">Tax</h4>
+                <select class="form-select"
+                        formControlName="tax">
+                    @for (option of taxDefinitions; track option) {
+                        <option [value]="option.taxDefinitionId">{{ option.name }}</option>
+                    }
+                </select>
+            </div>
         </div>
     </div>
 

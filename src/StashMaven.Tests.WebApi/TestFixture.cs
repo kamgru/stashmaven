@@ -98,7 +98,8 @@ public abstract class TestFixture
         {
             Name = name,
             Sku = name[..Product.SkuMaxLength],
-            UnitOfMeasure = UnitOfMeasure.Kg
+            UnitOfMeasure = UnitOfMeasure.Kg,
+            DefaultTaxDefinitionId = Guid.NewGuid().ToString()
         };
         HttpResponseMessage response = await http.PostAsJsonAsync("api/v1/Product", request);
         response.EnsureSuccessStatusCode();

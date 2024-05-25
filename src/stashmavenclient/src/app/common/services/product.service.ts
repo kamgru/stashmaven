@@ -8,6 +8,7 @@ export class AddProductRequest {
         public name: string,
         public sku: string,
         public unitOfMeasure: string,
+        public defaultTaxDefinitionId: string
     ) {
     }
 }

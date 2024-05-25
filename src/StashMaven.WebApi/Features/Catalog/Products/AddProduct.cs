@@ -24,7 +24,8 @@ public partial class ProductController
 
 [Injectable]
 public class AddProductHandler(
-    StashMavenContext context)
+    StashMavenRepository repository,
+    UnitOfWork unitOfWork)
 {
     public class AddProductRequest
     {
@@ -37,6 +38,8 @@ public class AddProductHandler(
         public required string Name { get; set; } = null!;
 
         public UnitOfMeasure UnitOfMeasure { get; set; }
+        
+        public required string DefaultTaxDefinitionId { get; set; }
     }
 
     public record AddProductResponse(string ProductId);
@@ -44,6 +47,14 @@ public class AddProductHandler(
     public async Task<StashMavenResult<AddProductResponse>> AddProductAsync(
         AddProductRequest request)
     {
+        TaxDefinition? taxDefinition = await repository.GetTaxDefinitionAsync(
+            new TaxDefinitionId(request.DefaultTaxDefinitionId));
+        
+        if (taxDefinition is null)
+        {
+            return StashMavenResult<AddProductResponse>.Error(ErrorCodes.TaxDefinitionNotFound);
+        }
+        
         ProductId productId = new(Guid.NewGuid().ToString());
 
         Product product = new()
@@ -52,15 +63,14 @@ public class AddProductHandler(
             Sku = request.Sku,
             Name = request.Name,
             UnitOfMeasure = request.UnitOfMeasure,
+            DefaultTaxDefinition = taxDefinition,
             CreatedOn = DateTime.UtcNow,
             UpdatedOn = DateTime.UtcNow
         };
 
-        context.Products.Add(product);
+        repository.InsertProduct(product);
         
-        List<Stockpile> stockpiles = await context.Stockpiles
-            .AsTracking()
-            .ToListAsync();
+        IReadOnlyList<Stockpile> stockpiles = await repository.GetAllStockpilesAsync();
         
         foreach (Stockpile stockpile in stockpiles)
         {
@@ -73,12 +83,12 @@ public class AddProductHandler(
                 Stockpile = stockpile,
             };
 
-            context.InventoryItems.Add(inventoryItem);
+            repository.InsertInventoryItem(inventoryItem);
         }
 
         try
         {
-            await context.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync();
             return StashMavenResult<AddProductResponse>.Success(new AddProductResponse(productId.Value));
         }
         catch (DbUpdateException ex)

@@ -112,6 +112,7 @@ public class StashMavenRepository(StashMavenContext context)
         await context.Products
             .AsTracking()
             .Include(x => x.Brand)
+            .Include(x => x.DefaultTaxDefinition)
             .FirstOrDefaultAsync(ci => ci.ProductId.Value == productId.Value);
     
     public void InsertStockpile(
@@ -131,7 +132,7 @@ public class StashMavenRepository(StashMavenContext context)
         InventoryItem inventoryItem) =>
         context.InventoryItems.Add(inventoryItem);
     
-    public async Task<List<Stockpile>> GetAllStockpilesAsync() =>
+    public async Task<IReadOnlyList<Stockpile>> GetAllStockpilesAsync() =>
         await context.Stockpiles
             .AsTracking()
             .ToListAsync();
@@ -140,4 +141,14 @@ public class StashMavenRepository(StashMavenContext context)
         await context.Products
             .AsTracking()
             .ToListAsync();
+    
+    public async Task<TaxDefinition?> GetTaxDefinitionAsync(TaxDefinitionId taxDefinitionId) =>
+        await context.TaxDefinitions
+            .Include(x => x.Products)
+            .AsTracking()
+            .FirstOrDefaultAsync(x => x.TaxDefinitionId.Value == taxDefinitionId.Value);
+    
+    public void InsertProduct(
+        Product product) =>
+        context.Products.Add(product);
 }
